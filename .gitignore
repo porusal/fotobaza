@@ -9,6 +9,7 @@ database/*.sqlite
 bootstrap/cache/*.php
 .env
 .env.*
+!.env.example
 .DS_Store
 public/storage/*
 !public/storage/.gitignore

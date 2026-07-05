@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
+use App\Support\FilesystemGallerySync;
 use App\Support\SiteViewData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,6 +24,24 @@ class GalleryController extends Controller
                 ->ordered()
                 ->get(),
         ]));
+    }
+
+    public function syncFilesystem(FilesystemGallerySync $filesystemGallerySync): RedirectResponse
+    {
+        $result = $filesystemGallerySync->sync();
+
+        if (! empty($result['error'])) {
+            return back()->with('status', 'FTP-синхронизация не выполнена: ' . $result['error']);
+        }
+
+        return back()->with('status', sprintf(
+            'FTP-синхронизация выполнена: создано каталогов %d, обновлено каталогов %d, найдено файлов %d, добавлено фото %d, обновлено фото %d.',
+            $result['galleries_created'] ?? 0,
+            $result['galleries_updated'] ?? 0,
+            $result['photos_scanned'] ?? 0,
+            $result['photos_created'] ?? 0,
+            $result['photos_updated'] ?? 0,
+        ));
     }
 
     public function create(): View

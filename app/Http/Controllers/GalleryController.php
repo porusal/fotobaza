@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Gallery;
 use App\Models\Page;
 use App\Models\Photo;
+use App\Support\FilesystemGallerySync;
 use App\Support\SiteViewData;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class GalleryController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request, FilesystemGallerySync $filesystemGallerySync): View
     {
+        $filesystemGallerySync->syncIfDue();
+
         $settings = SiteViewData::settings();
         $activeTag = $request->string('tag')->trim()->toString();
         $latestPhotos = SiteViewData::latestPhotosByTag($settings['home_photos_count'], $activeTag !== '' ? $activeTag : null);
@@ -37,8 +40,17 @@ class GalleryController extends Controller
         ]));
     }
 
-    public function show(Request $request, Gallery $gallery): View
+    public function show(Request $request, string $slug, FilesystemGallerySync $filesystemGallerySync): View
     {
+        $gallery = Gallery::query()->where('slug', $slug)->first();
+
+        if (! $gallery) {
+            $filesystemGallerySync->sync();
+            $gallery = Gallery::query()->where('slug', $slug)->firstOrFail();
+        } else {
+            $filesystemGallerySync->syncIfDue();
+        }
+
         $gallery->load([
             'parent:id,parent_id,slug,display_name',
             'children' => fn ($query) => $query->active()->ordered()->withCount('photos'),

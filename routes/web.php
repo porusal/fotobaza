@@ -16,7 +16,7 @@ use App\Http\Middleware\EnsureAdminPendingTwoFactor;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [GalleryController::class, 'index'])->name('home');
-Route::get('/gallery/{gallery}', [GalleryController::class, 'show'])->name('galleries.show');
+Route::get('/gallery/{slug}', [GalleryController::class, 'show'])->name('galleries.show');
 Route::get('/about', [GalleryController::class, 'about'])->name('about');
 Route::get('/page/{page}', [GalleryController::class, 'page'])->name('pages.show');
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
@@ -55,6 +55,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/security/two-factor/recovery-codes', [SecurityController::class, 'regenerateRecoveryCodes'])->name('security.two-factor.recovery-codes');
         Route::delete('/security/two-factor', [SecurityController::class, 'disable'])->name('security.two-factor.disable');
 
+        Route::post('/galleries/sync-filesystem', [AdminGalleryController::class, 'syncFilesystem'])->name('galleries.sync-filesystem');
         Route::resource('galleries', AdminGalleryController::class)->except(['show']);
         Route::resource('photos', AdminPhotoController::class)->except(['show']);
         Route::resource('pages', AdminPageController::class)->except(['show']);

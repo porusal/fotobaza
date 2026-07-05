@@ -4,12 +4,22 @@
 
 @section('content')
     <section class="admin-card">
+        @if(session('status'))
+            <div class="alert alert-success mb-3">{{ session('status') }}</div>
+        @endif
+
         <div class="panel__title">
             <div>
                 <p class="eyebrow">CRUD</p>
                 <h2>Управление каталогами</h2>
             </div>
-            <a href="{{ route('admin.galleries.create') }}" class="btn-soft">Новый каталог</a>
+            <div class="d-flex flex-wrap gap-2 justify-content-end">
+                <form method="post" action="{{ route('admin.galleries.sync-filesystem') }}" class="admin-inline-form">
+                    @csrf
+                    <button type="submit" class="btn-ghost">Синхронизировать FTP</button>
+                </form>
+                <a href="{{ route('admin.galleries.create') }}" class="btn-soft">Новый каталог</a>
+            </div>
         </div>
 
         <div class="table-responsive">

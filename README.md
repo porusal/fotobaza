@@ -51,6 +51,10 @@ CACHE_STORE=file
 QUEUE_CONNECTION=sync
 FILESYSTEM_DISK=public
 FILESYSTEM_PUBLIC_ROOT=public/storage
+GALLERY_FILESYSTEM_SYNC=true
+GALLERY_FILESYSTEM_AUTO_SYNC=true
+GALLERY_FILESYSTEM_AUTO_SYNC_SECONDS=30
+GALLERY_FILESYSTEM_PHOTOS_DIR=photos
 ```
 
 If the site still tries to query the `sessions` table after changing `.env`, clear cached config:
@@ -58,6 +62,32 @@ If the site still tries to query the `sessions` table after changing `.env`, cle
 ```bash
 php artisan optimize:clear
 ```
+
+## FTP Photo Folders
+
+You can upload albums directly over FTP into:
+
+```text
+public/storage/photos
+```
+
+Every directory under this folder is imported as a gallery, and image files inside it are imported as photos. Nested directories become subgalleries.
+
+Example:
+
+```text
+public/storage/photos/events/weddings/photo-01.jpg
+public/storage/photos/events/weddings/photo-02.jpg
+public/storage/photos/events/concerts/photo-01.jpg
+```
+
+After upload, run:
+
+```bash
+php artisan gallery:sync-filesystem
+```
+
+Or open the admin panel and click `Синхронизировать FTP` on the `Каталоги` page. Public pages also run a lightweight automatic sync every `GALLERY_FILESYSTEM_AUTO_SYNC_SECONDS` seconds.
 
 ## Notes
 
