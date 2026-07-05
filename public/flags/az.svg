@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Azerbaijani flag">
+  <rect x="0" y="0" width="48" height="11.333" fill="#00b5e2"/>
+  <rect x="0" y="11.333" width="48" height="11.334" fill="#ef3340"/>
+  <rect x="0" y="22.667" width="48" height="11.333" fill="#509e2f"/>
+  <circle cx="23" cy="17" r="5" fill="#ffffff"/>
+  <circle cx="25" cy="17" r="4" fill="#ef3340"/>
+  <polygon points="32.00,13.50 32.57,15.61 34.47,14.53 33.39,16.43 35.50,17.00 33.39,17.57 34.47,19.47 32.57,18.39 32.00,20.50 31.43,18.39 29.53,19.47 30.61,17.57 28.50,17.00 30.61,16.43 29.53,14.53 31.43,15.61" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

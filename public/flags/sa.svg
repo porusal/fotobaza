@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Saudi Arabian flag">
+  <rect x="0" y="0" width="48" height="34" fill="#006c35"/>
+  <path d="M12 21h23v2H12zM34 18h4v2h-4z" fill="#ffffff"/>
+  <path d="M15 12h18v3H15z" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

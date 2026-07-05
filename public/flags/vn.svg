@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Vietnamese flag">
+  <rect x="0" y="0" width="48" height="34" fill="#da251d"/>
+  <polygon points="24.00,9.00 25.88,14.41 31.61,14.53 27.04,17.99 28.70,23.47 24.00,20.20 19.30,23.47 20.96,17.99 16.39,14.53 22.12,14.41" fill="#ffff00"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

@@ -8,13 +8,13 @@
         <aside class="page-sidebar d-none d-lg-grid">
             <div class="sidebar-panel">
                 <div class="sidebar-card">
-                    <div class="sidebar-card__title">Каталоги</div>
-                    <x-gallery-tree :items="$galleryTree" :active-slug="$gallery->slug" />
+                    <div class="sidebar-card__title">{{ __('Каталоги') }}</div>
+                    <x-gallery-tree :items="$galleryTree" :active-slug="$gallery->slug" :open-ids="$galleryTreeOpenIds ?? []" />
                 </div>
 
                 <div class="sidebar-card">
-                    <div class="sidebar-card__title">Теги этой категории</div>
-                    <x-tag-cloud :tags="$galleryTags" :base-url="url('/gallery/' . $gallery->slug)" :active-tag="$activeTag ?? null" />
+                    <div class="sidebar-card__title">{{ __('Теги этой категории') }}</div>
+                    <x-tag-cloud :tags="$galleryTags" :base-url="url('/gallery/' . $gallery->slug)" :all-url="url('/gallery/' . $gallery->slug)" :active-tag="$activeTag ?? null" />
                 </div>
             </div>
         </aside>
@@ -22,7 +22,7 @@
         <article class="page-content">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-custom">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">{{ __('Главная') }}</a></li>
                     @if($gallery->parent)
                         <li class="breadcrumb-item"><a href="{{ url('/gallery/' . $gallery->parent->slug) }}">{{ $gallery->parent->display_name }}</a></li>
                     @endif
@@ -30,7 +30,7 @@
                 </ol>
             </nav>
 
-            <section class="page-hero">
+            <section class="page-hero page-hero--split">
                 <div class="page-hero__figure">
                     @if(!empty($gallery->cover_image))
                         <img src="{{ $gallery->cover_image }}" alt="{{ $gallery->display_name }}">
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="page-hero__body">
-                    <p class="eyebrow">Каталог / {{ $gallery->name }}</p>
+                    <p class="eyebrow">{{ __('Каталог') }} / {{ $gallery->name }}</p>
                     <h1>{{ $gallery->display_name }}</h1>
                     <div class="page-copy">
                         {!! $gallery->description !!}
@@ -48,12 +48,12 @@
 
             <section class="section">
                 <div class="section-head">
-                    <p class="eyebrow">Содержимое каталога</p>
+                    <p class="eyebrow">{{ __('Содержимое каталога') }}</p>
                     <div class="section-head__row">
-                        <h2>{{ $gallery->photos->isNotEmpty() ? 'Фото каталога' : 'Подкаталоги' }}</h2>
+                        <h2>{{ $gallery->photos->isNotEmpty() ? __('Фото каталога') : __('Подкаталоги') }}</h2>
                         <div class="section-head__actions">
-                            <span class="chip">{{ $gallery->photos->count() }} фото</span>
-                            <span class="chip">{{ $gallery->children->count() }} подкаталога</span>
+                            <span class="chip">{{ $gallery->photos->count() }} {{ __('Фото') }}</span>
+                            <span class="chip">{{ $gallery->children->count() }} {{ __('Подкаталоги') }}</span>
                         </div>
                     </div>
                 </div>
@@ -73,14 +73,14 @@
                                     <div class="folder-card__body">
                                         <div>
                                             <strong>{{ $child->display_name }}</strong>
-                                            <p>{{ $child->description ? \Illuminate\Support\Str::limit(strip_tags($child->description ?? ''), 90) : 'Открыть подкаталог' }}</p>
+                                            <p>{{ $child->description ? \Illuminate\Support\Str::limit(strip_tags($child->description ?? ''), 90) : __('Открыть подкаталог') }}</p>
                                         </div>
-                                        <span class="folder-card__count">{{ $child->photos_count ?? 0 }} фото</span>
+                                        <span class="folder-card__count">{{ $child->photos_count ?? 0 }} {{ __('Фото') }}</span>
                                     </div>
                                 </a>
                             </article>
                         @empty
-                            <div class="empty-state">В этом разделе ещё нет фото и подкаталогов.</div>
+                            <div class="empty-state">{{ __('В этом разделе ещё нет фото и подкаталогов.') }}</div>
                         @endforelse
                     </div>
                 @endif

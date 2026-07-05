@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Admin\SecurityController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\TagController as AdminTagController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
 use App\Http\Middleware\EnsureAdminGuest;
@@ -17,6 +19,7 @@ Route::get('/', [GalleryController::class, 'index'])->name('home');
 Route::get('/gallery/{gallery}', [GalleryController::class, 'show'])->name('galleries.show');
 Route::get('/about', [GalleryController::class, 'about'])->name('about');
 Route::get('/page/{page}', [GalleryController::class, 'page'])->name('pages.show');
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(EnsureAdminGuest::class)->group(function () {
@@ -41,6 +44,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/profile/two-factor', [ProfileController::class, 'disableTwoFactor'])->name('profile.two-factor.disable');
         Route::get('/settings', [DashboardController::class, 'settings'])->name('settings.edit');
         Route::put('/settings', [DashboardController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/tags', [AdminTagController::class, 'index'])->name('tags.index');
+        Route::post('/tags', [AdminTagController::class, 'store'])->name('tags.store');
+        Route::put('/tags/{tag}', [AdminTagController::class, 'update'])->name('tags.update');
+        Route::delete('/tags/{tag}', [AdminTagController::class, 'destroy'])->name('tags.destroy');
 
         Route::get('/security', [SecurityController::class, 'show'])->name('security.show');
         Route::post('/security/two-factor/setup', [SecurityController::class, 'setup'])->name('security.two-factor.setup');

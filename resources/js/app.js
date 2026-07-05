@@ -19,12 +19,14 @@ function initThemeToggle() {
   const storageKey = "foto636-theme";
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const label = themeToggle.querySelector("[data-theme-label]");
+  const lightLabel = themeToggle.dataset.themeLabelLight || "День";
+  const darkLabel = themeToggle.dataset.themeLabelDark || "Ночь";
 
   const applyTheme = (theme) => {
     document.body.classList.toggle("dark-mode", theme === "dark");
     themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
     if (label) {
-      label.textContent = theme === "dark" ? "Ночь" : "День";
+      label.textContent = theme === "dark" ? darkLabel : lightLabel;
     }
   };
 
@@ -46,6 +48,195 @@ function initThemeToggle() {
       // Local storage can be disabled in hardened browser profiles.
     }
     applyTheme(theme);
+  });
+}
+
+function readCookie(name) {
+  const prefix = `${name}=`;
+  const cookies = document.cookie ? document.cookie.split("; ") : [];
+  const cookie = cookies.find((item) => item.startsWith(prefix));
+
+  if (!cookie) {
+    return "";
+  }
+
+  try {
+    return decodeURIComponent(cookie.slice(prefix.length));
+  } catch {
+    return cookie.slice(prefix.length);
+  }
+}
+
+function writeCookie(name, value, maxAgeSeconds) {
+  document.cookie = `${name}=${value}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
+}
+
+function clearCookie(name) {
+  const host = window.location.hostname;
+  const domains = Array.from(new Set([host, host ? `.${host}` : ""])).filter(Boolean);
+
+  document.cookie = `${name}=; path=/; max-age=0; SameSite=Lax`;
+
+  domains.forEach((domain) => {
+    document.cookie = `${name}=; path=/; domain=${domain}; max-age=0; SameSite=Lax`;
+  });
+}
+
+function googleCookieLanguage(sourceLanguage) {
+  const value = readCookie("googtrans");
+  const parts = value.replace(/^\/+|\/+$/g, "").split("/");
+
+  if (parts.length >= 2 && parts[0] === sourceLanguage) {
+    return parts[1];
+  }
+
+  return "";
+}
+
+function savedLanguage(sourceLanguage) {
+  try {
+    return window.localStorage.getItem("foto636-language") || readCookie("site_locale") || googleCookieLanguage(sourceLanguage) || sourceLanguage;
+  } catch {
+    return readCookie("site_locale") || googleCookieLanguage(sourceLanguage) || sourceLanguage;
+  }
+}
+
+function rememberLanguage(language) {
+  try {
+    window.localStorage.setItem("foto636-language", language);
+  } catch {
+    // Local storage can be disabled in private or hardened browser modes.
+  }
+}
+
+function applyGoogleTranslateLanguage(sourceLanguage, targetLanguage) {
+  const oneYear = 60 * 60 * 24 * 365;
+
+  if (!targetLanguage || targetLanguage === sourceLanguage) {
+    clearCookie("googtrans");
+    writeCookie("site_locale", sourceLanguage, oneYear);
+    rememberLanguage(sourceLanguage);
+    return;
+  }
+
+  writeCookie("googtrans", `/${sourceLanguage}/${targetLanguage}`, oneYear);
+  writeCookie("site_locale", targetLanguage, oneYear);
+  rememberLanguage(targetLanguage);
+}
+
+function syncLanguageSwitcherSummary(switcher, activeLink) {
+  if (!activeLink) {
+    return;
+  }
+
+  const label = switcher.querySelector("[data-language-current-label]");
+  const flag = switcher.querySelector("[data-language-current-flag]");
+  const nextLabel = activeLink.dataset.languageLabel;
+  const nextFlag = activeLink.dataset.languageFlagSrc;
+
+  if (label && nextLabel) {
+    label.textContent = nextLabel;
+  }
+
+  if (flag && nextFlag) {
+    flag.setAttribute("src", nextFlag);
+  }
+}
+
+function syncLanguageSwitcherState(switcher, language) {
+  const sourceLanguage = switcher.dataset.sourceLanguage || "ru";
+  const links = Array.from(switcher.querySelectorAll("[data-language-link]"));
+  const activeLanguage = language || sourceLanguage;
+  let activeLink = links.find((link) => link.dataset.language === activeLanguage);
+
+  if (!activeLink) {
+    activeLink = links.find((link) => link.dataset.language === sourceLanguage) || links[0];
+  }
+
+  links.forEach((link) => {
+    const isActive = link === activeLink;
+
+    link.classList.toggle("is-active", isActive);
+    if (isActive) {
+      link.setAttribute("aria-current", "true");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+
+  syncLanguageSwitcherSummary(switcher, activeLink);
+}
+
+function initLanguageSwitcher() {
+  document.querySelectorAll("[data-language-switcher]").forEach((switcher) => {
+    const sourceLanguage = switcher.dataset.sourceLanguage || "ru";
+    const currentLanguage = savedLanguage(sourceLanguage);
+    const links = Array.from(switcher.querySelectorAll("[data-language-link]"));
+
+    syncLanguageSwitcherState(switcher, currentLanguage);
+
+    links.forEach((link) => {
+      const language = link.dataset.language || sourceLanguage;
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        syncLanguageSwitcherState(switcher, language);
+        applyGoogleTranslateLanguage(sourceLanguage, language);
+        switcher.removeAttribute("open");
+        window.location.reload();
+      });
+    });
+  });
+}
+
+function initGoogleTranslateElement() {
+  window.googleTranslateElementInit = () => {
+    const element = document.getElementById("google_translate_element");
+
+    if (!element || !window.google?.translate?.TranslateElement) {
+      return;
+    }
+
+    const config = {
+      pageLanguage: element.dataset.sourceLanguage || "ru",
+      autoDisplay: false,
+    };
+
+    if (element.dataset.includedLanguages) {
+      config.includedLanguages = element.dataset.includedLanguages;
+    }
+
+    new window.google.translate.TranslateElement(config, "google_translate_element");
+  };
+}
+
+function initGalleryTreeToggle() {
+  document.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-gallery-tree-toggle]");
+    if (!toggle) {
+      return;
+    }
+
+    const item = toggle.closest("[data-gallery-tree-item]");
+    if (!item) {
+      return;
+    }
+
+    const children = item.querySelector("[data-gallery-tree-children]");
+    if (!children) {
+      return;
+    }
+
+    const isHidden = children.hasAttribute("hidden");
+    if (isHidden) {
+      children.removeAttribute("hidden");
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.title = toggle.dataset.titleExpanded || "Свернуть ветку";
+      return;
+    }
+
+    children.setAttribute("hidden", "");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.title = toggle.dataset.titleCollapsed || "Развернуть ветку";
   });
 }
 
@@ -199,25 +390,6 @@ function initPhotoUploadRows() {
   window.foto636InitSelect2(list);
 }
 
-function initGoogleTranslate() {
-  window.googleTranslateElementInit = function googleTranslateElementInit() {
-    const target = document.getElementById("google_translate_element");
-    if (!target || !window.google?.translate?.TranslateElement) {
-      return;
-    }
-
-    new window.google.translate.TranslateElement(
-      {
-        pageLanguage: "ru",
-        includedLanguages: "ru,en,de,fr,it,es,pl",
-        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false,
-      },
-      "google_translate_element",
-    );
-  };
-}
-
 window.foto636InitSelect2 = (root = document) => {
   void initSelect2(root).catch(() => {});
 };
@@ -230,9 +402,11 @@ window.foto636InitQuill = (root = document) => {
   }
 };
 
+initGoogleTranslateElement();
 initThemeToggle();
+initLanguageSwitcher();
+initGalleryTreeToggle();
 initLightGallery();
-initGoogleTranslate();
 window.foto636InitSelect2();
 window.foto636InitQuill();
 initPhotoUploadRows();

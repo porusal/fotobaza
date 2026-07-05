@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Thai flag">
+  <rect x="0" y="0" width="48" height="5.66" fill="#a51931"/>
+  <rect x="0" y="5.66" width="48" height="5.66" fill="#ffffff"/>
+  <rect x="0" y="11.32" width="48" height="11.36" fill="#2d2a4a"/>
+  <rect x="0" y="22.68" width="48" height="5.66" fill="#ffffff"/>
+  <rect x="0" y="28.34" width="48" height="5.66" fill="#a51931"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

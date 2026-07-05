@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Israeli flag">
+  <rect x="0" y="0" width="48" height="34" fill="#ffffff"/>
+  <rect x="0" y="5" width="48" height="4" fill="#0038b8"/>
+  <rect x="0" y="25" width="48" height="4" fill="#0038b8"/>
+  <polygon points="24,11 30,21 18,21" fill="none" stroke="#0038b8" stroke-width="2"/>
+  <polygon points="24,23 30,13 18,13" fill="none" stroke="#0038b8" stroke-width="2"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

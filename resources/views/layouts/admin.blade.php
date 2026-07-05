@@ -8,6 +8,7 @@
         ['label' => 'Каталоги', 'route' => 'admin.galleries.index', 'active' => 'admin.galleries.*'],
         ['label' => 'Фото', 'route' => 'admin.photos.index', 'active' => 'admin.photos.*'],
         ['label' => 'Страницы', 'route' => 'admin.pages.index', 'active' => 'admin.pages.*'],
+        ['label' => 'Теги', 'route' => 'admin.tags.index', 'active' => 'admin.tags.*'],
         ['label' => 'Настройки', 'route' => 'admin.settings.edit', 'active' => 'admin.settings.*'],
         ['label' => 'Безопасность', 'route' => 'admin.security.show', 'active' => 'admin.security.*'],
     ];
@@ -62,7 +63,7 @@
                         </div>
 
                         <div class="admin-toolbar__actions">
-                            <div class="translate-widget" id="google_translate_element"></div>
+                            @include('partials.language-switcher')
                             <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">
                                 <span aria-hidden="true">◐</span>
                                 <span class="theme-toggle__label" data-theme-label>День</span>
@@ -92,7 +93,7 @@
         </div>
     </div>
 
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
     @stack('scripts')
 </body>
 </html>

@@ -77,6 +77,7 @@
                                     <option value="{{ $tag->id }}" @selected(in_array($tag->id, old('tags', $photo->tags->pluck('id')->all()) ?? [], true))>{{ $tag->name }}</option>
                                 @endforeach
                             </select>
+                            <div class="form-hint mt-2">Нет нужного тега? Откройте <a href="{{ route('admin.tags.index') }}">раздел тегов</a>.</div>
                             @error('tags')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror

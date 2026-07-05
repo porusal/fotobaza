@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Georgian flag">
+  <rect x="0" y="0" width="48" height="34" fill="#ffffff"/>
+  <rect x="0" y="14" width="48" height="6" fill="#ff0000"/>
+  <rect x="21" y="0" width="6" height="34" fill="#ff0000"/>
+  <path d="M10 7h3v3h3v3h-3v3h-3v-3H7v-3h3zM35 7h3v3h3v3h-3v3h-3v-3h-3v-3h3zM10 21h3v3h3v3h-3v3h-3v-3H7v-3h3zM35 21h3v3h3v3h-3v3h-3v-3h-3v-3h3z" fill="#ff0000"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

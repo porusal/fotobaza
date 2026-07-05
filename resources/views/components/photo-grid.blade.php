@@ -27,12 +27,12 @@
                 >
                 <span class="photo-card__veil" aria-hidden="true"></span>
                 <span class="photo-card__caption">
-                    <span>Фото</span>
+                    <span>{{ __('Фото') }}</span>
                     <strong>{{ $photo->alt_text ?: $photo->filename }}</strong>
                 </span>
             </a>
         </article>
     @empty
-        <div class="empty-state">Пока нет фото для этого раздела.</div>
+        <div class="empty-state">{{ __('Пока нет фото для этого раздела.') }}</div>
     @endforelse
 </div>

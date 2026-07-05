@@ -2,9 +2,16 @@
     'tags' => collect(),
     'baseUrl' => null,
     'activeTag' => null,
+    'allUrl' => null,
 ])
 
 <div class="tag-cloud">
+    @if($allUrl)
+        <a href="{{ $allUrl }}" class="tag-pill {{ $activeTag ? '' : 'is-active' }}">
+            <span>{{ __('Все') }}</span>
+        </a>
+    @endif
+
     @forelse($tags as $tag)
         @php
             $tagUrl = $baseUrl ? $baseUrl . '?tag=' . urlencode($tag->name) : null;
@@ -25,6 +32,6 @@
             </span>
         @endif
     @empty
-        <div class="empty-state">Облако тегов появится после загрузки фото.</div>
+        <div class="empty-state">{{ __('Облако тегов появится после загрузки фото.') }}</div>
     @endforelse
 </div>

@@ -6,9 +6,15 @@ vendor/
 .vite/
 .phpunit.result.cache
 public/build/
+database/*.sqlite
 bootstrap/cache/*.php
 .env
 .env.*
 .DS_Store
 storage/*.key
+storage/app/public/site/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*
 storage/logs/*.log

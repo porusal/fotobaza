@@ -47,6 +47,7 @@
                     <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, array_map('strval', $rowItem['tags'] ?? []), true))>{{ $tag->name }}</option>
                 @endforeach
             </select>
+            <div class="form-hint mt-2">Нет нужного тега? Откройте <a href="{{ route('admin.tags.index') }}">раздел тегов</a>.</div>
             @error('items.' . $rowIndex . '.tags')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror

@@ -11,10 +11,11 @@ use Illuminate\View\View;
 
 class GalleryController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         $settings = SiteViewData::settings();
-        $latestPhotos = SiteViewData::latestPhotos($settings['home_photos_count']);
+        $activeTag = $request->string('tag')->trim()->toString();
+        $latestPhotos = SiteViewData::latestPhotosByTag($settings['home_photos_count'], $activeTag !== '' ? $activeTag : null);
         $aboutPage = Page::query()
             ->published()
             ->where('slug', 'about')
@@ -32,13 +33,14 @@ class GalleryController extends Controller
             'galleryCount' => Gallery::query()->active()->count(),
             'tagCount' => \App\Models\Tag::query()->count(),
             'topTags' => SiteViewData::topTags(),
+            'activeTag' => $activeTag !== '' ? $activeTag : null,
         ]));
     }
 
     public function show(Request $request, Gallery $gallery): View
     {
         $gallery->load([
-            'parent:id,slug,display_name',
+            'parent:id,parent_id,slug,display_name',
             'children' => fn ($query) => $query->active()->ordered()->withCount('photos'),
         ]);
 
@@ -61,6 +63,7 @@ class GalleryController extends Controller
             'gallery' => $gallery,
             'galleryTags' => SiteViewData::galleryTags($gallery),
             'activeTag' => $activeTag !== '' ? $activeTag : null,
+            'galleryTreeOpenIds' => SiteViewData::galleryOpenIds($gallery),
         ]));
     }
 

@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -74,7 +75,11 @@ class DashboardController extends Controller
             'home_photos_count' => ['required', 'integer', 'min:1', 'max:50'],
             'gallery_grid_columns' => ['required', 'integer', 'min:1', 'max:4'],
             'grid_gap' => ['required', 'in:sm,md,lg'],
+            'translate_languages' => ['nullable', 'array'],
+            'translate_languages.*' => ['string', Rule::in(SiteViewData::translationTargetLanguageCodes())],
         ]);
+
+        $validated['translate_languages'] = array_values(array_unique($validated['translate_languages'] ?? []));
 
         if ($request->hasFile('site_logo')) {
             $currentLogo = Setting::value('site_logo');

@@ -13,13 +13,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', $siteName)</title>
-    <meta name="description" content="@yield('meta_description', $siteTagline)">
+    <meta name="description" content="@yield('meta_description', __($siteTagline))">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
 <body class="{{ $bodyClass }}">
-    <a class="visually-skip" href="#main-content">Перейти к содержанию</a>
+    <a class="visually-skip" href="#main-content">{{ __('Перейти к содержанию') }}</a>
     <div class="site-shell">
         @include('partials.site-header', [
             'siteName' => $siteName,
@@ -41,7 +41,7 @@
         ])
     </div>
 
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
     @stack('scripts')
 </body>
 </html>

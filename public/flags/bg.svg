@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Bulgarian flag">
+  <rect x="0" y="0" width="48" height="11.333" fill="#ffffff"/>
+  <rect x="0" y="11.333" width="48" height="11.334" fill="#00966e"/>
+  <rect x="0" y="22.667" width="48" height="11.333" fill="#d62612"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

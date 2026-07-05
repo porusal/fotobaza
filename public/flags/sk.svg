@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Slovak flag">
+  <rect x="0" y="0" width="48" height="11.333" fill="#ffffff"/>
+  <rect x="0" y="11.333" width="48" height="11.334" fill="#0b4ea2"/>
+  <rect x="0" y="22.667" width="48" height="11.333" fill="#ee1c25"/>
+  <path d="M14 9h9v6.5c0 5.2-4.5 7.8-4.5 7.8S14 20.7 14 15.5V9z" fill="#ee1c25"/>
+  <path d="M16 11h5v2h-5zM17.4 10h2.2v7h-2.2zM15.5 15h6v2h-6z" fill="#ffffff"/>
+  <path d="M14 17c2 .8 3 1.5 4.5 3 1.5-1.5 2.5-2.2 4.5-3v-1H14v1z" fill="#0b4ea2"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

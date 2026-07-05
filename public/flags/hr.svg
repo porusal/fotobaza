@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Croatian flag">
+  <rect x="0" y="0" width="48" height="11.333" fill="#ff0000"/>
+  <rect x="0" y="11.333" width="48" height="11.334" fill="#ffffff"/>
+  <rect x="0" y="22.667" width="48" height="11.333" fill="#171796"/>
+  <rect x="18" y="10" width="12" height="13" fill="#ffffff"/>
+  <rect x="18" y="10" width="4" height="4.33" fill="#ff0000"/>
+  <rect x="26" y="10" width="4" height="4.33" fill="#ff0000"/>
+  <rect x="22" y="14.33" width="4" height="4.34" fill="#ff0000"/>
+  <rect x="18" y="18.67" width="4" height="4.33" fill="#ff0000"/>
+  <rect x="26" y="18.67" width="4" height="4.33" fill="#ff0000"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

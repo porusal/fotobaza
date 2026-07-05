@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', ($page->title ?? 'Обо мне') . ' — ' . $siteName)
-@section('meta_description', $page->title ?? 'Обо мне')
+@section('title', ($page->title ?? __('Обо мне')) . ' — ' . $siteName)
+@section('meta_description', $page->title ?? __('Обо мне'))
 
 @section('content')
     <article class="page-grid">
@@ -13,8 +13,8 @@
             </div>
 
             <div class="page-hero__body">
-                <p class="eyebrow">Информационная страница</p>
-                <h1>{{ $page->title ?? 'Обо мне' }}</h1>
+                <p class="eyebrow">{{ __('Информационная страница') }}</p>
+                <h1>{{ $page->title ?? __('Обо мне') }}</h1>
                 <div class="page-copy">
                     {!! $page->content !!}
                 </div>

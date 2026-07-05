@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Belarusian flag">
+  <rect x="0" y="0" width="48" height="23" fill="#c8313e"/>
+  <rect x="0" y="23" width="48" height="11" fill="#4aa657"/>
+  <rect x="0" y="0" width="6" height="34" fill="#ffffff"/>
+  <path d="M1 2h4v4H1zM2 8h2v2H2zM1 12h4v4H1zM2 18h2v2H2zM1 22h4v4H1zM2 28h2v2H2z" fill="#c8313e"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>

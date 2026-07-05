@@ -104,6 +104,43 @@
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <div class="col-12">
+                    <div class="admin-card admin-card--soft">
+                        <div class="panel__title panel__title--compact">
+                            <div>
+                                <p class="eyebrow">Перевод</p>
+                                <h3 class="h5 mb-0">Языки в выпадающем списке</h3>
+                            </div>
+                            <div class="form-hint mb-0">Русский показывается всегда как исходный.</div>
+                        </div>
+
+                        <div class="translation-picks">
+                            @foreach(($translationLanguageOptions ?? collect()) as $language)
+                                @if($language['code'] === 'ru')
+                                    @continue
+                                @endif
+
+                                <label class="translation-pick">
+                                    <input
+                                        type="checkbox"
+                                        name="translate_languages[]"
+                                        value="{{ $language['code'] }}"
+                                        @checked(in_array($language['code'], old('translate_languages', $settings['translate_languages'] ?? []), true))
+                                    >
+                                    <span class="translation-pick__flag">
+                                        <img src="{{ asset('flags/' . $language['flag'] . '.svg') }}" alt="" aria-hidden="true">
+                                    </span>
+                                    <span class="translation-pick__label">{{ $language['label'] }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+
+                        @error('translate_languages')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
             </div>
 
             <div class="admin-card mt-1">

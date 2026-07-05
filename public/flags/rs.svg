@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" role="img" aria-label="Serbian flag">
+  <rect x="0" y="0" width="48" height="11.333" fill="#c6363c"/>
+  <rect x="0" y="11.333" width="48" height="11.334" fill="#0c4076"/>
+  <rect x="0" y="22.667" width="48" height="11.333" fill="#ffffff"/>
+  <path d="M13 10h8v7c0 4.2-4 6.5-4 6.5S13 21.2 13 17v-7z" fill="#c6363c"/>
+  <circle cx="17" cy="13.4" r="2.2" fill="#ffcc00"/>
+  <path d="M14 16h6v2h-6z" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="47" height="33" rx="4.5" fill="none" stroke="rgba(15,23,42,.18)"/>
+</svg>
