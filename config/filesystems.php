@@ -1,5 +1,11 @@
 <?php
 
+$publicRoot = env('FILESYSTEM_PUBLIC_ROOT') ?: public_path('storage');
+
+if (! str_starts_with($publicRoot, DIRECTORY_SEPARATOR) && ! preg_match('/^[A-Za-z]:[\\\\\/]/', $publicRoot)) {
+    $publicRoot = base_path($publicRoot);
+}
+
 return [
 
     /*
@@ -40,8 +46,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'root' => $publicRoot,
+            'url' => env('FILESYSTEM_PUBLIC_URL', rtrim(env('APP_URL', 'http://localhost'), '/').'/storage'),
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

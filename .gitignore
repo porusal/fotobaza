@@ -10,6 +10,8 @@ bootstrap/cache/*.php
 .env
 .env.*
 .DS_Store
+public/storage/*
+!public/storage/.gitignore
 storage/*.key
 storage/app/public/site/*
 storage/framework/cache/*
