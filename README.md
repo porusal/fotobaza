@@ -48,6 +48,7 @@ DB_DATABASE=/var/www/vhosts/636.ovh/foto.636.ovh/database/database.sqlite
 
 SESSION_DRIVER=file
 CACHE_STORE=file
+CACHE_DATABASE_ENABLED=false
 QUEUE_CONNECTION=sync
 FILESYSTEM_DISK=public
 FILESYSTEM_PUBLIC_ROOT=public/storage
@@ -57,7 +58,9 @@ GALLERY_FILESYSTEM_AUTO_SYNC_SECONDS=30
 GALLERY_FILESYSTEM_PHOTOS_DIR=photos
 ```
 
-If the site still tries to query the `sessions` table after changing `.env`, clear cached config:
+For shared hosting with SQLite, keep `CACHE_STORE=file`. This project intentionally falls back to file cache unless `CACHE_DATABASE_ENABLED=true` is set, because the default SQLite deployment does not create Laravel's optional `cache` table.
+
+If the site still tries to query database tables for sessions or cache after changing `.env`, clear cached config:
 
 ```bash
 php artisan optimize:clear
