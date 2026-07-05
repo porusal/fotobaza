@@ -4,7 +4,6 @@ namespace App\Support;
 
 use App\Models\Gallery;
 use App\Models\Photo;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,7 +14,7 @@ use Throwable;
 
 class FilesystemGallerySync
 {
-    private const AUTO_SYNC_CACHE_KEY = 'gallery_filesystem_auto_sync';
+    private const AUTO_SYNC_MARKER_FILENAME = 'gallery-filesystem-auto-sync.timestamp';
 
     public function syncIfDue(): array
     {
@@ -25,12 +24,12 @@ class FilesystemGallerySync
 
         $seconds = max(0, (int) config('gallery.filesystem.auto_sync_seconds', 30));
 
-        if ($seconds > 0 && Cache::has(self::AUTO_SYNC_CACHE_KEY)) {
+        if ($seconds > 0 && ! $this->autoSyncIsDue($seconds)) {
             return $this->emptyResult(true);
         }
 
         if ($seconds > 0) {
-            Cache::put(self::AUTO_SYNC_CACHE_KEY, true, now()->addSeconds($seconds));
+            $this->touchAutoSyncMarker();
         }
 
         try {
@@ -358,6 +357,36 @@ class FilesystemGallerySync
         }
 
         return false;
+    }
+
+    private function autoSyncIsDue(int $seconds): bool
+    {
+        $markerPath = $this->autoSyncMarkerPath();
+
+        if (! is_file($markerPath)) {
+            return true;
+        }
+
+        $lastRunAt = (int) @filemtime($markerPath);
+
+        return $lastRunAt <= 0 || (time() - $lastRunAt) >= $seconds;
+    }
+
+    private function touchAutoSyncMarker(): void
+    {
+        $markerPath = $this->autoSyncMarkerPath();
+        $directory = dirname($markerPath);
+
+        if (! is_dir($directory)) {
+            @mkdir($directory, 0775, true);
+        }
+
+        @touch($markerPath);
+    }
+
+    private function autoSyncMarkerPath(): string
+    {
+        return storage_path('framework/cache/' . self::AUTO_SYNC_MARKER_FILENAME);
     }
 
     private function emptyResult(bool $skipped = false, ?string $error = null): array

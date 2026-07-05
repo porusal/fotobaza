@@ -60,4 +60,27 @@ class FilesystemGallerySyncTest extends TestCase
         ]);
         $this->assertSame(1, Photo::query()->count());
     }
+
+    public function test_auto_sync_does_not_require_laravel_cache_table(): void
+    {
+        Storage::fake('public');
+        config(['cache.default' => 'database']);
+
+        $markerPath = storage_path('framework/cache/gallery-filesystem-auto-sync.timestamp');
+        @unlink($markerPath);
+
+        Storage::disk('public')->put('photos/cache-free/photo-01.jpg', 'image');
+
+        $result = app(FilesystemGallerySync::class)->syncIfDue();
+
+        @unlink($markerPath);
+
+        $this->assertFalse($result['skipped']);
+        $this->assertDatabaseHas('galleries', [
+            'slug' => 'cache-free',
+        ]);
+        $this->assertDatabaseHas('photos', [
+            'path' => '/storage/photos/cache-free/photo-01.jpg',
+        ]);
+    }
 }
