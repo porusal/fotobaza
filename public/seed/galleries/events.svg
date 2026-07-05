@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Events cover">
+  <rect width="1200" height="800" fill="#2a1f34"/>
+  <circle cx="280" cy="220" r="160" fill="#ffbf73" fill-opacity=".2"/>
+  <circle cx="840" cy="300" r="260" fill="#79cfc0" fill-opacity=".14"/>
+  <rect x="160" y="160" width="880" height="480" rx="40" fill="#ffffff" fill-opacity=".04"/>
+</svg>

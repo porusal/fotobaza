@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="Behind scenes 01">
+  <rect width="1200" height="1500" fill="#1f2937"/>
+  <circle cx="400" cy="380" r="250" fill="#79cfc0" fill-opacity=".18"/>
+  <circle cx="760" cy="520" r="230" fill="#ffbf73" fill-opacity=".15"/>
+  <rect x="220" y="260" width="760" height="980" rx="40" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".1"/>
+</svg>

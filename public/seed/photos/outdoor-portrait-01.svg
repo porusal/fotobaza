@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="Outdoor portrait 01">
+  <rect width="1200" height="1500" fill="#7b9d6a"/>
+  <circle cx="410" cy="280" r="240" fill="#fff4dc" fill-opacity=".28"/>
+  <rect x="230" y="470" width="800" height="200" rx="100" fill="#2e4633" fill-opacity=".34"/>
+  <rect x="330" y="220" width="330" height="920" rx="165" fill="#24312b" fill-opacity=".22"/>
+</svg>

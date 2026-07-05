@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Weddings cover">
+  <rect width="1200" height="800" fill="#a77a6c"/>
+  <circle cx="420" cy="250" r="210" fill="#fff4dc" fill-opacity=".2"/>
+  <rect x="220" y="170" width="760" height="460" rx="180" fill="#fff4dc" fill-opacity=".08"/>
+</svg>

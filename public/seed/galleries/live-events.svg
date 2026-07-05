@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Live events cover">
+  <rect width="1200" height="800" fill="#0f172a"/>
+  <circle cx="340" cy="210" r="170" fill="#79cfc0" fill-opacity=".18"/>
+  <circle cx="820" cy="310" r="210" fill="#ffbf73" fill-opacity=".16"/>
+  <rect x="180" y="150" width="840" height="500" rx="28" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".1"/>
+</svg>

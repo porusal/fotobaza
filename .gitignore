@@ -2,5 +2,13 @@ outputs/
 work/
 dist/
 node_modules/
+vendor/
+.vite/
+.phpunit.result.cache
+public/build/
+bootstrap/cache/*.php
 .env
+.env.*
 .DS_Store
+storage/*.key
+storage/logs/*.log

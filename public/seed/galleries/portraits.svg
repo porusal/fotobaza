@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Portraits cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2b221b"/>
+      <stop offset="1" stop-color="#e9b47c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="340" cy="250" r="230" fill="#fff4dc" fill-opacity=".18"/>
+  <rect x="220" y="170" width="320" height="460" rx="160" fill="#101316" fill-opacity=".18"/>
+  <rect x="620" y="160" width="300" height="500" rx="140" fill="#fff4dc" fill-opacity=".14"/>
+</svg>

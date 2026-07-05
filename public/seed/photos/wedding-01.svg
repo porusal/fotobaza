@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="Wedding 01">
+  <rect width="1200" height="1500" fill="#a77a6c"/>
+  <circle cx="440" cy="340" r="260" fill="#fff4dc" fill-opacity=".22"/>
+  <rect x="240" y="250" width="720" height="980" rx="240" fill="#fff4dc" fill-opacity=".07"/>
+</svg>

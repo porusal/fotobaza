@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="Fashion story 02">
+  <rect width="1200" height="1500" fill="#111827"/>
+  <circle cx="500" cy="340" r="250" fill="#79cfc0" fill-opacity=".14"/>
+  <circle cx="820" cy="560" r="180" fill="#ffbf73" fill-opacity=".18"/>
+  <rect x="190" y="160" width="820" height="1180" rx="36" fill="#ffffff" fill-opacity=".04"/>
+</svg>
