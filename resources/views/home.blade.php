@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $siteName . ' — ' . __('Главная'))
+@section('title', $siteName . ' - ' . __('Главная'))
 @section('meta_description', __($siteTagline))
 
 @section('content')
@@ -56,28 +56,10 @@
                         @if(!empty($heroImage))
                             <img class="hero-visual__image" src="{{ $heroImage }}" alt="{{ $siteName }}">
                         @endif
-                        <div class="hero-visual__badge">
-                            {{ __($heroBadge ?? 'Сейчас открыта запись') }}
-                        </div>
-                        <div class="hero-visual__footer">
-                            <div>
-                                <span>{{ __('Акцент') }}</span>
-                                <strong>{{ __($siteTagline) }}</strong>
-                            </div>
-                            <div>
-                                <span>{{ __('Формат') }}</span>
-                                <strong>Сетка, lightGallery, mobile-first</strong>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="hero-aside">
-                        <div class="hero-info">
-                            <p>{{ __('Сетка фото адаптируется под экран, а lightGallery открывает снимки в полноэкранном режиме карусели без лишнего шума.') }}</p>
-                        </div>
-                        <div class="hero-info">
-                            <p>{{ __('Переключатель темы вешает класс dark-mode на body, чтобы весь интерфейс менял палитру через CSS-переменные.') }}</p>
-                        </div>
+                        @if(!empty($heroBadge))
+                            <div class="hero-visual__badge">{{ $heroBadge }}</div>
+                        @endif
                     </div>
                 </div>
             </section>

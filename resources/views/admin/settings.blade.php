@@ -103,6 +103,15 @@
                     @enderror
                 </div>
 
+                <div class="col-lg-6">
+                    <label class="form-label" for="hero_badge">Надпись на главной картинке</label>
+                    <input class="form-control @error('hero_badge') is-invalid @enderror" type="text" name="hero_badge" id="hero_badge" maxlength="140" value="{{ old('hero_badge', $settings['hero_badge'] ?? '') }}">
+                    <div class="form-hint">Оставьте поле пустым, чтобы поверх картинки ничего не выводилось.</div>
+                    @error('hero_badge')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <div class="col-12">
                     <label class="form-label" for="intro_text">Вводный текст</label>
                     <textarea class="form-control @error('intro_text') is-invalid @enderror" name="intro_text" id="intro_text" rows="4">{{ old('intro_text', $settings['intro_text'] ?? '') }}</textarea>

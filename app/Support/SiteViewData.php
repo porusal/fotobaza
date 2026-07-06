@@ -24,7 +24,7 @@ class SiteViewData
             'home_photos_count' => 12,
             'gallery_grid_columns' => 3,
             'grid_gap' => 'md',
-            'hero_badge' => 'Сейчас открыта запись',
+            'hero_badge' => '',
             'intro_text' => 'Фотоистории с мягким светом, четкой композицией и легкой подачей для портфолио, брендов и личных проектов.',
             'translate_languages' => ['en'],
             'theme_text_color' => '#1c1712',
@@ -62,33 +62,10 @@ class SiteViewData
         $settings = array_merge($defaults, $stored);
 
         $settings['site_name'] = (string) ($settings['site_name'] ?: $defaults['site_name']);
-        $settings['site_tagline'] = (string) ($settings['site_tagline'] ?: $defaults['site_tagline']);
+        $settings['site_tagline'] = static::cleanSettingText($settings['site_tagline'] ?? '', $defaults['site_tagline']);
         $settings['site_logo'] = $settings['site_logo'] ?: null;
-
-        if (in_array($settings['site_tagline'], [
-            'Photography with atmosphere',
-            'Modern photo gallery with atmosphere',
-            'РЎРѕРІСЂРµРјРµРЅРЅР°СЏ С„РѕС‚РѕРіР°Р»РµСЂРµСЏ СЃ Р°С‚РјРѕСЃС„РµСЂРѕР№',
-        ], true)) {
-            $settings['site_tagline'] = $defaults['site_tagline'];
-        }
-
-        $settings['hero_badge'] = (string) ($settings['hero_badge'] ?: $defaults['hero_badge']);
-
-        if (in_array($settings['hero_badge'], [
-            'Now booking / editorial work',
-            'Open for commissions / 2026',
-            'РЎРµР№С‡Р°СЃ РѕС‚РєСЂС‹С‚Р° Р·Р°РїРёСЃСЊ',
-        ], true)) {
-            $settings['hero_badge'] = $defaults['hero_badge'];
-        }
-
-        $settings['intro_text'] = (string) ($settings['intro_text'] ?: $defaults['intro_text']);
-
-        if (str_contains($settings['intro_text'], 'Р¤РѕС‚РѕРёСЃС‚РѕСЂРёРё')) {
-            $settings['intro_text'] = $defaults['intro_text'];
-        }
-
+        $settings['hero_badge'] = static::cleanSettingText($settings['hero_badge'] ?? '', $defaults['hero_badge'], true);
+        $settings['intro_text'] = static::cleanSettingText($settings['intro_text'] ?? '', $defaults['intro_text']);
         $settings['home_photos_count'] = max(1, (int) ($settings['home_photos_count'] ?? 12));
         $settings['gallery_grid_columns'] = max(1, min(4, (int) ($settings['gallery_grid_columns'] ?? 3)));
         $settings['grid_gap'] = in_array($settings['grid_gap'], ['sm', 'md', 'lg'], true)
@@ -273,10 +250,10 @@ class SiteViewData
             return $styleOptions[$styleKey][$property] ?? $styleOptions['normal'][$property];
         };
 
-        $fontSize = static function (string $key, string $property) use ($settings, $sizeOptions): string {
-            $sizeKey = (string) ($settings[$key] ?? 'md');
+        $fontSize = static function (string $key, string $property, string $fallback = '12pt') use ($settings, $sizeOptions): string {
+            $sizeKey = (string) ($settings[$key] ?? $fallback);
 
-            return $sizeOptions[$sizeKey][$property] ?? $sizeOptions['md'][$property];
+            return $sizeOptions[$sizeKey][$property] ?? $sizeOptions[$fallback][$property];
         };
 
         $variables = [
@@ -309,14 +286,14 @@ class SiteViewData
             '--font-catalog-weight' => $fontStyle('font_catalog_style', 'weight'),
             '--font-tag-style' => $fontStyle('font_tag_style', 'style'),
             '--font-tag-weight' => $fontStyle('font_tag_style', 'weight'),
-            '--font-body-size' => $fontSize('font_body_size', 'body'),
-            '--font-menu-size' => $fontSize('font_menu_size', 'menu'),
-            '--font-catalog-size' => $fontSize('font_catalog_size', 'catalog'),
-            '--font-tag-size' => $fontSize('font_tag_size', 'tag'),
-            '--font-heading-h1-size' => $fontSize('font_heading_size', 'h1'),
-            '--font-heading-h2-size' => $fontSize('font_heading_size', 'h2'),
-            '--font-heading-h3-size' => $fontSize('font_heading_size', 'h3'),
-            '--font-heading-h4-size' => $fontSize('font_heading_size', 'h4'),
+            '--font-body-size' => $fontSize('font_body_size', 'body', '12pt'),
+            '--font-menu-size' => $fontSize('font_menu_size', 'menu', '11pt'),
+            '--font-catalog-size' => $fontSize('font_catalog_size', 'catalog', '12pt'),
+            '--font-tag-size' => $fontSize('font_tag_size', 'tag', '11pt'),
+            '--font-heading-h1-size' => $fontSize('font_heading_size', 'h1', '42pt'),
+            '--font-heading-h2-size' => $fontSize('font_heading_size', 'h2', '42pt'),
+            '--font-heading-h3-size' => $fontSize('font_heading_size', 'h3', '42pt'),
+            '--font-heading-h4-size' => $fontSize('font_heading_size', 'h4', '42pt'),
         ];
 
         return collect($variables)
@@ -573,6 +550,58 @@ class SiteViewData
         }
 
         return array_values(array_unique($ids));
+    }
+
+    private static function cleanSettingText(mixed $value, string $fallback, bool $allowEmpty = false): string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return $allowEmpty ? '' : $fallback;
+        }
+
+        if (static::isLegacyText($value)) {
+            return $allowEmpty ? '' : $fallback;
+        }
+
+        return $value;
+    }
+
+    private static function isLegacyText(string $value): bool
+    {
+        $legacyExactValues = [
+            'Photography with atmosphere',
+            'Modern photo gallery with atmosphere',
+            'Now booking / editorial work',
+            'Open for commissions / 2026',
+        ];
+
+        if (in_array($value, $legacyExactValues, true)) {
+            return true;
+        }
+
+        $legacyFragments = [
+            'РЎ',
+            'Р¤',
+            'Рџ',
+            'Р ',
+            'Рµ',
+            'Р»',
+            'СЃ',
+            'С‚',
+            'СЊ',
+            'С‹',
+            'вЂ',
+            'В°',
+        ];
+
+        foreach ($legacyFragments as $fragment) {
+            if (str_contains($value, $fragment)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static function normalizeTranslationLanguages(mixed $value): array

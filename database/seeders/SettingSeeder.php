@@ -17,7 +17,7 @@ class SettingSeeder extends Seeder
             'home_photos_count' => 8,
             'gallery_grid_columns' => 3,
             'grid_gap' => 'md',
-            'hero_badge' => 'Сейчас открыта запись',
+            'hero_badge' => '',
             'intro_text' => 'Фотоистории с мягким светом, четкой композицией и легкой подачей для портфолио, брендов и личных проектов.',
             'translate_languages' => ['en', 'lv'],
             'theme_text_color' => '#1c1712',
