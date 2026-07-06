@@ -20,12 +20,15 @@ class PhotoController extends Controller
     public function index(): View
     {
         return view('admin.photos.index', array_merge(SiteViewData::common(), [
-            'photos' => Photo::query()
-                ->with(['gallery:id,display_name', 'tags:id,name'])
-                ->orderByDesc('created_at')
-                ->orderByDesc('id')
-                ->limit(60)
+            'galleries' => Gallery::query()
+                ->with([
+                    'parent:id,display_name',
+                    'photos' => fn ($query) => $query->with('tags:id,name'),
+                ])
+                ->withCount('photos')
+                ->ordered()
                 ->get(),
+            'photosCount' => Photo::query()->count(),
         ]));
     }
 

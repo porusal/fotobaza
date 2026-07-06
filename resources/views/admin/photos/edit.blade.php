@@ -15,7 +15,9 @@
             </div>
             <div class="d-flex flex-wrap gap-2">
                 <a class="btn-ghost" href="{{ route('admin.photos.index') }}">Назад</a>
-                <button type="submit" class="btn-soft" form="photo-edit-form">Сохранить</button>
+                <button type="submit" class="btn-soft icon-button" form="photo-edit-form" title="Сохранить" aria-label="Сохранить">
+                    <x-admin-icon name="save" />
+                </button>
             </div>
         </div>
 
@@ -71,12 +73,12 @@
                         </div>
 
                         <div class="col-12">
-                            <label class="form-label" for="tags">Теги</label>
-                            <select class="form-select @error('tags') is-invalid @enderror" name="tags[]" id="tags" multiple data-select2>
-                                @foreach(($tags ?? collect()) as $tag)
-                                    <option value="{{ $tag->id }}" @selected(in_array($tag->id, old('tags', $photo->tags->pluck('id')->all()) ?? [], true))>{{ $tag->name }}</option>
-                                @endforeach
-                            </select>
+                            <label class="form-label">Теги</label>
+                            @include('admin.photos._tag-cloud', [
+                                'name' => 'tags[]',
+                                'tags' => $tags,
+                                'selected' => old('tags', $photo->tags->pluck('id')->all()),
+                            ])
                             <div class="form-hint mt-2">Нет нужного тега? Откройте <a href="{{ route('admin.tags.index') }}">раздел тегов</a>.</div>
                             @error('tags')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -92,14 +94,17 @@
                     <div class="folder-card__cover mb-3">
                         <img src="{{ $photo->path }}" alt="{{ $photo->alt_text ?: $photo->filename }}">
                     </div>
-                    <div class="form-hint">Текущий путь: {{ $photo->path }}</div>
-                    <div class="form-hint">Каталог: {{ $photo->gallery?->display_name ?? '—' }}</div>
+                    <div class="form-hint file-path">Текущий путь: <span>{{ $photo->path }}</span></div>
+                    <div class="form-hint">Каталог: {{ $photo->gallery?->display_name ?? '-' }}</div>
                     <div class="form-hint">Теги: {{ $photo->tags->pluck('name')->join(', ') ?: 'Без тегов' }}</div>
 
                     <form method="post" action="{{ route('admin.photos.destroy', $photo) }}" class="mt-4" onsubmit="return confirm('Удалить фото?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-ghost w-100">Удалить фото</button>
+                        <button type="submit" class="btn-ghost w-100">
+                            <x-admin-icon name="trash" />
+                            <span>Удалить фото</span>
+                        </button>
                     </form>
                 </div>
             </div>

@@ -3,25 +3,38 @@
 @section('title', 'Настройки сайта')
 
 @php
-    $colorFields = [
-        'theme_text_color' => 'Основной текст',
-        'theme_heading_color' => 'Заголовки',
-        'theme_muted_color' => 'Вторичный текст',
-        'theme_accent_color' => 'Главный акцент',
-        'theme_accent_secondary_color' => 'Второй акцент',
-        'theme_accent_soft_color' => 'Мягкий акцент',
-        'theme_tag_color' => 'Теги',
+    $colorGroups = [
+        'Светлая тема' => [
+            'theme_text_color' => 'Основной текст',
+            'theme_heading_color' => 'Заголовки',
+            'theme_muted_color' => 'Вторичный текст',
+            'theme_accent_color' => 'Главный акцент',
+            'theme_accent_secondary_color' => 'Второй акцент',
+            'theme_accent_soft_color' => 'Мягкий акцент',
+            'theme_tag_color' => 'Теги',
+        ],
+        'Тёмная тема' => [
+            'theme_dark_text_color' => 'Основной текст',
+            'theme_dark_heading_color' => 'Заголовки',
+            'theme_dark_muted_color' => 'Вторичный текст',
+            'theme_dark_accent_color' => 'Главный акцент',
+            'theme_dark_accent_secondary_color' => 'Второй акцент',
+            'theme_dark_accent_soft_color' => 'Мягкий акцент',
+            'theme_dark_tag_color' => 'Теги',
+        ],
     ];
 
     $fontFields = [
-        'font_body' => 'Основной текст',
-        'font_heading' => 'Заголовки',
-        'font_menu' => 'Меню',
-        'font_catalog' => 'Каталоги',
-        'font_tag' => 'Теги',
+        'body' => 'Основной текст',
+        'heading' => 'Заголовки',
+        'menu' => 'Меню',
+        'catalog' => 'Каталоги',
+        'tag' => 'Теги',
     ];
 
     $themeFontOptions = $themeFontOptions ?? [];
+    $themeFontStyleOptions = $themeFontStyleOptions ?? [];
+    $themeFontSizeOptions = $themeFontSizeOptions ?? [];
 @endphp
 
 @section('content')
@@ -137,24 +150,31 @@
                                 <p class="eyebrow">Внешний вид</p>
                                 <h3 class="h5 mb-0">Цветовая гамма</h3>
                             </div>
-                            <p class="form-hint mb-0">Цвета применяются к публичной части и админке сразу после сохранения.</p>
+                            <p class="form-hint mb-0">Светлая и тёмная темы настраиваются отдельно.</p>
                         </div>
 
-                        <div class="theme-settings-grid">
-                            @foreach($colorFields as $field => $label)
-                                <label class="color-field" for="{{ $field }}">
-                                    <span>{{ $label }}</span>
-                                    <input
-                                        class="form-control form-control-color @error($field) is-invalid @enderror"
-                                        type="color"
-                                        name="{{ $field }}"
-                                        id="{{ $field }}"
-                                        value="{{ old($field, $settings[$field] ?? '#1c1712') }}"
-                                    >
-                                    @error($field)
-                                        <span class="invalid-feedback d-block">{{ $message }}</span>
-                                    @enderror
-                                </label>
+                        <div class="theme-palette-grid">
+                            @foreach($colorGroups as $groupTitle => $colorFields)
+                                <section class="theme-palette-card">
+                                    <h4>{{ $groupTitle }}</h4>
+                                    <div class="theme-settings-grid">
+                                        @foreach($colorFields as $field => $label)
+                                            <label class="color-field" for="{{ $field }}">
+                                                <span>{{ $label }}</span>
+                                                <input
+                                                    class="form-control form-control-color @error($field) is-invalid @enderror"
+                                                    type="color"
+                                                    name="{{ $field }}"
+                                                    id="{{ $field }}"
+                                                    value="{{ old($field, $settings[$field] ?? '#1c1712') }}"
+                                                >
+                                                @error($field)
+                                                    <span class="invalid-feedback d-block">{{ $message }}</span>
+                                                @enderror
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </section>
                             @endforeach
                         </div>
                     </div>
@@ -165,26 +185,51 @@
                         <div class="panel__title panel__title--compact">
                             <div>
                                 <p class="eyebrow">Шрифты</p>
-                                <h3 class="h5 mb-0">Типографика сайта</h3>
+                                <h3 class="h5 mb-0">Google Fonts, стиль и размер</h3>
                             </div>
-                            <p class="form-hint mb-0">Можно отдельно настроить меню, заголовки, каталоги и теги.</p>
+                            <p class="form-hint mb-0">Доступен набор подключённых Google Fonts и системных шрифтов.</p>
                         </div>
 
-                        <div class="theme-settings-grid">
+                        <div class="font-settings-list">
                             @foreach($fontFields as $field => $label)
-                                <label class="font-field" for="{{ $field }}">
-                                    <span>{{ $label }}</span>
-                                    <select class="form-select @error($field) is-invalid @enderror" name="{{ $field }}" id="{{ $field }}">
-                                        @foreach($themeFontOptions as $fontKey => $font)
-                                            <option value="{{ $fontKey }}" @selected(old($field, $settings[$field] ?? 'manrope') === $fontKey)>
-                                                {{ $font['label'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error($field)
-                                        <span class="invalid-feedback d-block">{{ $message }}</span>
-                                    @enderror
-                                </label>
+                                @php
+                                    $familyName = 'font_' . $field;
+                                    $styleName = 'font_' . $field . '_style';
+                                    $sizeName = 'font_' . $field . '_size';
+                                @endphp
+                                <section class="font-settings-row">
+                                    <h4>{{ $label }}</h4>
+                                    <label>
+                                        <span>Шрифт</span>
+                                        <select class="form-select @error($familyName) is-invalid @enderror" name="{{ $familyName }}">
+                                            @foreach($themeFontOptions as $fontKey => $font)
+                                                <option value="{{ $fontKey }}" @selected(old($familyName, $settings[$familyName] ?? 'manrope') === $fontKey)>
+                                                    {{ $font['label'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    <label>
+                                        <span>Стиль</span>
+                                        <select class="form-select @error($styleName) is-invalid @enderror" name="{{ $styleName }}">
+                                            @foreach($themeFontStyleOptions as $styleKey => $style)
+                                                <option value="{{ $styleKey }}" @selected(old($styleName, $settings[$styleName] ?? 'normal') === $styleKey)>
+                                                    {{ $style['label'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    <label>
+                                        <span>Размер</span>
+                                        <select class="form-select @error($sizeName) is-invalid @enderror" name="{{ $sizeName }}">
+                                            @foreach($themeFontSizeOptions as $sizeKey => $size)
+                                                <option value="{{ $sizeKey }}" @selected(old($sizeName, $settings[$sizeName] ?? 'md') === $sizeKey)>
+                                                    {{ $size['label'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                </section>
                             @endforeach
                         </div>
                     </div>

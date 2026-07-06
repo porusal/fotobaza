@@ -17,8 +17,14 @@
             </div>
             <div class="d-flex flex-wrap gap-2">
                 <a class="btn-ghost" href="{{ route('admin.photos.index') }}">Назад</a>
-                <button type="button" class="btn-ghost" data-photo-add-row>Добавить строку</button>
-                <button type="submit" class="btn-soft">Загрузить</button>
+                <button type="button" class="btn-ghost" data-photo-add-row>
+                    <x-admin-icon name="plus" />
+                    <span>Добавить строку</span>
+                </button>
+                <button type="submit" class="btn-soft">
+                    <x-admin-icon name="save" />
+                    <span>Загрузить</span>
+                </button>
             </div>
         </div>
 
@@ -39,7 +45,7 @@
 
                 <div class="col-lg-6 d-flex align-items-end">
                     <div class="form-hint">
-                        Каждая строка загружает отдельный файл с собственными тегами. Если нужно больше файлов, просто добавьте ещё одну строку.
+                        Каждая строка загружает отдельный файл. Теги выбираются прямо в строке как облако чекбоксов.
                     </div>
                 </div>
 

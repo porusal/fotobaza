@@ -34,11 +34,28 @@ class SiteViewData
             'theme_accent_secondary_color' => '#2d6f67',
             'theme_accent_soft_color' => '#cf7158',
             'theme_tag_color' => '#2d6f67',
+            'theme_dark_text_color' => '#f4efe8',
+            'theme_dark_heading_color' => '#fff6ea',
+            'theme_dark_muted_color' => '#cfc4b9',
+            'theme_dark_accent_color' => '#ffb871',
+            'theme_dark_accent_secondary_color' => '#7bcfc1',
+            'theme_dark_accent_soft_color' => '#f28a73',
+            'theme_dark_tag_color' => '#7bcfc1',
             'font_body' => 'manrope',
             'font_heading' => 'cormorant',
             'font_menu' => 'manrope',
             'font_catalog' => 'manrope',
             'font_tag' => 'manrope',
+            'font_body_style' => 'normal',
+            'font_heading_style' => 'bold',
+            'font_menu_style' => 'bold',
+            'font_catalog_style' => 'bold',
+            'font_tag_style' => 'bold',
+            'font_body_size' => 'md',
+            'font_heading_size' => 'md',
+            'font_menu_size' => 'md',
+            'font_catalog_size' => 'md',
+            'font_tag_size' => 'md',
         ];
 
         $stored = Setting::query()->pluck('value', 'key')->all();
@@ -87,6 +104,14 @@ class SiteViewData
             $settings[$key] = static::normalizeFontKey($settings[$key] ?? $defaults[$key], $defaults[$key]);
         }
 
+        foreach (static::themeFontStyleKeys() as $key) {
+            $settings[$key] = static::normalizeOptionKey($settings[$key] ?? $defaults[$key], $defaults[$key], static::themeFontStyleOptions());
+        }
+
+        foreach (static::themeFontSizeKeys() as $key) {
+            $settings[$key] = static::normalizeOptionKey($settings[$key] ?? $defaults[$key], $defaults[$key], static::themeFontSizeOptions());
+        }
+
         return $settings;
     }
 
@@ -110,6 +135,8 @@ class SiteViewData
             'currentTranslateLanguage' => static::currentTranslateLanguage($settings['translate_languages']),
             'siteThemeStyle' => static::themeStyle($settings),
             'themeFontOptions' => static::themeFontOptions(),
+            'themeFontStyleOptions' => static::themeFontStyleOptions(),
+            'themeFontSizeOptions' => static::themeFontSizeOptions(),
         ];
     }
 
@@ -123,6 +150,13 @@ class SiteViewData
             'theme_accent_secondary_color',
             'theme_accent_soft_color',
             'theme_tag_color',
+            'theme_dark_text_color',
+            'theme_dark_heading_color',
+            'theme_dark_muted_color',
+            'theme_dark_accent_color',
+            'theme_dark_accent_secondary_color',
+            'theme_dark_accent_soft_color',
+            'theme_dark_tag_color',
         ];
     }
 
@@ -137,43 +171,168 @@ class SiteViewData
         ];
     }
 
+    public static function themeFontStyleKeys(): array
+    {
+        return [
+            'font_body_style',
+            'font_heading_style',
+            'font_menu_style',
+            'font_catalog_style',
+            'font_tag_style',
+        ];
+    }
+
+    public static function themeFontSizeKeys(): array
+    {
+        return [
+            'font_body_size',
+            'font_heading_size',
+            'font_menu_size',
+            'font_catalog_size',
+            'font_tag_size',
+        ];
+    }
+
     public static function themeFontOptions(): array
     {
         return [
             'manrope' => ['label' => 'Manrope', 'stack' => '"Manrope", "Segoe UI", sans-serif'],
+            'montserrat' => ['label' => 'Montserrat', 'stack' => '"Montserrat", "Segoe UI", sans-serif'],
+            'raleway' => ['label' => 'Raleway', 'stack' => '"Raleway", "Segoe UI", sans-serif'],
+            'nunito' => ['label' => 'Nunito Sans', 'stack' => '"Nunito Sans", "Segoe UI", sans-serif'],
+            'oswald' => ['label' => 'Oswald', 'stack' => '"Oswald", "Arial Narrow", sans-serif'],
             'cormorant' => ['label' => 'Cormorant Garamond', 'stack' => '"Cormorant Garamond", Georgia, serif'],
             'playfair' => ['label' => 'Playfair Display', 'stack' => '"Playfair Display", Georgia, serif'],
+            'lora' => ['label' => 'Lora', 'stack' => '"Lora", Georgia, serif'],
+            'merriweather' => ['label' => 'Merriweather', 'stack' => '"Merriweather", Georgia, serif'],
             'source_serif' => ['label' => 'Source Serif 4', 'stack' => '"Source Serif 4", Georgia, serif'],
-            'montserrat' => ['label' => 'Montserrat', 'stack' => '"Montserrat", "Segoe UI", sans-serif'],
-            'oswald' => ['label' => 'Oswald', 'stack' => '"Oswald", "Arial Narrow", sans-serif'],
             'georgia' => ['label' => 'Georgia', 'stack' => 'Georgia, "Times New Roman", serif'],
             'trebuchet' => ['label' => 'Trebuchet MS', 'stack' => '"Trebuchet MS", "Segoe UI", sans-serif'],
+        ];
+    }
+
+    public static function themeFontStyleOptions(): array
+    {
+        return [
+            'normal' => ['label' => 'Обычный', 'style' => 'normal', 'weight' => '400'],
+            'italic' => ['label' => 'Курсив', 'style' => 'italic', 'weight' => '400'],
+            'bold' => ['label' => 'Жирный', 'style' => 'normal', 'weight' => '700'],
+            'bold_italic' => ['label' => 'Жирный курсив', 'style' => 'italic', 'weight' => '700'],
+        ];
+    }
+
+    public static function themeFontSizeOptions(): array
+    {
+        return [
+            'sm' => [
+                'label' => 'Компактный',
+                'body' => '0.94rem',
+                'menu' => '0.88rem',
+                'catalog' => '0.92rem',
+                'tag' => '0.82rem',
+                'h1' => 'clamp(2.35rem, 5.4vw, 4.7rem)',
+                'h2' => 'clamp(1.8rem, 3.5vw, 3rem)',
+                'h3' => 'clamp(1.35rem, 2.5vw, 1.95rem)',
+                'h4' => '1.15rem',
+            ],
+            'md' => [
+                'label' => 'Стандартный',
+                'body' => '1rem',
+                'menu' => '0.95rem',
+                'catalog' => '1rem',
+                'tag' => '0.9rem',
+                'h1' => 'clamp(2.8rem, 6vw, 5.4rem)',
+                'h2' => 'clamp(2rem, 4vw, 3.5rem)',
+                'h3' => 'clamp(1.6rem, 3vw, 2.2rem)',
+                'h4' => '1.25rem',
+            ],
+            'lg' => [
+                'label' => 'Крупный',
+                'body' => '1.08rem',
+                'menu' => '1.03rem',
+                'catalog' => '1.08rem',
+                'tag' => '0.98rem',
+                'h1' => 'clamp(3.1rem, 6.7vw, 6.1rem)',
+                'h2' => 'clamp(2.25rem, 4.6vw, 3.95rem)',
+                'h3' => 'clamp(1.8rem, 3.4vw, 2.5rem)',
+                'h4' => '1.38rem',
+            ],
+            'xl' => [
+                'label' => 'Очень крупный',
+                'body' => '1.16rem',
+                'menu' => '1.12rem',
+                'catalog' => '1.16rem',
+                'tag' => '1.06rem',
+                'h1' => 'clamp(3.4rem, 7.4vw, 6.8rem)',
+                'h2' => 'clamp(2.55rem, 5.2vw, 4.45rem)',
+                'h3' => 'clamp(2rem, 3.9vw, 2.85rem)',
+                'h4' => '1.5rem',
+            ],
         ];
     }
 
     public static function themeStyle(array $settings): string
     {
         $fontOptions = static::themeFontOptions();
+        $styleOptions = static::themeFontStyleOptions();
+        $sizeOptions = static::themeFontSizeOptions();
+
         $fontStack = static function (string $key) use ($settings, $fontOptions): string {
             $fontKey = (string) ($settings[$key] ?? 'manrope');
 
             return $fontOptions[$fontKey]['stack'] ?? $fontOptions['manrope']['stack'];
         };
 
+        $fontStyle = static function (string $key, string $property) use ($settings, $styleOptions): string {
+            $styleKey = (string) ($settings[$key] ?? 'normal');
+
+            return $styleOptions[$styleKey][$property] ?? $styleOptions['normal'][$property];
+        };
+
+        $fontSize = static function (string $key, string $property) use ($settings, $sizeOptions): string {
+            $sizeKey = (string) ($settings[$key] ?? 'md');
+
+            return $sizeOptions[$sizeKey][$property] ?? $sizeOptions['md'][$property];
+        };
+
         $variables = [
-            '--text' => $settings['theme_text_color'] ?? '#1c1712',
-            '--heading-color' => $settings['theme_heading_color'] ?? '#1c1712',
-            '--muted' => $settings['theme_muted_color'] ?? '#6e655d',
-            '--muted-strong' => $settings['theme_text_color'] ?? '#1c1712',
-            '--accent' => $settings['theme_accent_color'] ?? '#a15f2d',
-            '--accent-2' => $settings['theme_accent_secondary_color'] ?? '#2d6f67',
-            '--accent-3' => $settings['theme_accent_soft_color'] ?? '#cf7158',
-            '--tag-color' => $settings['theme_tag_color'] ?? '#2d6f67',
+            '--theme-light-text' => $settings['theme_text_color'] ?? '#1c1712',
+            '--theme-light-heading' => $settings['theme_heading_color'] ?? '#1c1712',
+            '--theme-light-muted' => $settings['theme_muted_color'] ?? '#6e655d',
+            '--theme-light-accent' => $settings['theme_accent_color'] ?? '#a15f2d',
+            '--theme-light-accent-2' => $settings['theme_accent_secondary_color'] ?? '#2d6f67',
+            '--theme-light-accent-3' => $settings['theme_accent_soft_color'] ?? '#cf7158',
+            '--theme-light-tag' => $settings['theme_tag_color'] ?? '#2d6f67',
+            '--theme-dark-text' => $settings['theme_dark_text_color'] ?? '#f4efe8',
+            '--theme-dark-heading' => $settings['theme_dark_heading_color'] ?? '#fff6ea',
+            '--theme-dark-muted' => $settings['theme_dark_muted_color'] ?? '#cfc4b9',
+            '--theme-dark-accent' => $settings['theme_dark_accent_color'] ?? '#ffb871',
+            '--theme-dark-accent-2' => $settings['theme_dark_accent_secondary_color'] ?? '#7bcfc1',
+            '--theme-dark-accent-3' => $settings['theme_dark_accent_soft_color'] ?? '#f28a73',
+            '--theme-dark-tag' => $settings['theme_dark_tag_color'] ?? '#7bcfc1',
             '--font-body' => $fontStack('font_body'),
             '--font-heading' => $fontStack('font_heading'),
             '--font-menu' => $fontStack('font_menu'),
             '--font-catalog' => $fontStack('font_catalog'),
             '--font-tag' => $fontStack('font_tag'),
+            '--font-body-style' => $fontStyle('font_body_style', 'style'),
+            '--font-body-weight' => $fontStyle('font_body_style', 'weight'),
+            '--font-heading-style' => $fontStyle('font_heading_style', 'style'),
+            '--font-heading-weight' => $fontStyle('font_heading_style', 'weight'),
+            '--font-menu-style' => $fontStyle('font_menu_style', 'style'),
+            '--font-menu-weight' => $fontStyle('font_menu_style', 'weight'),
+            '--font-catalog-style' => $fontStyle('font_catalog_style', 'style'),
+            '--font-catalog-weight' => $fontStyle('font_catalog_style', 'weight'),
+            '--font-tag-style' => $fontStyle('font_tag_style', 'style'),
+            '--font-tag-weight' => $fontStyle('font_tag_style', 'weight'),
+            '--font-body-size' => $fontSize('font_body_size', 'body'),
+            '--font-menu-size' => $fontSize('font_menu_size', 'menu'),
+            '--font-catalog-size' => $fontSize('font_catalog_size', 'catalog'),
+            '--font-tag-size' => $fontSize('font_tag_size', 'tag'),
+            '--font-heading-h1-size' => $fontSize('font_heading_size', 'h1'),
+            '--font-heading-h2-size' => $fontSize('font_heading_size', 'h2'),
+            '--font-heading-h3-size' => $fontSize('font_heading_size', 'h3'),
+            '--font-heading-h4-size' => $fontSize('font_heading_size', 'h4'),
         ];
 
         return collect($variables)
@@ -475,9 +634,14 @@ class SiteViewData
 
     private static function normalizeFontKey(mixed $value, string $fallback): string
     {
+        return static::normalizeOptionKey($value, $fallback, static::themeFontOptions());
+    }
+
+    private static function normalizeOptionKey(mixed $value, string $fallback, array $options): string
+    {
         $value = trim((string) $value);
 
-        if (array_key_exists($value, static::themeFontOptions())) {
+        if (array_key_exists($value, $options)) {
             return $value;
         }
 

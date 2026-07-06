@@ -12,7 +12,9 @@
             <span>Одна строка = один файл и свои теги</span>
         </div>
 
-        <button type="button" class="btn-ghost" data-photo-remove-row>Удалить</button>
+        <button type="button" class="btn-ghost icon-button" data-photo-remove-row title="Удалить строку" aria-label="Удалить строку">
+            <x-admin-icon name="trash" />
+        </button>
     </div>
 
     <div class="row g-3">
@@ -42,11 +44,11 @@
 
         <div class="col-12">
             <label class="form-label">Теги</label>
-            <select class="form-select" name="items[{{ $rowIndex }}][tags][]" multiple data-select2>
-                @foreach(($tags ?? collect()) as $tag)
-                    <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, array_map('strval', $rowItem['tags'] ?? []), true))>{{ $tag->name }}</option>
-                @endforeach
-            </select>
+            @include('admin.photos._tag-cloud', [
+                'name' => 'items[' . $rowIndex . '][tags][]',
+                'tags' => $tags,
+                'selected' => $rowItem['tags'] ?? [],
+            ])
             <div class="form-hint mt-2">Нет нужного тега? Откройте <a href="{{ route('admin.tags.index') }}">раздел тегов</a>.</div>
             @error('items.' . $rowIndex . '.tags')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
