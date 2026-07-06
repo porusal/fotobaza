@@ -29,6 +29,12 @@
             'galleryTree' => $galleryTree,
         ])
 
+        @include('partials.site-mobile-menu', [
+            'siteName' => $siteName,
+            'menuPages' => $menuPages,
+            'galleryTree' => $galleryTree,
+        ])
+
         <main id="main-content" class="layout-main">
             <div class="container-xxl">
                 @yield('content')

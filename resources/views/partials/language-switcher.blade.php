@@ -49,6 +49,7 @@
     id="google_translate_element"
     class="translate-widget"
     data-source-language="{{ $sourceLanguage }}"
+    data-current-language="{{ $currentTranslateLanguage }}"
     data-included-languages="{{ $includedLanguages }}"
     aria-hidden="true"
 ></div>
