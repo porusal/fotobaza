@@ -92,6 +92,8 @@ php artisan gallery:sync-filesystem
 
 Or open the admin panel and click `Синхронизировать FTP` on the `Каталоги` page. Public pages also run a lightweight automatic sync every `GALLERY_FILESYSTEM_AUTO_SYNC_SECONDS` seconds.
 
+When a gallery is created or moved in the admin panel, the site also creates or moves the matching physical directory under `public/storage/photos`. The gallery `name` field is used as the folder name, while `display_name` is only the public title.
+
 ## Notes
 
 - `database/database.sqlite` is ignored by Git.

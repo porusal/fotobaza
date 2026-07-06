@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use App\Models\Photo;
 use App\Models\Tag;
+use App\Support\GalleryFilesystem;
 use App\Support\SiteViewData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class PhotoController extends Controller
         ]));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, GalleryFilesystem $galleryFilesystem): RedirectResponse
     {
         $validated = $request->validate([
             'gallery_id' => ['required', 'integer', Rule::exists('galleries', 'id')],
@@ -49,6 +50,7 @@ class PhotoController extends Controller
         ]);
 
         $gallery = Gallery::query()->findOrFail((int) $validated['gallery_id']);
+        $galleryDirectory = $galleryFilesystem->ensureDirectoryForGallery($gallery);
 
         foreach ($validated['items'] as $index => $item) {
             $file = $request->file("items.$index.file");
@@ -57,7 +59,7 @@ class PhotoController extends Controller
                 continue;
             }
 
-            $storedPath = $file->store('photos/' . $gallery->slug, 'public');
+            $storedPath = $file->store($galleryDirectory, 'public');
             $photo = Photo::create([
                 'gallery_id' => $gallery->id,
                 'filename' => $file->getClientOriginalName(),
@@ -85,7 +87,7 @@ class PhotoController extends Controller
         ]));
     }
 
-    public function update(Request $request, Photo $photo): RedirectResponse
+    public function update(Request $request, Photo $photo, GalleryFilesystem $galleryFilesystem): RedirectResponse
     {
         $validated = $request->validate([
             'gallery_id' => ['required', 'integer', Rule::exists('galleries', 'id')],
@@ -102,7 +104,7 @@ class PhotoController extends Controller
         if ($request->hasFile('photo_file')) {
             $this->deleteStoredAsset($photo->path);
 
-            $storedPath = $request->file('photo_file')->store('photos/' . $gallery->slug, 'public');
+            $storedPath = $request->file('photo_file')->store($galleryFilesystem->ensureDirectoryForGallery($gallery), 'public');
             $photo->path = Storage::disk('public')->url($storedPath);
         }
 

@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use App\Support\FilesystemGallerySync;
+use App\Support\GalleryFilesystem;
 use App\Support\SiteViewData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use RuntimeException;
 
 class GalleryController extends Controller
 {
@@ -55,17 +58,28 @@ class GalleryController extends Controller
         ]));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, GalleryFilesystem $galleryFilesystem): RedirectResponse
     {
         $validated = $this->validatePayload($request);
+        $gallery = null;
 
-        $gallery = new Gallery();
-        $gallery->fill($this->mapPayload($request, $validated));
-        if ($request->hasFile('cover_image')) {
-            $gallery->cover_image = $this->storeCoverImage($request);
+        try {
+            DB::transaction(function () use (&$gallery, $galleryFilesystem, $request, $validated): void {
+                $gallery = new Gallery();
+                $gallery->fill($this->mapPayload($request, $validated));
+                if ($request->hasFile('cover_image')) {
+                    $gallery->cover_image = $this->storeCoverImage($request);
+                }
+                $gallery->slug = $this->uniqueSlug($validated['slug'] ?? null, $gallery->display_name);
+                $gallery->save();
+
+                $galleryFilesystem->ensureDirectoryForGallery($gallery);
+            });
+        } catch (RuntimeException $exception) {
+            throw ValidationException::withMessages([
+                'name' => $exception->getMessage(),
+            ]);
         }
-        $gallery->slug = $this->uniqueSlug($validated['slug'] ?? null, $gallery->display_name);
-        $gallery->save();
 
         return redirect()
             ->route('admin.galleries.edit', $gallery)
@@ -80,10 +94,11 @@ class GalleryController extends Controller
         ]));
     }
 
-    public function update(Request $request, Gallery $gallery): RedirectResponse
+    public function update(Request $request, Gallery $gallery, GalleryFilesystem $galleryFilesystem): RedirectResponse
     {
         $validated = $this->validatePayload($request, $gallery);
         $payload = $this->mapPayload($request, $validated);
+        $oldDirectory = $galleryFilesystem->directoryForGallery($gallery);
 
         if ($request->hasFile('cover_image')) {
             $this->deleteStoredAsset($gallery->cover_image);
@@ -92,9 +107,19 @@ class GalleryController extends Controller
             unset($payload['cover_image']);
         }
 
-        $gallery->fill($payload);
-        $gallery->slug = $this->uniqueSlug($validated['slug'] ?? null, $gallery->display_name, $gallery);
-        $gallery->save();
+        try {
+            DB::transaction(function () use ($gallery, $galleryFilesystem, $oldDirectory, $payload, $validated): void {
+                $gallery->fill($payload);
+                $gallery->slug = $this->uniqueSlug($validated['slug'] ?? null, $gallery->display_name, $gallery);
+                $gallery->save();
+
+                $galleryFilesystem->moveDirectoryForGallery($gallery->refresh(), $oldDirectory);
+            });
+        } catch (RuntimeException $exception) {
+            throw ValidationException::withMessages([
+                'name' => $exception->getMessage(),
+            ]);
+        }
 
         return redirect()
             ->route('admin.galleries.edit', $gallery)
@@ -121,7 +146,7 @@ class GalleryController extends Controller
                 'integer',
                 Rule::exists('galleries', 'id'),
             ],
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'not_regex:/[\/\\\\]/'],
             'display_name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
