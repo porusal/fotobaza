@@ -2365,6 +2365,11 @@ body.dark-mode .offcanvas .btn-close {
   border-top: 1px solid var(--border);
 }
 
+.page-footer__copyright {
+  margin-left: auto;
+  text-align: right;
+}
+
 @media (min-width: 768px) {
   .hero__meta {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2391,6 +2396,13 @@ body.dark-mode .offcanvas .btn-close {
   .font-settings-row {
     grid-template-columns: minmax(150px, 0.8fr) repeat(3, minmax(0, 1fr));
     align-items: end;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .page-footer__copyright {
+    margin-left: 0;
+    text-align: left;
   }
 }
 

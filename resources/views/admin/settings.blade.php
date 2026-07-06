@@ -104,6 +104,15 @@
                 </div>
 
                 <div class="col-lg-6">
+                    <label class="form-label" for="site_copyright">Копирайт в подвале</label>
+                    <input class="form-control @error('site_copyright') is-invalid @enderror" type="text" name="site_copyright" id="site_copyright" maxlength="255" value="{{ old('site_copyright', $settings['site_copyright'] ?? '') }}">
+                    <div class="form-hint">Этот текст выводится справа в футере. Например: © 2026 Foto 636.</div>
+                    @error('site_copyright')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-lg-6">
                     <label class="form-label" for="hero_badge">Надпись на главной картинке</label>
                     <input class="form-control @error('hero_badge') is-invalid @enderror" type="text" name="hero_badge" id="hero_badge" maxlength="140" value="{{ old('hero_badge', $settings['hero_badge'] ?? '') }}">
                     <div class="form-hint">Оставьте поле пустым, чтобы поверх картинки ничего не выводилось.</div>

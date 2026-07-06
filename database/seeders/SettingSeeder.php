@@ -12,6 +12,7 @@ class SettingSeeder extends Seeder
         $settings = [
             'site_name' => 'Foto 636',
             'site_tagline' => 'Современная фотогалерея с атмосферой',
+            'site_copyright' => '© 2026 Foto 636',
             'site_logo' => '/seed/logo.svg',
             'hero_image' => '/seed/hero.svg',
             'home_photos_count' => 8,

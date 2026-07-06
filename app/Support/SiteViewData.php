@@ -19,6 +19,7 @@ class SiteViewData
         $defaults = [
             'site_name' => config('app.name', 'Foto 636'),
             'site_tagline' => 'Современная фотогалерея с атмосферой',
+            'site_copyright' => '',
             'site_logo' => null,
             'hero_image' => null,
             'home_photos_count' => 12,
@@ -63,6 +64,10 @@ class SiteViewData
 
         $settings['site_name'] = (string) ($settings['site_name'] ?: $defaults['site_name']);
         $settings['site_tagline'] = static::cleanSettingText($settings['site_tagline'] ?? '', $defaults['site_tagline']);
+        $settings['site_copyright'] = static::cleanSettingText(
+            $settings['site_copyright'] ?? '',
+            '© ' . date('Y') . ' ' . $settings['site_name']
+        );
         $settings['site_logo'] = $settings['site_logo'] ?: null;
         $settings['hero_badge'] = static::cleanSettingText($settings['hero_badge'] ?? '', $defaults['hero_badge'], true);
         $settings['intro_text'] = static::cleanSettingText($settings['intro_text'] ?? '', $defaults['intro_text']);
@@ -99,6 +104,7 @@ class SiteViewData
         return [
             'siteName' => $settings['site_name'],
             'siteTagline' => $settings['site_tagline'],
+            'siteCopyright' => $settings['site_copyright'],
             'siteLogo' => $settings['site_logo'],
             'heroImage' => $settings['hero_image'],
             'adminUser' => AdminSession::currentUser(),

@@ -7,6 +7,10 @@
                     <div>{{ $siteTagline }}</div>
                 @endif
             </div>
+
+            @if(!empty($siteCopyright))
+                <div class="page-footer__copyright">{{ $siteCopyright }}</div>
+            @endif
         </div>
     </div>
 </footer>

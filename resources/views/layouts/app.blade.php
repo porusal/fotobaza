@@ -1,6 +1,7 @@
 @php
     $siteName = $siteName ?? config('app.name', 'Foto 636');
     $siteTagline = $siteTagline ?? 'Современная фотогалерея с атмосферой';
+    $siteCopyright = $siteCopyright ?? null;
     $siteLogo = $siteLogo ?? null;
     $menuPages = $menuPages ?? collect();
     $galleryTree = $galleryTree ?? collect();
@@ -44,6 +45,7 @@
         @include('partials.site-footer', [
             'siteName' => $siteName,
             'siteTagline' => $siteTagline,
+            'siteCopyright' => $siteCopyright,
         ])
     </div>
 

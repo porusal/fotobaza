@@ -72,6 +72,7 @@ class DashboardController extends Controller
             'hero_image' => ['nullable', 'image', 'max:4096'],
             'site_name' => ['required', 'string', 'max:255'],
             'site_tagline' => ['required', 'string', 'max:255'],
+            'site_copyright' => ['nullable', 'string', 'max:255'],
             'hero_badge' => ['nullable', 'string', 'max:140'],
             'intro_text' => ['nullable', 'string'],
             'home_photos_count' => ['required', 'integer', 'min:1', 'max:50'],
@@ -111,6 +112,7 @@ class DashboardController extends Controller
         ]);
 
         $validated['translate_languages'] = array_values(array_unique($validated['translate_languages'] ?? []));
+        $validated['site_copyright'] = trim((string) ($validated['site_copyright'] ?? ''));
         $validated['hero_badge'] = trim((string) ($validated['hero_badge'] ?? ''));
 
         if ($request->hasFile('site_logo')) {
