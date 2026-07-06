@@ -76,6 +76,8 @@ class DashboardController extends Controller
             'hero_badge' => ['nullable', 'string', 'max:140'],
             'intro_text' => ['nullable', 'string'],
             'home_photos_count' => ['required', 'integer', 'min:1', 'max:50'],
+            'gallery_grid_columns_mobile' => ['required', 'integer', 'min:1', 'max:4'],
+            'gallery_grid_columns_tablet' => ['required', 'integer', 'min:1', 'max:4'],
             'gallery_grid_columns' => ['required', 'integer', 'min:1', 'max:4'],
             'grid_gap' => ['required', 'in:sm,md,lg'],
             'translate_languages' => ['nullable', 'array'],

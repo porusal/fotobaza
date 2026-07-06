@@ -75,7 +75,14 @@
                     </div>
                 </div>
 
-                <x-photo-grid :photos="$latestPhotos" :columns="$gridColumns ?? 3" :gap="$galleryGap ?? '1rem'" />
+                <x-photo-grid
+                    :photos="$latestPhotos"
+                    :columns="$gridColumns ?? 3"
+                    :mobile-columns="$gridColumnsMobile ?? 2"
+                    :tablet-columns="$gridColumnsTablet ?? 3"
+                    :desktop-columns="$gridColumnsDesktop ?? ($gridColumns ?? 3)"
+                    :gap="$galleryGap ?? '1rem'"
+                />
             </section>
         </div>
     </div>

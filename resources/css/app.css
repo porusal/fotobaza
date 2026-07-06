@@ -1157,7 +1157,7 @@ h4 {
 }
 
 .gallery-grid {
-  column-count: var(--gallery-columns);
+  column-count: var(--gallery-columns-mobile, var(--gallery-columns, 2));
   column-gap: var(--gallery-gap, 1rem);
 }
 
@@ -2011,6 +2011,62 @@ h4 {
   gap: 1rem;
 }
 
+.photo-grid-mode-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
+.photo-grid-mode-switch__button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  background: transparent;
+  color: var(--muted-strong);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.photo-grid-mode-switch__button:hover,
+.photo-grid-mode-switch__button:focus-visible,
+.photo-grid-mode-switch__button.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.admin-photo-grid-preview {
+  --admin-preview-columns: var(--admin-grid-desktop, 3);
+  width: 100%;
+  max-width: none;
+  grid-template-columns: repeat(var(--admin-preview-columns), minmax(0, 260px));
+  transition: max-width 180ms ease;
+}
+
+.admin-photo-grid-preview[data-grid-preview-mode="mobile"] {
+  --admin-preview-columns: var(--admin-grid-mobile, 2);
+  max-width: 430px;
+}
+
+.admin-photo-grid-preview[data-grid-preview-mode="tablet"] {
+  --admin-preview-columns: var(--admin-grid-tablet, 3);
+  max-width: 760px;
+}
+
+.admin-photo-grid-preview[data-grid-preview-mode="desktop"] {
+  --admin-preview-columns: var(--admin-grid-desktop, 3);
+}
+
+.admin-photo-grid-preview .admin-photo-card {
+  width: 100%;
+}
+
 .photo-category-card {
   min-width: 0;
   margin: 0;
@@ -2371,6 +2427,10 @@ body.dark-mode .offcanvas .btn-close {
 }
 
 @media (min-width: 768px) {
+  .gallery-grid {
+    column-count: var(--gallery-columns-tablet, var(--gallery-columns, 3));
+  }
+
   .hero__meta {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2437,7 +2497,7 @@ body.dark-mode .offcanvas .btn-close {
   }
 
   .gallery-grid {
-    column-count: var(--gallery-columns);
+    column-count: var(--gallery-columns-desktop, var(--gallery-columns, 3));
   }
 
   .admin-shell {
@@ -2569,7 +2629,7 @@ body.dark-mode .offcanvas .btn-close {
   }
 
   .gallery-grid {
-    column-count: 1;
+    column-count: var(--gallery-columns-mobile, 2);
   }
 
   .lightGallery-captions {
@@ -2586,6 +2646,10 @@ body.dark-mode .offcanvas .btn-close {
 
   .photo-category-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-photo-grid-preview {
+    grid-template-columns: repeat(var(--admin-preview-columns), minmax(0, 1fr));
   }
 
   .admin-photo-card {

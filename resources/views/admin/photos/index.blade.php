@@ -3,7 +3,7 @@
 @section('title', $selectedGallery ? 'Фото: ' . $selectedGallery->display_name : 'Фото')
 
 @section('content')
-    <section class="admin-card">
+    <section class="admin-card" data-admin-photo-grid-panel>
         @if(session('status'))
             <div class="alert alert-success mb-3">{{ session('status') }}</div>
         @endif
@@ -23,7 +23,12 @@
                     @endif
                 </p>
             </div>
-            <div class="d-flex flex-wrap gap-2">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <div class="photo-grid-mode-switch" data-admin-photo-grid-switch aria-label="Режим предпросмотра сетки">
+                    <button type="button" class="photo-grid-mode-switch__button" data-grid-mode-button="mobile">Моб</button>
+                    <button type="button" class="photo-grid-mode-switch__button" data-grid-mode-button="tablet">Планшет</button>
+                    <button type="button" class="photo-grid-mode-switch__button is-active" data-grid-mode-button="desktop">ПК</button>
+                </div>
                 @if($selectedGallery)
                     <a href="{{ route('admin.photos.index') }}" class="btn-ghost">
                         <x-admin-icon name="folder" />
@@ -39,7 +44,12 @@
 
         @if($selectedGallery)
             @if($selectedGallery->photos->isNotEmpty())
-                <div class="photo-category__grid photo-category__grid--inside">
+                <div
+                    class="photo-category__grid photo-category__grid--inside admin-photo-grid-preview"
+                    data-admin-photo-grid-preview
+                    data-grid-preview-mode="desktop"
+                    style="--admin-grid-mobile: {{ $gridColumnsMobile ?? 2 }}; --admin-grid-tablet: {{ $gridColumnsTablet ?? 3 }}; --admin-grid-desktop: {{ $gridColumnsDesktop ?? ($gridColumns ?? 3) }};"
+                >
                     @foreach($selectedGallery->photos as $photo)
                         <article class="admin-photo-card">
                             <div class="folder-card__cover">
@@ -82,7 +92,12 @@
                 </div>
             @endif
         @else
-            <div class="photo-category-grid">
+            <div
+                class="photo-category-grid admin-photo-grid-preview"
+                data-admin-photo-grid-preview
+                data-grid-preview-mode="desktop"
+                style="--admin-grid-mobile: {{ $gridColumnsMobile ?? 2 }}; --admin-grid-tablet: {{ $gridColumnsTablet ?? 3 }}; --admin-grid-desktop: {{ $gridColumnsDesktop ?? ($gridColumns ?? 3) }};"
+            >
                 @forelse(($galleries ?? collect()) as $gallery)
                     <article class="folder-card photo-category-card">
                         <a class="folder-card__link photo-category-card__link" href="{{ route('admin.photos.index', ['gallery' => $gallery->id]) }}">

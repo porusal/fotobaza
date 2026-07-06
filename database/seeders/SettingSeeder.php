@@ -16,6 +16,8 @@ class SettingSeeder extends Seeder
             'site_logo' => '/seed/logo.svg',
             'hero_image' => '/seed/hero.svg',
             'home_photos_count' => 8,
+            'gallery_grid_columns_mobile' => 2,
+            'gallery_grid_columns_tablet' => 3,
             'gallery_grid_columns' => 3,
             'grid_gap' => 'md',
             'hero_badge' => '',

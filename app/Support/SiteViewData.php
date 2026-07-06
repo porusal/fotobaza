@@ -23,6 +23,8 @@ class SiteViewData
             'site_logo' => null,
             'hero_image' => null,
             'home_photos_count' => 12,
+            'gallery_grid_columns_mobile' => 2,
+            'gallery_grid_columns_tablet' => 3,
             'gallery_grid_columns' => 3,
             'grid_gap' => 'md',
             'hero_badge' => '',
@@ -72,6 +74,8 @@ class SiteViewData
         $settings['hero_badge'] = static::cleanSettingText($settings['hero_badge'] ?? '', $defaults['hero_badge'], true);
         $settings['intro_text'] = static::cleanSettingText($settings['intro_text'] ?? '', $defaults['intro_text']);
         $settings['home_photos_count'] = max(1, (int) ($settings['home_photos_count'] ?? 12));
+        $settings['gallery_grid_columns_mobile'] = max(1, min(4, (int) ($settings['gallery_grid_columns_mobile'] ?? 2)));
+        $settings['gallery_grid_columns_tablet'] = max(1, min(4, (int) ($settings['gallery_grid_columns_tablet'] ?? 3)));
         $settings['gallery_grid_columns'] = max(1, min(4, (int) ($settings['gallery_grid_columns'] ?? 3)));
         $settings['grid_gap'] = in_array($settings['grid_gap'], ['sm', 'md', 'lg'], true)
             ? $settings['grid_gap']
@@ -112,6 +116,9 @@ class SiteViewData
             'galleryTree' => static::galleryTree(),
             'settings' => $settings,
             'gridColumns' => $settings['gallery_grid_columns'],
+            'gridColumnsMobile' => $settings['gallery_grid_columns_mobile'],
+            'gridColumnsTablet' => $settings['gallery_grid_columns_tablet'],
+            'gridColumnsDesktop' => $settings['gallery_grid_columns'],
             'galleryGap' => static::galleryGap($settings['grid_gap']),
             'translationLanguageOptions' => static::translationLanguageOptions(),
             'translationLanguages' => $settings['translate_languages'],

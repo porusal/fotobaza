@@ -59,9 +59,17 @@
                 </div>
 
                 @if($gallery->photos->isNotEmpty())
-                    <x-photo-grid :photos="$gallery->photos" :columns="$gridColumns ?? 3" :gap="$galleryGap ?? '1rem'" :group="$gallery->slug" />
+                    <x-photo-grid
+                        :photos="$gallery->photos"
+                        :columns="$gridColumns ?? 3"
+                        :mobile-columns="$gridColumnsMobile ?? 2"
+                        :tablet-columns="$gridColumnsTablet ?? 3"
+                        :desktop-columns="$gridColumnsDesktop ?? ($gridColumns ?? 3)"
+                        :gap="$galleryGap ?? '1rem'"
+                        :group="$gallery->slug"
+                    />
                 @else
-                    <div class="gallery-grid gallery-grid--3" style="--gallery-columns: {{ $gridColumns ?? 3 }}; --gallery-gap: {{ $galleryGap ?? '1rem' }};">
+                    <div class="gallery-grid gallery-grid--3" style="--gallery-columns-mobile: {{ $gridColumnsMobile ?? 2 }}; --gallery-columns-tablet: {{ $gridColumnsTablet ?? 3 }}; --gallery-columns-desktop: {{ $gridColumnsDesktop ?? ($gridColumns ?? 3) }}; --gallery-columns: {{ $gridColumns ?? 3 }}; --gallery-gap: {{ $galleryGap ?? '1rem' }};">
                         @forelse($gallery->children as $child)
                             <article class="folder-card">
                                 <a class="folder-card__link" href="{{ url('/gallery/' . $child->slug) }}">

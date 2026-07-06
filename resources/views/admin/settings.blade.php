@@ -137,8 +137,32 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label" for="gallery_grid_columns">Колонки сетки</label>
+                <div class="col-md-3">
+                    <label class="form-label" for="gallery_grid_columns_mobile">Колонки на телефоне</label>
+                    <select class="form-select @error('gallery_grid_columns_mobile') is-invalid @enderror" name="gallery_grid_columns_mobile" id="gallery_grid_columns_mobile">
+                        @for($i = 1; $i <= 4; $i++)
+                            <option value="{{ $i }}" @selected((int) old('gallery_grid_columns_mobile', $settings['gallery_grid_columns_mobile'] ?? 2) === $i)>{{ $i }}</option>
+                        @endfor
+                    </select>
+                    @error('gallery_grid_columns_mobile')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label" for="gallery_grid_columns_tablet">Колонки на планшете</label>
+                    <select class="form-select @error('gallery_grid_columns_tablet') is-invalid @enderror" name="gallery_grid_columns_tablet" id="gallery_grid_columns_tablet">
+                        @for($i = 1; $i <= 4; $i++)
+                            <option value="{{ $i }}" @selected((int) old('gallery_grid_columns_tablet', $settings['gallery_grid_columns_tablet'] ?? 3) === $i)>{{ $i }}</option>
+                        @endfor
+                    </select>
+                    @error('gallery_grid_columns_tablet')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label" for="gallery_grid_columns">Колонки на ПК</label>
                     <select class="form-select @error('gallery_grid_columns') is-invalid @enderror" name="gallery_grid_columns" id="gallery_grid_columns">
                         @for($i = 1; $i <= 4; $i++)
                             <option value="{{ $i }}" @selected((int) old('gallery_grid_columns', $settings['gallery_grid_columns'] ?? 3) === $i)>{{ $i }}</option>
@@ -149,7 +173,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label" for="grid_gap">Размер промежутков</label>
                     <select class="form-select @error('grid_gap') is-invalid @enderror" name="grid_gap" id="grid_gap">
                         <option value="sm" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'sm')>Маленький</option>

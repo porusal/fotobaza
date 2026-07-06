@@ -474,6 +474,38 @@ function initPhotoUploadRows() {
   window.foto636InitSelect2(list);
 }
 
+function initAdminPhotoGridSwitch() {
+  document.querySelectorAll("[data-admin-photo-grid-switch]").forEach((switcher) => {
+    const panel = switcher.closest("[data-admin-photo-grid-panel]") || document;
+    const previews = Array.from(panel.querySelectorAll("[data-admin-photo-grid-preview]"));
+    const buttons = Array.from(switcher.querySelectorAll("[data-grid-mode-button]"));
+
+    if (!previews.length || !buttons.length) {
+      return;
+    }
+
+    const setMode = (mode) => {
+      previews.forEach((preview) => {
+        preview.dataset.gridPreviewMode = mode;
+      });
+
+      buttons.forEach((button) => {
+        const isActive = button.dataset.gridModeButton === mode;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setMode(button.dataset.gridModeButton || "desktop");
+      });
+    });
+
+    setMode(previews[0].dataset.gridPreviewMode || "desktop");
+  });
+}
+
 window.foto636InitSelect2 = (root = document) => {
   void initSelect2(root).catch(() => {});
 };
@@ -494,3 +526,4 @@ initLightGallery();
 window.foto636InitSelect2();
 window.foto636InitQuill();
 initPhotoUploadRows();
+initAdminPhotoGridSwitch();

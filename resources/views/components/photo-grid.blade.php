@@ -1,14 +1,23 @@
 @props([
     'photos' => collect(),
     'columns' => 3,
+    'mobileColumns' => 2,
+    'tabletColumns' => null,
+    'desktopColumns' => null,
     'gap' => '1rem',
     'group' => 'gallery',
 ])
 
+@php
+    $desktopColumns = max(1, min((int) ($desktopColumns ?? $columns), 4));
+    $tabletColumns = max(1, min((int) ($tabletColumns ?? $desktopColumns), 4));
+    $mobileColumns = max(1, min((int) $mobileColumns, 4));
+@endphp
+
 <div
-    class="gallery-grid gallery-grid--{{ max(1, min((int) $columns, 4)) }}"
+    class="gallery-grid gallery-grid--{{ $desktopColumns }}"
     data-lightgallery="true"
-    style="--gallery-columns: {{ max(1, min((int) $columns, 4)) }}; --gallery-gap: {{ $gap }};"
+    style="--gallery-columns-mobile: {{ $mobileColumns }}; --gallery-columns-tablet: {{ $tabletColumns }}; --gallery-columns-desktop: {{ $desktopColumns }}; --gallery-columns: {{ $desktopColumns }}; --gallery-gap: {{ $gap }};"
 >
     @forelse($photos as $photo)
         @php
