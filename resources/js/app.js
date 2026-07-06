@@ -281,6 +281,49 @@ function initGalleryTreeToggle() {
 }
 
 function initLightGallery() {
+  document.querySelectorAll("[data-lightgallery-carousel]:not([data-lightgallery-ready])").forEach((container) => {
+    const shell = container.closest("[data-lightgallery-carousel-shell]");
+    const jsonElement = shell?.querySelector("[data-lightgallery-items]");
+
+    if (!jsonElement) {
+      return;
+    }
+
+    let dynamicItems = [];
+    try {
+      dynamicItems = JSON.parse(jsonElement.textContent || "[]");
+    } catch {
+      dynamicItems = [];
+    }
+
+    if (!dynamicItems.length) {
+      return;
+    }
+
+    const inlineGallery = lightGallery(container, {
+      container,
+      dynamic: true,
+      dynamicEl: dynamicItems,
+      hash: false,
+      closable: false,
+      showMaximizeIcon: true,
+      appendSubHtmlTo: ".lg-item",
+      slideDelay: 240,
+      loop: true,
+      download: false,
+      speed: 420,
+      licenseKey: "0000-0000-000-0000",
+      mobileSettings: {
+        controls: true,
+        showCloseIcon: true,
+        download: false,
+      },
+    });
+
+    inlineGallery.openGallery();
+    container.setAttribute("data-lightgallery-ready", "true");
+  });
+
   document.querySelectorAll("[data-lightgallery]").forEach((gallery) => {
     lightGallery(gallery, {
       selector: ".lightgallery-item",

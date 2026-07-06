@@ -1250,6 +1250,71 @@ h4 {
   opacity: 0.96;
 }
 
+.photo-carousel-shell {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.photo-carousel {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 62vw, 760px);
+  overflow: hidden;
+  border-radius: calc(var(--radius-xl) + 6px);
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 24% 18%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 26%),
+    radial-gradient(circle at 78% 26%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 28%),
+    linear-gradient(145deg, color-mix(in srgb, var(--surface-strong) 88%, transparent), var(--surface));
+  box-shadow: var(--shadow);
+}
+
+.photo-carousel .lg-container,
+.photo-carousel .lg-outer,
+.photo-carousel .lg-backdrop {
+  border-radius: inherit;
+}
+
+.photo-carousel .lg-backdrop,
+.photo-carousel .lg-outer {
+  background: transparent;
+}
+
+.photo-carousel .lg-inner {
+  border-radius: inherit;
+}
+
+.photo-carousel .lg-toolbar {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: linear-gradient(180deg, rgba(6, 8, 12, 0.58), transparent);
+}
+
+.photo-carousel .lg-sub-html {
+  padding: 0 1rem 1rem;
+  background: linear-gradient(180deg, transparent, rgba(6, 8, 12, 0.62));
+}
+
+.lightGallery-captions {
+  display: inline-grid;
+  max-width: min(100%, 42rem);
+  padding: 0.7rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(6, 8, 12, 0.42);
+  color: #fff;
+  backdrop-filter: blur(16px);
+}
+
+.lightGallery-captions h4 {
+  margin: 0;
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: normal;
+  line-height: 1.25;
+}
+
 .folder-card {
   display: grid;
   gap: 0.8rem;
@@ -2530,6 +2595,15 @@ body.dark-mode .offcanvas .btn-close {
 
   .gallery-grid {
     column-count: 1;
+  }
+
+  .photo-carousel {
+    height: clamp(300px, 82vw, 520px);
+    border-radius: var(--radius-xl);
+  }
+
+  .lightGallery-captions {
+    border-radius: var(--radius-md);
   }
 
   .page-grid--sidebar {

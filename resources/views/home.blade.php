@@ -66,14 +66,14 @@
                             </div>
                             <div>
                                 <span>{{ __('Формат') }}</span>
-                                <strong>Сетка, lightGallery, mobile-first</strong>
+                                <strong>Карусель, lightGallery, mobile-first</strong>
                             </div>
                         </div>
                     </div>
 
                     <div class="hero-aside">
                         <div class="hero-info">
-                            <p>{{ __('Сетка фото адаптируется под экран, а всплывающее окно lightGallery открывает снимки без лишнего шума.') }}</p>
+                            <p>{{ __('Карусель фото адаптируется под экран, а lightGallery открывает снимки в полноэкранном режиме без лишнего шума.') }}</p>
                         </div>
                         <div class="hero-info">
                             <p>{{ __('Переключатель темы вешает класс dark-mode на body, чтобы весь интерфейс менял палитру через CSS-переменные.') }}</p>
