@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SecurityController extends Controller
 {
@@ -21,6 +20,7 @@ class SecurityController extends Controller
         $user = $this->currentUser($request);
         $setupSecret = AdminSession::twoFactorSetupSecret($request);
         $setupCodes = AdminSession::twoFactorSetupCodes($request);
+        $twoFactor = new TwoFactorAuthenticator();
 
         if (! $setupSecret && $user?->hasPendingTwoFactorSetup()) {
             $setupSecret = $user->two_factor_secret;
@@ -32,8 +32,11 @@ class SecurityController extends Controller
             'twoFactorPending' => $user?->hasPendingTwoFactorSetup() ?? false,
             'twoFactorSetupSecret' => $setupSecret,
             'twoFactorSetupCodes' => $setupCodes,
+            'twoFactorSetupUri' => $setupSecret && $user
+                ? $twoFactor->otpauthUri($user->email, $setupSecret)
+                : null,
             'twoFactorQrCodeSvg' => $setupSecret && $user
-                ? $this->qrCodeSvg($user->email, $setupSecret)
+                ? $twoFactor->qrCodeSvg($user->email, $setupSecret)
                 : null,
         ]));
     }
@@ -158,13 +161,4 @@ class SecurityController extends Controller
         return $user;
     }
 
-    private function qrCodeSvg(string $email, string $secret): string
-    {
-        $uri = (new TwoFactorAuthenticator())->otpauthUri($email, $secret);
-
-        return QrCode::format('svg')
-            ->margin(1)
-            ->size(210)
-            ->generate($uri);
-    }
 }

@@ -44,11 +44,11 @@ class SettingSeeder extends Seeder
             'font_menu_style' => 'bold',
             'font_catalog_style' => 'bold',
             'font_tag_style' => 'bold',
-            'font_body_size' => 'md',
-            'font_heading_size' => 'md',
-            'font_menu_size' => 'md',
-            'font_catalog_size' => 'md',
-            'font_tag_size' => 'md',
+            'font_body_size' => '12pt',
+            'font_heading_size' => '42pt',
+            'font_menu_size' => '11pt',
+            'font_catalog_size' => '12pt',
+            'font_tag_size' => '11pt',
         ];
 
         foreach ($settings as $key => $value) {

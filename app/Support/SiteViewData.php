@@ -51,11 +51,11 @@ class SiteViewData
             'font_menu_style' => 'bold',
             'font_catalog_style' => 'bold',
             'font_tag_style' => 'bold',
-            'font_body_size' => 'md',
-            'font_heading_size' => 'md',
-            'font_menu_size' => 'md',
-            'font_catalog_size' => 'md',
-            'font_tag_size' => 'md',
+            'font_body_size' => '12pt',
+            'font_heading_size' => '42pt',
+            'font_menu_size' => '11pt',
+            'font_catalog_size' => '12pt',
+            'font_tag_size' => '11pt',
         ];
 
         $stored = Setting::query()->pluck('value', 'key')->all();
@@ -200,11 +200,24 @@ class SiteViewData
             'montserrat' => ['label' => 'Montserrat', 'stack' => '"Montserrat", "Segoe UI", sans-serif'],
             'raleway' => ['label' => 'Raleway', 'stack' => '"Raleway", "Segoe UI", sans-serif'],
             'nunito' => ['label' => 'Nunito Sans', 'stack' => '"Nunito Sans", "Segoe UI", sans-serif'],
+            'open_sans' => ['label' => 'Open Sans', 'stack' => '"Open Sans", "Segoe UI", sans-serif'],
+            'roboto' => ['label' => 'Roboto', 'stack' => '"Roboto", "Segoe UI", sans-serif'],
+            'rubik' => ['label' => 'Rubik', 'stack' => '"Rubik", "Segoe UI", sans-serif'],
+            'ubuntu' => ['label' => 'Ubuntu', 'stack' => '"Ubuntu", "Segoe UI", sans-serif'],
+            'fira_sans' => ['label' => 'Fira Sans', 'stack' => '"Fira Sans", "Segoe UI", sans-serif'],
+            'exo_2' => ['label' => 'Exo 2', 'stack' => '"Exo 2", "Segoe UI", sans-serif'],
+            'arsenal' => ['label' => 'Arsenal', 'stack' => '"Arsenal", "Segoe UI", sans-serif'],
+            'noto_sans' => ['label' => 'Noto Sans', 'stack' => '"Noto Sans", "Segoe UI", sans-serif'],
             'oswald' => ['label' => 'Oswald', 'stack' => '"Oswald", "Arial Narrow", sans-serif'],
             'cormorant' => ['label' => 'Cormorant Garamond', 'stack' => '"Cormorant Garamond", Georgia, serif'],
             'playfair' => ['label' => 'Playfair Display', 'stack' => '"Playfair Display", Georgia, serif'],
             'lora' => ['label' => 'Lora', 'stack' => '"Lora", Georgia, serif'],
             'merriweather' => ['label' => 'Merriweather', 'stack' => '"Merriweather", Georgia, serif'],
+            'roboto_slab' => ['label' => 'Roboto Slab', 'stack' => '"Roboto Slab", Georgia, serif'],
+            'bitter' => ['label' => 'Bitter', 'stack' => '"Bitter", Georgia, serif'],
+            'spectral' => ['label' => 'Spectral', 'stack' => '"Spectral", Georgia, serif'],
+            'libre_baskerville' => ['label' => 'Libre Baskerville', 'stack' => '"Libre Baskerville", Georgia, serif'],
+            'noto_serif' => ['label' => 'Noto Serif', 'stack' => '"Noto Serif", Georgia, serif'],
             'source_serif' => ['label' => 'Source Serif 4', 'stack' => '"Source Serif 4", Georgia, serif'],
             'georgia' => ['label' => 'Georgia', 'stack' => 'Georgia, "Times New Roman", serif'],
             'trebuchet' => ['label' => 'Trebuchet MS', 'stack' => '"Trebuchet MS", "Segoe UI", sans-serif'],
@@ -223,52 +236,23 @@ class SiteViewData
 
     public static function themeFontSizeOptions(): array
     {
-        return [
-            'sm' => [
-                'label' => 'Компактный',
-                'body' => '0.94rem',
-                'menu' => '0.88rem',
-                'catalog' => '0.92rem',
-                'tag' => '0.82rem',
-                'h1' => 'clamp(2.35rem, 5.4vw, 4.7rem)',
-                'h2' => 'clamp(1.8rem, 3.5vw, 3rem)',
-                'h3' => 'clamp(1.35rem, 2.5vw, 1.95rem)',
-                'h4' => '1.15rem',
-            ],
-            'md' => [
-                'label' => 'Стандартный',
-                'body' => '1rem',
-                'menu' => '0.95rem',
-                'catalog' => '1rem',
-                'tag' => '0.9rem',
-                'h1' => 'clamp(2.8rem, 6vw, 5.4rem)',
-                'h2' => 'clamp(2rem, 4vw, 3.5rem)',
-                'h3' => 'clamp(1.6rem, 3vw, 2.2rem)',
-                'h4' => '1.25rem',
-            ],
-            'lg' => [
-                'label' => 'Крупный',
-                'body' => '1.08rem',
-                'menu' => '1.03rem',
-                'catalog' => '1.08rem',
-                'tag' => '0.98rem',
-                'h1' => 'clamp(3.1rem, 6.7vw, 6.1rem)',
-                'h2' => 'clamp(2.25rem, 4.6vw, 3.95rem)',
-                'h3' => 'clamp(1.8rem, 3.4vw, 2.5rem)',
-                'h4' => '1.38rem',
-            ],
-            'xl' => [
-                'label' => 'Очень крупный',
-                'body' => '1.16rem',
-                'menu' => '1.12rem',
-                'catalog' => '1.16rem',
-                'tag' => '1.06rem',
-                'h1' => 'clamp(3.4rem, 7.4vw, 6.8rem)',
-                'h2' => 'clamp(2.55rem, 5.2vw, 4.45rem)',
-                'h3' => 'clamp(2rem, 3.9vw, 2.85rem)',
-                'h4' => '1.5rem',
-            ],
-        ];
+        $options = [];
+
+        foreach ([8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 28, 32, 36, 42, 48, 56, 64, 72] as $pt) {
+            $options[$pt . 'pt'] = [
+                'label' => $pt . ' pt',
+                'body' => $pt . 'pt',
+                'menu' => $pt . 'pt',
+                'catalog' => $pt . 'pt',
+                'tag' => $pt . 'pt',
+                'h1' => $pt . 'pt',
+                'h2' => max(10, (int) round($pt * 0.68)) . 'pt',
+                'h3' => max(10, (int) round($pt * 0.52)) . 'pt',
+                'h4' => max(10, (int) round($pt * 0.42)) . 'pt',
+            ];
+        }
+
+        return $options;
     }
 
     public static function themeStyle(array $settings): string

@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProfileController extends Controller
 {
@@ -187,6 +186,7 @@ class ProfileController extends Controller
     {
         $setupSecret = AdminSession::twoFactorSetupSecret($request);
         $setupCodes = AdminSession::twoFactorSetupCodes($request);
+        $twoFactor = new TwoFactorAuthenticator();
 
         if (! $setupSecret && $user->hasPendingTwoFactorSetup()) {
             $setupSecret = $user->two_factor_secret;
@@ -197,19 +197,12 @@ class ProfileController extends Controller
             'twoFactorPending' => $user->hasPendingTwoFactorSetup(),
             'twoFactorSetupSecret' => $setupSecret,
             'twoFactorSetupCodes' => $setupCodes,
+            'twoFactorSetupUri' => $setupSecret
+                ? $twoFactor->otpauthUri($user->email, $setupSecret)
+                : null,
             'twoFactorQrCodeSvg' => $setupSecret
-                ? $this->qrCodeSvg($user->email, $setupSecret)
+                ? $twoFactor->qrCodeSvg($user->email, $setupSecret)
                 : null,
         ];
-    }
-
-    private function qrCodeSvg(string $email, string $secret): string
-    {
-        $uri = (new TwoFactorAuthenticator())->otpauthUri($email, $secret);
-
-        return QrCode::format('svg')
-            ->margin(1)
-            ->size(210)
-            ->generate($uri);
     }
 }

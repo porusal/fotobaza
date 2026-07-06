@@ -38,26 +38,26 @@
 @endphp
 
 @section('content')
-    <form method="post" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="admin-card">
+    <form method="post" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="admin-form-grid">
         @csrf
         @method('PUT')
 
         @if(session('status'))
-            <div class="alert alert-success mb-3">{{ session('status') }}</div>
+            <div class="alert alert-success mb-0">{{ session('status') }}</div>
         @endif
 
-        <div class="panel__title">
-            <div>
-                <p class="eyebrow">Настройки</p>
-                <h2>Основные параметры</h2>
+        <section class="admin-card">
+            <div class="panel__title">
+                <div>
+                    <p class="eyebrow">Настройки</p>
+                    <h2>Основные параметры</h2>
+                </div>
+                <button type="submit" class="btn-soft">
+                    <x-admin-icon name="save" />
+                    <span>Сохранить</span>
+                </button>
             </div>
-            <button type="submit" class="btn-soft">
-                <x-admin-icon name="save" />
-                <span>Сохранить</span>
-            </button>
-        </div>
 
-        <div class="admin-form-grid">
             <div class="row g-3">
                 <div class="col-lg-6">
                     <label class="form-label" for="site_logo">Логотип</label>
@@ -142,141 +142,147 @@
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+        </section>
 
-                <div class="col-12">
-                    <div class="admin-card admin-card--soft">
-                        <div class="panel__title panel__title--compact">
-                            <div>
-                                <p class="eyebrow">Внешний вид</p>
-                                <h3 class="h5 mb-0">Цветовая гамма</h3>
-                            </div>
-                            <p class="form-hint mb-0">Светлая и тёмная темы настраиваются отдельно.</p>
-                        </div>
-
-                        <div class="theme-palette-grid">
-                            @foreach($colorGroups as $groupTitle => $colorFields)
-                                <section class="theme-palette-card">
-                                    <h4>{{ $groupTitle }}</h4>
-                                    <div class="theme-settings-grid">
-                                        @foreach($colorFields as $field => $label)
-                                            <label class="color-field" for="{{ $field }}">
-                                                <span>{{ $label }}</span>
-                                                <input
-                                                    class="form-control form-control-color @error($field) is-invalid @enderror"
-                                                    type="color"
-                                                    name="{{ $field }}"
-                                                    id="{{ $field }}"
-                                                    value="{{ old($field, $settings[$field] ?? '#1c1712') }}"
-                                                >
-                                                @error($field)
-                                                    <span class="invalid-feedback d-block">{{ $message }}</span>
-                                                @enderror
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </section>
-                            @endforeach
-                        </div>
-                    </div>
+        <section class="admin-card admin-card--soft">
+            <div class="panel__title panel__title--compact">
+                <div>
+                    <p class="eyebrow">Внешний вид</p>
+                    <h2 class="h3 mb-0">Цветовая гамма</h2>
+                    <p class="form-hint mb-0">Светлая и тёмная темы настраиваются отдельно.</p>
                 </div>
+                <button type="submit" class="btn-soft">
+                    <x-admin-icon name="save" />
+                    <span>Сохранить</span>
+                </button>
+            </div>
 
-                <div class="col-12">
-                    <div class="admin-card admin-card--soft">
-                        <div class="panel__title panel__title--compact">
-                            <div>
-                                <p class="eyebrow">Шрифты</p>
-                                <h3 class="h5 mb-0">Google Fonts, стиль и размер</h3>
-                            </div>
-                            <p class="form-hint mb-0">Доступен набор подключённых Google Fonts и системных шрифтов.</p>
-                        </div>
-
-                        <div class="font-settings-list">
-                            @foreach($fontFields as $field => $label)
-                                @php
-                                    $familyName = 'font_' . $field;
-                                    $styleName = 'font_' . $field . '_style';
-                                    $sizeName = 'font_' . $field . '_size';
-                                @endphp
-                                <section class="font-settings-row">
-                                    <h4>{{ $label }}</h4>
-                                    <label>
-                                        <span>Шрифт</span>
-                                        <select class="form-select @error($familyName) is-invalid @enderror" name="{{ $familyName }}">
-                                            @foreach($themeFontOptions as $fontKey => $font)
-                                                <option value="{{ $fontKey }}" @selected(old($familyName, $settings[$familyName] ?? 'manrope') === $fontKey)>
-                                                    {{ $font['label'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                    <label>
-                                        <span>Стиль</span>
-                                        <select class="form-select @error($styleName) is-invalid @enderror" name="{{ $styleName }}">
-                                            @foreach($themeFontStyleOptions as $styleKey => $style)
-                                                <option value="{{ $styleKey }}" @selected(old($styleName, $settings[$styleName] ?? 'normal') === $styleKey)>
-                                                    {{ $style['label'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                    <label>
-                                        <span>Размер</span>
-                                        <select class="form-select @error($sizeName) is-invalid @enderror" name="{{ $sizeName }}">
-                                            @foreach($themeFontSizeOptions as $sizeKey => $size)
-                                                <option value="{{ $sizeKey }}" @selected(old($sizeName, $settings[$sizeName] ?? 'md') === $sizeKey)>
-                                                    {{ $size['label'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                </section>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="admin-card admin-card--soft">
-                        <div class="panel__title panel__title--compact">
-                            <div>
-                                <p class="eyebrow">Перевод</p>
-                                <h3 class="h5 mb-0">Языки в выпадающем списке</h3>
-                            </div>
-                            <p class="form-hint mb-0">Русский показывается всегда как исходный язык.</p>
-                        </div>
-
-                        <div class="translation-picks">
-                            @foreach(($translationLanguageOptions ?? []) as $language)
-                                @if($language['code'] === 'ru')
-                                    @continue
-                                @endif
-
-                                <label class="translation-pick">
+            <div class="theme-palette-grid">
+                @foreach($colorGroups as $groupTitle => $colorFields)
+                    <section class="theme-palette-card">
+                        <h3 class="h4">{{ $groupTitle }}</h3>
+                        <div class="theme-settings-grid">
+                            @foreach($colorFields as $field => $label)
+                                <label class="color-field" for="{{ $field }}">
+                                    <span>{{ $label }}</span>
                                     <input
-                                        type="checkbox"
-                                        name="translate_languages[]"
-                                        value="{{ $language['code'] }}"
-                                        @checked(in_array($language['code'], old('translate_languages', $settings['translate_languages'] ?? []), true))
+                                        class="form-control form-control-color @error($field) is-invalid @enderror"
+                                        type="color"
+                                        name="{{ $field }}"
+                                        id="{{ $field }}"
+                                        value="{{ old($field, $settings[$field] ?? '#1c1712') }}"
                                     >
-                                    <span class="translation-pick__flag">
-                                        <img src="{{ asset('flags/' . $language['flag'] . '.svg') }}" alt="" aria-hidden="true">
-                                    </span>
-                                    <span class="translation-pick__label">{{ $language['label'] }}</span>
+                                    @error($field)
+                                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                                    @enderror
                                 </label>
                             @endforeach
                         </div>
+                    </section>
+                @endforeach
+            </div>
+        </section>
 
-                        @error('translate_languages')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
+        <section class="admin-card admin-card--soft">
+            <div class="panel__title panel__title--compact">
+                <div>
+                    <p class="eyebrow">Шрифты</p>
+                    <h2 class="h3 mb-0">Google Fonts, стиль и размер</h2>
+                    <p class="form-hint mb-0">Размеры выбираются в пунктах: 8 pt, 9 pt, 10 pt и так далее.</p>
                 </div>
+                <button type="submit" class="btn-soft">
+                    <x-admin-icon name="save" />
+                    <span>Сохранить</span>
+                </button>
             </div>
 
-            <div class="admin-card mt-1">
-                <p class="eyebrow">Примечание</p>
-                <p>Изменения сохраняются в таблице <code>settings</code> и сразу используются на публичной части сайта.</p>
+            <div class="font-settings-list">
+                @foreach($fontFields as $field => $label)
+                    @php
+                        $familyName = 'font_' . $field;
+                        $styleName = 'font_' . $field . '_style';
+                        $sizeName = 'font_' . $field . '_size';
+                    @endphp
+                    <section class="font-settings-row">
+                        <h3 class="h4">{{ $label }}</h3>
+                        <label>
+                            <span>Шрифт</span>
+                            <select class="form-select @error($familyName) is-invalid @enderror" name="{{ $familyName }}">
+                                @foreach($themeFontOptions as $fontKey => $font)
+                                    <option value="{{ $fontKey }}" @selected(old($familyName, $settings[$familyName] ?? 'manrope') === $fontKey)>
+                                        {{ $font['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </label>
+                        <label>
+                            <span>Стиль</span>
+                            <select class="form-select @error($styleName) is-invalid @enderror" name="{{ $styleName }}">
+                                @foreach($themeFontStyleOptions as $styleKey => $style)
+                                    <option value="{{ $styleKey }}" @selected(old($styleName, $settings[$styleName] ?? 'normal') === $styleKey)>
+                                        {{ $style['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </label>
+                        <label>
+                            <span>Размер</span>
+                            <select class="form-select @error($sizeName) is-invalid @enderror" name="{{ $sizeName }}">
+                                @foreach($themeFontSizeOptions as $sizeKey => $size)
+                                    <option value="{{ $sizeKey }}" @selected(old($sizeName, $settings[$sizeName] ?? '12pt') === $sizeKey)>
+                                        {{ $size['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </label>
+                    </section>
+                @endforeach
             </div>
-        </div>
+        </section>
+
+        <section class="admin-card admin-card--soft">
+            <div class="panel__title panel__title--compact">
+                <div>
+                    <p class="eyebrow">Перевод</p>
+                    <h2 class="h3 mb-0">Языки в выпадающем списке</h2>
+                    <p class="form-hint mb-0">Русский показывается всегда как исходный язык.</p>
+                </div>
+                <button type="submit" class="btn-soft">
+                    <x-admin-icon name="save" />
+                    <span>Сохранить</span>
+                </button>
+            </div>
+
+            <div class="translation-picks">
+                @foreach(($translationLanguageOptions ?? []) as $language)
+                    @if($language['code'] === 'ru')
+                        @continue
+                    @endif
+
+                    <label class="translation-pick">
+                        <input
+                            type="checkbox"
+                            name="translate_languages[]"
+                            value="{{ $language['code'] }}"
+                            @checked(in_array($language['code'], old('translate_languages', $settings['translate_languages'] ?? []), true))
+                        >
+                        <span class="translation-pick__flag">
+                            <img src="{{ asset('flags/' . $language['flag'] . '.svg') }}" alt="" aria-hidden="true">
+                        </span>
+                        <span class="translation-pick__label">{{ $language['label'] }}</span>
+                    </label>
+                @endforeach
+            </div>
+
+            @error('translate_languages')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </section>
+
+        <section class="admin-card">
+            <p class="eyebrow">Примечание</p>
+            <p>Изменения сохраняются в таблице <code>settings</code> и сразу используются на публичной части сайта.</p>
+        </section>
     </form>
 @endsection

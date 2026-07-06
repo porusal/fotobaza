@@ -1,3 +1,7 @@
+@php
+    $twoFactorSetupUri = $twoFactorSetupUri ?? null;
+@endphp
+
 <div class="security-card">
     <p class="eyebrow">Google Authenticator</p>
     <h2 class="h3 mb-2">Двухфакторная аутентификация</h2>
@@ -26,12 +30,29 @@
             <div class="security-qr">
                 @if($twoFactorQrCodeSvg)
                     {!! $twoFactorQrCodeSvg !!}
+                @else
+                    <div class="security-qr-fallback">
+                        <strong>QR-код недоступен</strong>
+                        <span>Добавьте ключ в Google Authenticator вручную.</span>
+                    </div>
                 @endif
             </div>
 
             <p class="form-hint">
-                Отсканируйте QR-код в приложении и введите 6-значный код, чтобы завершить включение.
+                Отсканируйте QR-код в приложении или добавьте секрет вручную, затем введите 6-значный код.
             </p>
+
+            <div class="security-manual-code">
+                <span>Секрет</span>
+                <code>{{ $twoFactorSetupSecret }}</code>
+            </div>
+
+            @if($twoFactorSetupUri)
+                <div class="security-manual-code">
+                    <span>URI для ручного добавления</span>
+                    <code>{{ $twoFactorSetupUri }}</code>
+                </div>
+            @endif
 
             @if(!empty($twoFactorSetupCodes))
                 <div>

@@ -118,6 +118,7 @@
                 'twoFactorPending' => $twoFactor['twoFactorPending'],
                 'twoFactorSetupSecret' => $twoFactor['twoFactorSetupSecret'],
                 'twoFactorSetupCodes' => $twoFactor['twoFactorSetupCodes'],
+                'twoFactorSetupUri' => $twoFactor['twoFactorSetupUri'],
                 'twoFactorQrCodeSvg' => $twoFactor['twoFactorQrCodeSvg'],
                 'twoFactorSetupRoute' => route('admin.profile.two-factor.setup'),
                 'twoFactorConfirmRoute' => route('admin.profile.two-factor.confirm'),

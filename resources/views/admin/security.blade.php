@@ -21,6 +21,7 @@
             'twoFactorPending' => $twoFactorPending,
             'twoFactorSetupSecret' => $twoFactorSetupSecret,
             'twoFactorSetupCodes' => $twoFactorSetupCodes,
+            'twoFactorSetupUri' => $twoFactorSetupUri,
             'twoFactorQrCodeSvg' => $twoFactorQrCodeSvg,
             'twoFactorSetupRoute' => route('admin.security.two-factor.setup'),
             'twoFactorConfirmRoute' => route('admin.security.two-factor.confirm'),

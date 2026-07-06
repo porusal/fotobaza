@@ -4,6 +4,7 @@ namespace App\Support;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Throwable;
 
 class TwoFactorAuthenticator
 {
@@ -78,6 +79,22 @@ class TwoFactorAuthenticator
             . '?secret=' . rawurlencode($secret)
             . '&issuer=' . rawurlencode($this->issuer)
             . '&algorithm=SHA1&digits=6&period=30';
+    }
+
+    public function qrCodeSvg(string $accountName, string $secret): ?string
+    {
+        if (! class_exists(\SimpleSoftwareIO\QrCode\Facades\QrCode::class)) {
+            return null;
+        }
+
+        try {
+            return \SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')
+                ->margin(1)
+                ->size(210)
+                ->generate($this->otpauthUri($accountName, $secret));
+        } catch (Throwable) {
+            return null;
+        }
     }
 
     private function totp(string $secret, int $timestamp): string
