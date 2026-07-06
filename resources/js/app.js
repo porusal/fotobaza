@@ -1,10 +1,22 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-autoplay.css";
+import "lightgallery/css/lg-fullscreen.css";
+import "lightgallery/css/lg-rotate.css";
+import "lightgallery/css/lg-share.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-zoom.css";
 import "quill/dist/quill.snow.css";
 import $ from "jquery";
 import Quill from "quill";
 import lightGallery from "lightgallery";
+import lgAutoplay from "lightgallery/plugins/autoplay";
+import lgFullscreen from "lightgallery/plugins/fullscreen";
+import lgRotate from "lightgallery/plugins/rotate";
+import lgShare from "lightgallery/plugins/share";
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import lgZoom from "lightgallery/plugins/zoom";
 import "select2/dist/css/select2.min.css";
 import "../css/app.css";
 
@@ -283,19 +295,44 @@ function initGalleryTreeToggle() {
 function initLightGallery() {
   document.querySelectorAll("[data-lightgallery]:not([data-lightgallery-ready])").forEach((gallery) => {
     lightGallery(gallery, {
+      plugins: [lgThumbnail, lgZoom, lgFullscreen, lgAutoplay, lgRotate, lgShare],
       selector: ".lightgallery-item",
       hash: false,
       loop: true,
       mode: "lg-slide",
       appendSubHtmlTo: ".lg-item",
       slideDelay: 400,
-      download: false,
+      allowMediaOverlap: false,
+      counter: true,
+      download: true,
+      thumbnail: true,
+      animateThumb: true,
+      alignThumbnails: "middle",
+      currentPagerPosition: "middle",
+      thumbWidth: 96,
+      thumbHeight: "78px",
+      thumbMargin: 6,
+      toggleThumb: false,
+      zoom: true,
+      actualSize: true,
+      showZoomInOutIcons: true,
+      fullScreen: true,
+      autoplay: true,
+      autoplayControls: true,
+      slideShowAutoplay: false,
+      rotate: true,
+      rotateLeft: true,
+      rotateRight: true,
+      flipHorizontal: true,
+      flipVertical: true,
+      share: true,
       speed: 420,
       licenseKey: "0000-0000-000-0000",
       mobileSettings: {
         controls: true,
         showCloseIcon: true,
-        download: false,
+        download: true,
+        thumbnail: true,
       },
     });
 
