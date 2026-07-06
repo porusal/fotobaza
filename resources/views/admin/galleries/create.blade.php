@@ -17,7 +17,10 @@
             </div>
             <div class="d-flex flex-wrap gap-2">
                 <a class="btn-ghost" href="{{ route('admin.galleries.index') }}">Назад</a>
-                <button type="submit" class="btn-soft">Создать</button>
+                <button type="submit" class="btn-soft">
+                    <x-admin-icon name="plus" />
+                    <span>Создать</span>
+                </button>
             </div>
         </div>
 

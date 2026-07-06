@@ -25,8 +25,20 @@ class SiteViewData
             'gallery_grid_columns' => 3,
             'grid_gap' => 'md',
             'hero_badge' => 'Сейчас открыта запись',
-            'intro_text' => null,
+            'intro_text' => 'Фотоистории с мягким светом, четкой композицией и легкой подачей для портфолио, брендов и личных проектов.',
             'translate_languages' => ['en'],
+            'theme_text_color' => '#1c1712',
+            'theme_heading_color' => '#1c1712',
+            'theme_muted_color' => '#6e655d',
+            'theme_accent_color' => '#a15f2d',
+            'theme_accent_secondary_color' => '#2d6f67',
+            'theme_accent_soft_color' => '#cf7158',
+            'theme_tag_color' => '#2d6f67',
+            'font_body' => 'manrope',
+            'font_heading' => 'cormorant',
+            'font_menu' => 'manrope',
+            'font_catalog' => 'manrope',
+            'font_tag' => 'manrope',
         ];
 
         $stored = Setting::query()->pluck('value', 'key')->all();
@@ -36,14 +48,28 @@ class SiteViewData
         $settings['site_tagline'] = (string) ($settings['site_tagline'] ?: $defaults['site_tagline']);
         $settings['site_logo'] = $settings['site_logo'] ?: null;
 
-        if (in_array($settings['site_tagline'], ['Photography with atmosphere', 'Modern photo gallery with atmosphere'], true)) {
+        if (in_array($settings['site_tagline'], [
+            'Photography with atmosphere',
+            'Modern photo gallery with atmosphere',
+            'РЎРѕРІСЂРµРјРµРЅРЅР°СЏ С„РѕС‚РѕРіР°Р»РµСЂРµСЏ СЃ Р°С‚РјРѕСЃС„РµСЂРѕР№',
+        ], true)) {
             $settings['site_tagline'] = $defaults['site_tagline'];
         }
 
         $settings['hero_badge'] = (string) ($settings['hero_badge'] ?: $defaults['hero_badge']);
 
-        if (in_array($settings['hero_badge'], ['Now booking / editorial work', 'Open for commissions / 2026'], true)) {
+        if (in_array($settings['hero_badge'], [
+            'Now booking / editorial work',
+            'Open for commissions / 2026',
+            'РЎРµР№С‡Р°СЃ РѕС‚РєСЂС‹С‚Р° Р·Р°РїРёСЃСЊ',
+        ], true)) {
             $settings['hero_badge'] = $defaults['hero_badge'];
+        }
+
+        $settings['intro_text'] = (string) ($settings['intro_text'] ?: $defaults['intro_text']);
+
+        if (str_contains($settings['intro_text'], 'Р¤РѕС‚РѕРёСЃС‚РѕСЂРёРё')) {
+            $settings['intro_text'] = $defaults['intro_text'];
         }
 
         $settings['home_photos_count'] = max(1, (int) ($settings['home_photos_count'] ?? 12));
@@ -52,6 +78,14 @@ class SiteViewData
             ? $settings['grid_gap']
             : 'md';
         $settings['translate_languages'] = static::normalizeTranslationLanguages($settings['translate_languages'] ?? []);
+
+        foreach (static::themeColorKeys() as $key) {
+            $settings[$key] = static::normalizeHexColor($settings[$key] ?? $defaults[$key], $defaults[$key]);
+        }
+
+        foreach (static::themeFontKeys() as $key) {
+            $settings[$key] = static::normalizeFontKey($settings[$key] ?? $defaults[$key], $defaults[$key]);
+        }
 
         return $settings;
     }
@@ -74,7 +108,77 @@ class SiteViewData
             'translationLanguageOptions' => static::translationLanguageOptions(),
             'translationLanguages' => $settings['translate_languages'],
             'currentTranslateLanguage' => static::currentTranslateLanguage($settings['translate_languages']),
+            'siteThemeStyle' => static::themeStyle($settings),
+            'themeFontOptions' => static::themeFontOptions(),
         ];
+    }
+
+    public static function themeColorKeys(): array
+    {
+        return [
+            'theme_text_color',
+            'theme_heading_color',
+            'theme_muted_color',
+            'theme_accent_color',
+            'theme_accent_secondary_color',
+            'theme_accent_soft_color',
+            'theme_tag_color',
+        ];
+    }
+
+    public static function themeFontKeys(): array
+    {
+        return [
+            'font_body',
+            'font_heading',
+            'font_menu',
+            'font_catalog',
+            'font_tag',
+        ];
+    }
+
+    public static function themeFontOptions(): array
+    {
+        return [
+            'manrope' => ['label' => 'Manrope', 'stack' => '"Manrope", "Segoe UI", sans-serif'],
+            'cormorant' => ['label' => 'Cormorant Garamond', 'stack' => '"Cormorant Garamond", Georgia, serif'],
+            'playfair' => ['label' => 'Playfair Display', 'stack' => '"Playfair Display", Georgia, serif'],
+            'source_serif' => ['label' => 'Source Serif 4', 'stack' => '"Source Serif 4", Georgia, serif'],
+            'montserrat' => ['label' => 'Montserrat', 'stack' => '"Montserrat", "Segoe UI", sans-serif'],
+            'oswald' => ['label' => 'Oswald', 'stack' => '"Oswald", "Arial Narrow", sans-serif'],
+            'georgia' => ['label' => 'Georgia', 'stack' => 'Georgia, "Times New Roman", serif'],
+            'trebuchet' => ['label' => 'Trebuchet MS', 'stack' => '"Trebuchet MS", "Segoe UI", sans-serif'],
+        ];
+    }
+
+    public static function themeStyle(array $settings): string
+    {
+        $fontOptions = static::themeFontOptions();
+        $fontStack = static function (string $key) use ($settings, $fontOptions): string {
+            $fontKey = (string) ($settings[$key] ?? 'manrope');
+
+            return $fontOptions[$fontKey]['stack'] ?? $fontOptions['manrope']['stack'];
+        };
+
+        $variables = [
+            '--text' => $settings['theme_text_color'] ?? '#1c1712',
+            '--heading-color' => $settings['theme_heading_color'] ?? '#1c1712',
+            '--muted' => $settings['theme_muted_color'] ?? '#6e655d',
+            '--muted-strong' => $settings['theme_text_color'] ?? '#1c1712',
+            '--accent' => $settings['theme_accent_color'] ?? '#a15f2d',
+            '--accent-2' => $settings['theme_accent_secondary_color'] ?? '#2d6f67',
+            '--accent-3' => $settings['theme_accent_soft_color'] ?? '#cf7158',
+            '--tag-color' => $settings['theme_tag_color'] ?? '#2d6f67',
+            '--font-body' => $fontStack('font_body'),
+            '--font-heading' => $fontStack('font_heading'),
+            '--font-menu' => $fontStack('font_menu'),
+            '--font-catalog' => $fontStack('font_catalog'),
+            '--font-tag' => $fontStack('font_tag'),
+        ];
+
+        return collect($variables)
+            ->map(fn (string $value, string $key): string => $key . ': ' . $value)
+            ->implode('; ');
     }
 
     public static function translationLanguageOptions(): array
@@ -188,7 +292,7 @@ class SiteViewData
         while ($current->parent_id && $guard < 25) {
             $current->loadMissing('parent:id,parent_id,slug,display_name');
 
-            if (!$current->parent) {
+            if (! $current->parent) {
                 break;
             }
 
@@ -241,7 +345,7 @@ class SiteViewData
 
                 $items->push((object) [
                     'id' => $gallery->id,
-                    'label' => str_repeat('— ', $depth) . $gallery->display_name,
+                    'label' => str_repeat('- ', $depth) . $gallery->display_name,
                     'depth' => $depth,
                     'gallery' => $gallery,
                 ]);
@@ -356,5 +460,27 @@ class SiteViewData
         }
 
         return array_values(array_unique($languages));
+    }
+
+    private static function normalizeHexColor(mixed $value, string $fallback): string
+    {
+        $value = strtolower(trim((string) $value));
+
+        if (preg_match('/^#[0-9a-f]{6}$/', $value) === 1) {
+            return $value;
+        }
+
+        return $fallback;
+    }
+
+    private static function normalizeFontKey(mixed $value, string $fallback): string
+    {
+        $value = trim((string) $value);
+
+        if (array_key_exists($value, static::themeFontOptions())) {
+            return $value;
+        }
+
+        return $fallback;
     }
 }

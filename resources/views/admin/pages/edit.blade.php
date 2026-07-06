@@ -19,8 +19,12 @@
                 </div>
                 <div class="d-flex flex-wrap gap-2">
                     <a class="btn-ghost" href="{{ route('admin.pages.index') }}">Назад</a>
-                    <a class="btn-ghost" href="{{ url('/page/' . $page->slug) }}" target="_blank" rel="noreferrer">Открыть</a>
-                    <button type="submit" class="btn-soft">Сохранить</button>
+                    <a class="btn-ghost icon-button" href="{{ url('/page/' . $page->slug) }}" target="_blank" rel="noreferrer" title="Открыть" aria-label="Открыть">
+                        <x-admin-icon name="external" />
+                    </a>
+                    <button type="submit" class="btn-soft icon-button" title="Сохранить" aria-label="Сохранить">
+                        <x-admin-icon name="save" />
+                    </button>
                 </div>
             </div>
 
@@ -31,7 +35,9 @@
             <form method="post" action="{{ route('admin.pages.destroy', $page) }}" onsubmit="return confirm('Удалить страницу?');">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn-ghost">Удалить</button>
+                <button type="submit" class="btn-ghost icon-button" title="Удалить" aria-label="Удалить">
+                    <x-admin-icon name="trash" />
+                </button>
             </form>
         </div>
     </div>

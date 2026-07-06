@@ -7,6 +7,7 @@ use App\Models\Gallery;
 use App\Models\Page;
 use App\Models\Photo;
 use App\Models\Setting;
+use App\Models\Tag;
 use App\Support\SiteViewData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class DashboardController extends Controller
     {
         return view('admin.photos.index', array_merge(SiteViewData::common(), [
             'galleries' => Gallery::query()->active()->ordered()->get(['id', 'display_name']),
-            'tags' => \App\Models\Tag::query()->ordered()->get(),
+            'tags' => Tag::query()->ordered()->get(),
             'photos' => Photo::query()
                 ->with(['gallery:id,display_name', 'tags:id,name'])
                 ->orderByDesc('created_at')
@@ -77,6 +78,18 @@ class DashboardController extends Controller
             'grid_gap' => ['required', 'in:sm,md,lg'],
             'translate_languages' => ['nullable', 'array'],
             'translate_languages.*' => ['string', Rule::in(SiteViewData::translationTargetLanguageCodes())],
+            'theme_text_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_heading_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_muted_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_accent_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_accent_secondary_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_accent_soft_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_tag_color' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'font_body' => ['required', Rule::in(array_keys(SiteViewData::themeFontOptions()))],
+            'font_heading' => ['required', Rule::in(array_keys(SiteViewData::themeFontOptions()))],
+            'font_menu' => ['required', Rule::in(array_keys(SiteViewData::themeFontOptions()))],
+            'font_catalog' => ['required', Rule::in(array_keys(SiteViewData::themeFontOptions()))],
+            'font_tag' => ['required', Rule::in(array_keys(SiteViewData::themeFontOptions()))],
         ]);
 
         $validated['translate_languages'] = array_values(array_unique($validated['translate_languages'] ?? []));

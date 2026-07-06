@@ -24,7 +24,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
-<body class="{{ $bodyClass }}">
+<body class="{{ $bodyClass }}" @if(!empty($siteThemeStyle)) style="{{ $siteThemeStyle }}" @endif>
     <div class="admin-layout">
         <div class="container-xxl">
             <div class="admin-shell">
@@ -71,10 +71,10 @@
 
                             @if(!empty($adminUser))
                                 <div class="admin-userbox">
-                                    <div>
-                                        <strong>{{ $adminUser->name }}</strong>
-                                        <small>{{ $adminUser->email }}</small>
-                                    </div>
+                                    <span class="admin-userbox__icon" aria-hidden="true">
+                                        <x-admin-icon name="user" />
+                                    </span>
+                                    <strong>{{ $adminUser->name ?: 'Admin' }}</strong>
                                 </div>
 
                                 <a class="btn-ghost" href="{{ route('admin.security.show') }}">2FA</a>

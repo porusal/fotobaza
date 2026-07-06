@@ -16,9 +16,15 @@
             <div class="d-flex flex-wrap gap-2 justify-content-end">
                 <form method="post" action="{{ route('admin.galleries.sync-filesystem') }}" class="admin-inline-form">
                     @csrf
-                    <button type="submit" class="btn-ghost">Синхронизировать FTP</button>
+                    <button type="submit" class="btn-ghost">
+                        <x-admin-icon name="sync" />
+                        <span>Синхронизировать FTP</span>
+                    </button>
                 </form>
-                <a href="{{ route('admin.galleries.create') }}" class="btn-soft">Новый каталог</a>
+                <a href="{{ route('admin.galleries.create') }}" class="btn-soft">
+                    <x-admin-icon name="plus" />
+                    <span>Новый каталог</span>
+                </a>
             </div>
         </div>
 
@@ -43,18 +49,24 @@
                             <td>{{ $gallery->slug }}</td>
                             <td>{{ $gallery->parent?->display_name ?? '—' }}</td>
                             <td>
-                                <span class="chip {{ $gallery->is_active ? 'is-active' : '' }}">
-                                    {{ $gallery->is_active ? 'Активен' : 'Скрыт' }}
+                                <span class="status-icon {{ $gallery->is_active ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $gallery->is_active ? 'Активен' : 'Скрыт' }}" aria-label="{{ $gallery->is_active ? 'Активен' : 'Скрыт' }}">
+                                    <x-admin-icon :name="$gallery->is_active ? 'check' : 'x'" />
                                 </span>
                             </td>
                             <td class="text-end">
                                 <div class="d-inline-flex flex-wrap gap-2">
-                                    <a class="btn-ghost" href="{{ route('admin.galleries.edit', $gallery) }}">Редактировать</a>
-                                    <a class="btn-ghost" href="{{ url('/gallery/' . $gallery->slug) }}" target="_blank" rel="noreferrer">Открыть</a>
+                                    <a class="btn-ghost icon-button" href="{{ route('admin.galleries.edit', $gallery) }}" title="Редактировать" aria-label="Редактировать">
+                                        <x-admin-icon name="edit" />
+                                    </a>
+                                    <a class="btn-ghost icon-button" href="{{ url('/gallery/' . $gallery->slug) }}" target="_blank" rel="noreferrer" title="Открыть" aria-label="Открыть">
+                                        <x-admin-icon name="external" />
+                                    </a>
                                     <form method="post" action="{{ route('admin.galleries.destroy', $gallery) }}" onsubmit="return confirm('Удалить каталог?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-ghost">Удалить</button>
+                                        <button type="submit" class="btn-ghost icon-button" title="Удалить" aria-label="Удалить">
+                                            <x-admin-icon name="trash" />
+                                        </button>
                                     </form>
                                 </div>
                             </td>

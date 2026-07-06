@@ -9,7 +9,10 @@
                 <p class="eyebrow">CRUD</p>
                 <h2>Информационные страницы</h2>
             </div>
-            <a href="{{ route('admin.pages.create') }}" class="btn-soft">Новая страница</a>
+            <a href="{{ route('admin.pages.create') }}" class="btn-soft">
+                <x-admin-icon name="plus" />
+                <span>Новая страница</span>
+            </a>
         </div>
 
         <div class="table-responsive">
@@ -32,23 +35,29 @@
                             </td>
                             <td>{{ $page->slug }}</td>
                             <td>
-                                <span class="chip {{ $page->is_published ? 'is-active' : '' }}">
-                                    {{ $page->is_published ? 'Опубликована' : 'Черновик' }}
+                                <span class="status-icon {{ $page->is_published ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $page->is_published ? 'Опубликована' : 'Черновик' }}" aria-label="{{ $page->is_published ? 'Опубликована' : 'Черновик' }}">
+                                    <x-admin-icon :name="$page->is_published ? 'eye' : 'eye-off'" />
                                 </span>
                             </td>
                             <td>
-                                <span class="chip {{ $page->show_in_menu ? 'is-active' : '' }}">
-                                    {{ $page->show_in_menu ? 'Да' : 'Нет' }}
+                                <span class="status-icon {{ $page->show_in_menu ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $page->show_in_menu ? 'Показывается в меню' : 'Не показывается в меню' }}" aria-label="{{ $page->show_in_menu ? 'Показывается в меню' : 'Не показывается в меню' }}">
+                                    <x-admin-icon :name="$page->show_in_menu ? 'menu' : 'x'" />
                                 </span>
                             </td>
                             <td class="text-end">
                                 <div class="d-inline-flex flex-wrap gap-2">
-                                    <a class="btn-ghost" href="{{ route('admin.pages.edit', $page) }}">Редактировать</a>
-                                    <a class="btn-ghost" href="{{ url('/page/' . $page->slug) }}" target="_blank" rel="noreferrer">Открыть</a>
+                                    <a class="btn-ghost icon-button" href="{{ route('admin.pages.edit', $page) }}" title="Редактировать" aria-label="Редактировать">
+                                        <x-admin-icon name="edit" />
+                                    </a>
+                                    <a class="btn-ghost icon-button" href="{{ url('/page/' . $page->slug) }}" target="_blank" rel="noreferrer" title="Открыть" aria-label="Открыть">
+                                        <x-admin-icon name="external" />
+                                    </a>
                                     <form method="post" action="{{ route('admin.pages.destroy', $page) }}" onsubmit="return confirm('Удалить страницу?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-ghost">Удалить</button>
+                                        <button type="submit" class="btn-ghost icon-button" title="Удалить" aria-label="Удалить">
+                                            <x-admin-icon name="trash" />
+                                        </button>
                                     </form>
                                 </div>
                             </td>

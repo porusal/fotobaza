@@ -28,7 +28,10 @@
 
                     <div class="form-hint mt-3">После создания тег появится в списках выбора для фото.</div>
 
-                    <button type="submit" class="btn-soft mt-3">Добавить тег</button>
+                    <button type="submit" class="btn-soft mt-3">
+                        <x-admin-icon name="plus" />
+                        <span>Добавить тег</span>
+                    </button>
                 </form>
             </div>
 
@@ -53,7 +56,9 @@
 
                                                 <input class="form-control form-control-sm @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name', $tag->name) }}">
 
-                                                <button type="submit" class="btn-ghost btn-sm">Сохранить</button>
+                                                <button type="submit" class="btn-ghost icon-button" title="Сохранить" aria-label="Сохранить">
+                                                    <x-admin-icon name="save" />
+                                                </button>
                                             </form>
                                         </td>
                                         <td>
@@ -63,7 +68,9 @@
                                             <form method="post" action="{{ route('admin.tags.destroy', $tag) }}" onsubmit="return confirm('Удалить тег?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-ghost btn-sm">Удалить</button>
+                                                <button type="submit" class="btn-ghost icon-button" title="Удалить" aria-label="Удалить">
+                                                    <x-admin-icon name="trash" />
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

@@ -28,22 +28,25 @@
 
         <div class="row g-3">
             <div class="col-md-4">
-                <div class="empty-state">
-                    Добавить каталоги
+                <a class="next-action-card" href="{{ route('admin.galleries.create') }}">
+                    <span class="next-action-card__icon" aria-hidden="true"><x-admin-icon name="folder" /></span>
+                    <strong>Добавить каталоги</strong>
                     <span>Создавайте структуру альбомов и подкаталогов.</span>
-                </div>
+                </a>
             </div>
             <div class="col-md-4">
-                <div class="empty-state">
-                    Загрузить фото
+                <a class="next-action-card" href="{{ route('admin.photos.create') }}">
+                    <span class="next-action-card__icon" aria-hidden="true"><x-admin-icon name="image" /></span>
+                    <strong>Загрузить фото</strong>
                     <span>Массовая загрузка с тегами и сортировкой.</span>
-                </div>
+                </a>
             </div>
             <div class="col-md-4">
-                <div class="empty-state">
-                    Настроить сайт
-                    <span>Логотип, девиз и сетка отображения.</span>
-                </div>
+                <a class="next-action-card" href="{{ route('admin.settings.edit') }}">
+                    <span class="next-action-card__icon" aria-hidden="true"><x-admin-icon name="settings" /></span>
+                    <strong>Настроить сайт</strong>
+                    <span>Логотип, девиз, сетка, цвета и шрифты.</span>
+                </a>
             </div>
         </div>
     </section>

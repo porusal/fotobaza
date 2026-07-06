@@ -2,6 +2,28 @@
 
 @section('title', 'Настройки сайта')
 
+@php
+    $colorFields = [
+        'theme_text_color' => 'Основной текст',
+        'theme_heading_color' => 'Заголовки',
+        'theme_muted_color' => 'Вторичный текст',
+        'theme_accent_color' => 'Главный акцент',
+        'theme_accent_secondary_color' => 'Второй акцент',
+        'theme_accent_soft_color' => 'Мягкий акцент',
+        'theme_tag_color' => 'Теги',
+    ];
+
+    $fontFields = [
+        'font_body' => 'Основной текст',
+        'font_heading' => 'Заголовки',
+        'font_menu' => 'Меню',
+        'font_catalog' => 'Каталоги',
+        'font_tag' => 'Теги',
+    ];
+
+    $themeFontOptions = $themeFontOptions ?? [];
+@endphp
+
 @section('content')
     <form method="post" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="admin-card">
         @csrf
@@ -16,7 +38,10 @@
                 <p class="eyebrow">Настройки</p>
                 <h2>Основные параметры</h2>
             </div>
-            <button type="submit" class="btn-soft">Сохранить</button>
+            <button type="submit" class="btn-soft">
+                <x-admin-icon name="save" />
+                <span>Сохранить</span>
+            </button>
         </div>
 
         <div class="admin-form-grid">
@@ -44,7 +69,7 @@
                     @enderror
                     @if(!empty($settings['hero_image']))
                         <div class="mt-2 page-hero__figure" style="min-height: 180px;">
-                            <img src="{{ $settings['hero_image'] }}" alt="Hero image">
+                            <img src="{{ $settings['hero_image'] }}" alt="Заглавная картинка">
                         </div>
                     @endif
                 </div>
@@ -57,7 +82,7 @@
                     @enderror
                 </div>
 
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <label class="form-label" for="site_tagline">Девиз</label>
                     <input class="form-control @error('site_tagline') is-invalid @enderror" type="text" name="site_tagline" id="site_tagline" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
                     @error('site_tagline')
@@ -94,11 +119,11 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label" for="grid_gap">Размер сетки</label>
+                    <label class="form-label" for="grid_gap">Размер промежутков</label>
                     <select class="form-select @error('grid_gap') is-invalid @enderror" name="grid_gap" id="grid_gap">
-                        <option value="sm" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'sm')>Small</option>
-                        <option value="md" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'md')>Medium</option>
-                        <option value="lg" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'lg')>Large</option>
+                        <option value="sm" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'sm')>Маленький</option>
+                        <option value="md" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'md')>Средний</option>
+                        <option value="lg" @selected(old('grid_gap', $settings['grid_gap'] ?? 'md') === 'lg')>Большой</option>
                     </select>
                     @error('grid_gap')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -109,14 +134,74 @@
                     <div class="admin-card admin-card--soft">
                         <div class="panel__title panel__title--compact">
                             <div>
+                                <p class="eyebrow">Внешний вид</p>
+                                <h3 class="h5 mb-0">Цветовая гамма</h3>
+                            </div>
+                            <p class="form-hint mb-0">Цвета применяются к публичной части и админке сразу после сохранения.</p>
+                        </div>
+
+                        <div class="theme-settings-grid">
+                            @foreach($colorFields as $field => $label)
+                                <label class="color-field" for="{{ $field }}">
+                                    <span>{{ $label }}</span>
+                                    <input
+                                        class="form-control form-control-color @error($field) is-invalid @enderror"
+                                        type="color"
+                                        name="{{ $field }}"
+                                        id="{{ $field }}"
+                                        value="{{ old($field, $settings[$field] ?? '#1c1712') }}"
+                                    >
+                                    @error($field)
+                                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="admin-card admin-card--soft">
+                        <div class="panel__title panel__title--compact">
+                            <div>
+                                <p class="eyebrow">Шрифты</p>
+                                <h3 class="h5 mb-0">Типографика сайта</h3>
+                            </div>
+                            <p class="form-hint mb-0">Можно отдельно настроить меню, заголовки, каталоги и теги.</p>
+                        </div>
+
+                        <div class="theme-settings-grid">
+                            @foreach($fontFields as $field => $label)
+                                <label class="font-field" for="{{ $field }}">
+                                    <span>{{ $label }}</span>
+                                    <select class="form-select @error($field) is-invalid @enderror" name="{{ $field }}" id="{{ $field }}">
+                                        @foreach($themeFontOptions as $fontKey => $font)
+                                            <option value="{{ $fontKey }}" @selected(old($field, $settings[$field] ?? 'manrope') === $fontKey)>
+                                                {{ $font['label'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error($field)
+                                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                                    @enderror
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="admin-card admin-card--soft">
+                        <div class="panel__title panel__title--compact">
+                            <div>
                                 <p class="eyebrow">Перевод</p>
                                 <h3 class="h5 mb-0">Языки в выпадающем списке</h3>
                             </div>
-                            <div class="form-hint mb-0">Русский показывается всегда как исходный.</div>
+                            <p class="form-hint mb-0">Русский показывается всегда как исходный язык.</p>
                         </div>
 
                         <div class="translation-picks">
-                            @foreach(($translationLanguageOptions ?? collect()) as $language)
+                            @foreach(($translationLanguageOptions ?? []) as $language)
                                 @if($language['code'] === 'ru')
                                     @continue
                                 @endif
@@ -145,7 +230,7 @@
 
             <div class="admin-card mt-1">
                 <p class="eyebrow">Примечание</p>
-                <p>Изменения сохраняются в таблицу <code>settings</code> и сразу используются на публичной части сайта.</p>
+                <p>Изменения сохраняются в таблице <code>settings</code> и сразу используются на публичной части сайта.</p>
             </div>
         </div>
     </form>

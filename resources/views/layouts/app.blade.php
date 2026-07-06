@@ -18,7 +18,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
-<body class="{{ $bodyClass }}">
+<body class="{{ $bodyClass }}" @if(!empty($siteThemeStyle)) style="{{ $siteThemeStyle }}" @endif>
     <a class="visually-skip" href="#main-content">{{ __('Перейти к содержанию') }}</a>
     <div class="site-shell">
         @include('partials.site-header', [
