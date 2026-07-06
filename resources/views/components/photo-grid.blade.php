@@ -5,38 +5,39 @@
     'group' => 'gallery',
 ])
 
-@php
-    $photos = collect($photos);
-    $carouselId = 'photo-carousel-' . md5($group . '-' . $photos->pluck('id')->join('-'));
-    $carouselItems = $photos->map(function ($photo) {
-        $title = $photo->alt_text ?: $photo->filename;
+<div
+    class="gallery-grid gallery-grid--{{ max(1, min((int) $columns, 4)) }}"
+    data-lightgallery="true"
+    style="--gallery-columns: {{ max(1, min((int) $columns, 4)) }}; --gallery-gap: {{ $gap }};"
+>
+    @forelse($photos as $photo)
+        @php
+            $title = $photo->alt_text ?: $photo->filename;
+        @endphp
 
-        return [
-            'src' => $photo->path,
-            'thumb' => $photo->path,
-            'subHtml' => '<div class="lightGallery-captions"><h4>' . e($title) . '</h4></div>',
-        ];
-    })->values()->all();
-    $carouselJson = json_encode(
-        $carouselItems,
-        JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-    );
-@endphp
-
-@if($photos->isNotEmpty())
-    <div
-        class="photo-carousel-shell"
-        data-lightgallery-carousel-shell
-        style="--gallery-columns: {{ max(1, min((int) $columns, 4)) }}; --gallery-gap: {{ $gap }};"
-    >
-        <div
-            id="{{ $carouselId }}"
-            class="photo-carousel"
-            data-lightgallery-carousel
-            aria-label="{{ __('Фотогалерея') }}"
-        ></div>
-        <script type="application/json" data-lightgallery-items>{!! $carouselJson !!}</script>
-    </div>
-@else
-    <div class="empty-state">{{ __('Пока нет фото для этого раздела.') }}</div>
-@endif
+        <article class="photo-card {{ ($photo->orientation ?? null) === 'portrait' ? 'photo-card--portrait' : '' }}">
+            <a
+                class="photo-card__link lightgallery-item"
+                href="{{ $photo->path }}"
+                data-src="{{ $photo->path }}"
+                data-thumb="{{ $photo->path }}"
+                data-sub-html="<div class=&quot;lightGallery-captions&quot;><h4>{{ e($title) }}</h4></div>"
+                aria-label="{{ $title }}"
+            >
+                <img
+                    class="photo-card__image"
+                    src="{{ $photo->path }}"
+                    alt="{{ $title }}"
+                    loading="lazy"
+                >
+                <span class="photo-card__veil" aria-hidden="true"></span>
+                <span class="photo-card__caption">
+                    <span>{{ __('Фото') }}</span>
+                    <strong>{{ $title }}</strong>
+                </span>
+            </a>
+        </article>
+    @empty
+        <div class="empty-state">{{ __('Пока нет фото для этого раздела.') }}</div>
+    @endforelse
+</div>

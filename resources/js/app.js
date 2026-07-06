@@ -281,35 +281,14 @@ function initGalleryTreeToggle() {
 }
 
 function initLightGallery() {
-  document.querySelectorAll("[data-lightgallery-carousel]:not([data-lightgallery-ready])").forEach((container) => {
-    const shell = container.closest("[data-lightgallery-carousel-shell]");
-    const jsonElement = shell?.querySelector("[data-lightgallery-items]");
-
-    if (!jsonElement) {
-      return;
-    }
-
-    let dynamicItems = [];
-    try {
-      dynamicItems = JSON.parse(jsonElement.textContent || "[]");
-    } catch {
-      dynamicItems = [];
-    }
-
-    if (!dynamicItems.length) {
-      return;
-    }
-
-    const inlineGallery = lightGallery(container, {
-      container,
-      dynamic: true,
-      dynamicEl: dynamicItems,
+  document.querySelectorAll("[data-lightgallery]:not([data-lightgallery-ready])").forEach((gallery) => {
+    lightGallery(gallery, {
+      selector: ".lightgallery-item",
       hash: false,
-      closable: false,
-      showMaximizeIcon: true,
-      appendSubHtmlTo: ".lg-item",
-      slideDelay: 240,
       loop: true,
+      mode: "lg-slide",
+      appendSubHtmlTo: ".lg-item",
+      slideDelay: 400,
       download: false,
       speed: 420,
       licenseKey: "0000-0000-000-0000",
@@ -320,22 +299,7 @@ function initLightGallery() {
       },
     });
 
-    inlineGallery.openGallery();
-    container.setAttribute("data-lightgallery-ready", "true");
-  });
-
-  document.querySelectorAll("[data-lightgallery]").forEach((gallery) => {
-    lightGallery(gallery, {
-      selector: ".lightgallery-item",
-      download: false,
-      speed: 320,
-      licenseKey: "0000-0000-000-0000",
-      mobileSettings: {
-        controls: true,
-        showCloseIcon: true,
-        download: false,
-      },
-    });
+    gallery.setAttribute("data-lightgallery-ready", "true");
   });
 }
 
