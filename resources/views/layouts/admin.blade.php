@@ -3,7 +3,7 @@
     $siteLogo = $siteLogo ?? null;
     $bodyClass = trim(($bodyClass ?? '') . ' layout-admin');
     $adminNav = $adminNav ?? [
-        ['label' => 'Дашборд', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
+        ['label' => 'Панель управления', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
         ['label' => 'Профиль', 'route' => 'admin.profile.edit', 'active' => 'admin.profile.*'],
         ['label' => 'Каталоги', 'route' => 'admin.galleries.index', 'active' => 'admin.galleries.*'],
         ['label' => 'Фото', 'route' => 'admin.photos.index', 'active' => 'admin.photos.*'],

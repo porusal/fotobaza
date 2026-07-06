@@ -20,7 +20,6 @@
                 <thead>
                     <tr>
                         <th>Заголовок</th>
-                        <th>Slug</th>
                         <th>Публикация</th>
                         <th>В меню</th>
                         <th class="text-end">Действия</th>
@@ -31,9 +30,7 @@
                         <tr>
                             <td>
                                 <strong>{{ $page->title }}</strong>
-                                <div class="form-hint">{{ \Illuminate\Support\Str::limit(strip_tags($page->content ?? ''), 80) }}</div>
                             </td>
-                            <td>{{ $page->slug }}</td>
                             <td>
                                 <span class="status-icon {{ $page->is_published ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $page->is_published ? 'Опубликована' : 'Черновик' }}" aria-label="{{ $page->is_published ? 'Опубликована' : 'Черновик' }}">
                                     <x-admin-icon :name="$page->is_published ? 'eye' : 'eye-off'" />
@@ -45,7 +42,7 @@
                                 </span>
                             </td>
                             <td class="text-end">
-                                <div class="d-inline-flex flex-wrap gap-2">
+                                <div class="admin-actions-line">
                                     <a class="btn-ghost icon-button" href="{{ route('admin.pages.edit', $page) }}" title="Редактировать" aria-label="Редактировать">
                                         <x-admin-icon name="edit" />
                                     </a>
@@ -64,7 +61,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">
+                            <td colspan="4">
                                 <div class="empty-state">Страниц пока нет. Создайте «Обо мне» и любые информационные разделы.</div>
                             </td>
                         </tr>

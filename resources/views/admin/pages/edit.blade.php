@@ -17,8 +17,10 @@
                     <p class="eyebrow">Страницы</p>
                     <h2>{{ $page->title }}</h2>
                 </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <a class="btn-ghost" href="{{ route('admin.pages.index') }}">Назад</a>
+                <div class="admin-actions-line">
+                    <a class="btn-ghost icon-button" href="{{ route('admin.pages.index') }}" title="Назад" aria-label="Назад">
+                        <x-admin-icon name="back" />
+                    </a>
                     <a class="btn-ghost icon-button" href="{{ url('/page/' . $page->slug) }}" target="_blank" rel="noreferrer" title="Открыть" aria-label="Открыть">
                         <x-admin-icon name="external" />
                     </a>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Дашборд')
+@section('title', 'Панель управления')
 
 @section('content')
     <section class="admin-stat-grid">

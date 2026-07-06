@@ -5,6 +5,7 @@
 @php
     $paths = [
         'check' => '<path d="M20 6 9 17l-5-5"/>',
+        'back' => '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
         'circle' => '<circle cx="12" cy="12" r="8"/>',
         'edit' => '<path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/><path d="m14 6 4 4"/>',
         'external' => '<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/>',

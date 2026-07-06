@@ -17,17 +17,28 @@ use Illuminate\View\View;
 
 class PhotoController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('admin.photos.index', array_merge(SiteViewData::common(), [
-            'galleries' => Gallery::query()
+        $selectedGalleryId = $request->integer('gallery');
+        $selectedGallery = null;
+
+        if ($selectedGalleryId > 0) {
+            $selectedGallery = Gallery::query()
                 ->with([
                     'parent:id,display_name',
                     'photos' => fn ($query) => $query->with('tags:id,name'),
                 ])
                 ->withCount('photos')
+                ->findOrFail($selectedGalleryId);
+        }
+
+        return view('admin.photos.index', array_merge(SiteViewData::common(), [
+            'galleries' => Gallery::query()
+                ->with('parent:id,display_name')
+                ->withCount('photos')
                 ->ordered()
                 ->get(),
+            'selectedGallery' => $selectedGallery,
             'photosCount' => Photo::query()->count(),
         ]));
     }
@@ -123,13 +134,15 @@ class PhotoController extends Controller
             ->with('status', 'Фото сохранено.');
     }
 
-    public function destroy(Photo $photo): RedirectResponse
+    public function destroy(Request $request, Photo $photo): RedirectResponse
     {
+        $redirectGalleryId = $request->integer('redirect_gallery');
+
         $this->deleteStoredAsset($photo->path);
         $photo->delete();
 
         return redirect()
-            ->route('admin.photos.index')
+            ->route('admin.photos.index', $redirectGalleryId > 0 ? ['gallery' => $redirectGalleryId] : [])
             ->with('status', 'Фото удалено.');
     }
 
