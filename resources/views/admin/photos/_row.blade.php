@@ -20,8 +20,8 @@
     <div class="row g-3">
         <div class="col-lg-4">
             <label class="form-label">Файл</label>
-            <input class="form-control" type="file" name="items[{{ $rowIndex }}][file]" accept="image/*" capture="environment" required>
-            <div class="form-hint mt-2">На смартфоне откроется камера. Поддерживаются фото до 32 MB.</div>
+            <input class="form-control" type="file" name="items[{{ $rowIndex }}][file]" accept="image/*" required>
+            <div class="form-hint mt-2">На смартфоне можно выбрать фото из галереи или сделать новый снимок камерой. Поддерживаются фото до 32 MB.</div>
             @error('items.' . $rowIndex . '.file')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror
