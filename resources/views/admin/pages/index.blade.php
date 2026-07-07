@@ -28,20 +28,20 @@
                 <tbody>
                     @forelse(($pages ?? collect()) as $page)
                         <tr>
-                            <td>
+                            <td data-label="Заголовок">
                                 <strong>{{ $page->title }}</strong>
                             </td>
-                            <td>
+                            <td data-label="Публикация">
                                 <span class="status-icon {{ $page->is_published ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $page->is_published ? 'Опубликована' : 'Черновик' }}" aria-label="{{ $page->is_published ? 'Опубликована' : 'Черновик' }}">
                                     <x-admin-icon :name="$page->is_published ? 'eye' : 'eye-off'" />
                                 </span>
                             </td>
-                            <td>
+                            <td data-label="В меню">
                                 <span class="status-icon {{ $page->show_in_menu ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $page->show_in_menu ? 'Показывается в меню' : 'Не показывается в меню' }}" aria-label="{{ $page->show_in_menu ? 'Показывается в меню' : 'Не показывается в меню' }}">
                                     <x-admin-icon :name="$page->show_in_menu ? 'menu' : 'x'" />
                                 </span>
                             </td>
-                            <td class="text-end">
+                            <td class="text-end" data-label="Действия">
                                 <div class="admin-actions-line">
                                     <a class="btn-ghost icon-button" href="{{ route('admin.pages.edit', $page) }}" title="Редактировать" aria-label="Редактировать">
                                         <x-admin-icon name="edit" />

@@ -49,7 +49,7 @@
                             <tbody>
                                 @forelse($tags as $tag)
                                     <tr>
-                                        <td class="w-100">
+                                        <td class="w-100" data-label="Название">
                                             <form method="post" action="{{ route('admin.tags.update', $tag) }}" class="d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
                                                 @csrf
                                                 @method('PUT')
@@ -61,10 +61,10 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        <td>
+                                        <td data-label="Фото">
                                             <span class="chip">{{ $tag->photos_count }}</span>
                                         </td>
-                                        <td class="text-end">
+                                        <td class="text-end" data-label="Действия">
                                             <form method="post" action="{{ route('admin.tags.destroy', $tag) }}" onsubmit="return confirm('Удалить тег?');">
                                                 @csrf
                                                 @method('DELETE')

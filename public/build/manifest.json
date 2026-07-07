@@ -1,6 +1,6 @@
 {
-  "_select2.full.min-CExazPoX.js": {
-    "file": "assets/select2.full.min-CExazPoX.js",
+  "_select2.full.min-Bm_F-RJk.js": {
+    "file": "assets/select2.full.min-Bm_F-RJk.js",
     "name": "select2.full.min",
     "isDynamicEntry": true,
     "imports": [
@@ -28,20 +28,20 @@
     "src": "node_modules/lightgallery/images/loading.gif"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BhXRcbWj.css",
+    "file": "assets/app-CHyHt2A3.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-tRgQmtpG.js",
+    "file": "assets/app-Cdr9Y8tz.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
-      "_select2.full.min-CExazPoX.js"
+      "_select2.full.min-Bm_F-RJk.js"
     ],
     "css": [
-      "assets/app-CxENaVH4.css"
+      "assets/app-CG2Se3Tk.css"
     ],
     "assets": [
       "assets/lg-C7ze34MH.woff2",

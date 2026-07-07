@@ -502,7 +502,14 @@ function initAdminPhotoGridSwitch() {
       });
     });
 
-    setMode(previews[0].dataset.gridPreviewMode || "desktop");
+    const requestedMode = previews[0].dataset.gridPreviewMode || "auto";
+    const automaticMode = window.matchMedia("(max-width: 575.98px)").matches
+      ? "mobile"
+      : window.matchMedia("(max-width: 991.98px)").matches
+        ? "tablet"
+        : "desktop";
+
+    setMode(requestedMode === "auto" ? automaticMode : requestedMode);
   });
 }
 

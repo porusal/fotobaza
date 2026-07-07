@@ -42,18 +42,18 @@
                 <tbody>
                     @forelse(($galleries ?? collect()) as $gallery)
                         <tr>
-                            <td>
+                            <td data-label="Название">
                                 <strong>{{ $gallery->display_name }}</strong>
                                 <div class="form-hint">{{ $gallery->name }}</div>
                             </td>
-                            <td>{{ $gallery->slug }}</td>
-                            <td>{{ $gallery->parent?->display_name ?? '—' }}</td>
-                            <td>
+                            <td data-label="Slug">{{ $gallery->slug }}</td>
+                            <td data-label="Родитель">{{ $gallery->parent?->display_name ?? '—' }}</td>
+                            <td data-label="Статус">
                                 <span class="status-icon {{ $gallery->is_active ? 'status-icon--success' : 'status-icon--muted' }}" title="{{ $gallery->is_active ? 'Активен' : 'Скрыт' }}" aria-label="{{ $gallery->is_active ? 'Активен' : 'Скрыт' }}">
                                     <x-admin-icon :name="$gallery->is_active ? 'check' : 'x'" />
                                 </span>
                             </td>
-                            <td class="text-end">
+                            <td class="text-end" data-label="Действия">
                                 <div class="d-inline-flex flex-wrap gap-2">
                                     <a class="btn-ghost icon-button" href="{{ route('admin.galleries.edit', $gallery) }}" title="Редактировать" aria-label="Редактировать">
                                         <x-admin-icon name="edit" />

@@ -27,7 +27,7 @@
                 <div class="photo-grid-mode-switch" data-admin-photo-grid-switch aria-label="Режим предпросмотра сетки">
                     <button type="button" class="photo-grid-mode-switch__button" data-grid-mode-button="mobile">Моб</button>
                     <button type="button" class="photo-grid-mode-switch__button" data-grid-mode-button="tablet">Планшет</button>
-                    <button type="button" class="photo-grid-mode-switch__button is-active" data-grid-mode-button="desktop">ПК</button>
+                    <button type="button" class="photo-grid-mode-switch__button" data-grid-mode-button="desktop">ПК</button>
                 </div>
                 @if($selectedGallery)
                     <a href="{{ route('admin.photos.index') }}" class="btn-ghost">
@@ -47,7 +47,7 @@
                 <div
                     class="photo-category__grid photo-category__grid--inside admin-photo-grid-preview"
                     data-admin-photo-grid-preview
-                    data-grid-preview-mode="desktop"
+                    data-grid-preview-mode="auto"
                     style="--admin-grid-mobile: {{ $gridColumnsMobile ?? 2 }}; --admin-grid-tablet: {{ $gridColumnsTablet ?? 3 }}; --admin-grid-desktop: {{ $gridColumnsDesktop ?? ($gridColumns ?? 3) }};"
                 >
                     @foreach($selectedGallery->photos as $photo)
@@ -95,7 +95,7 @@
             <div
                 class="photo-category-grid admin-photo-grid-preview"
                 data-admin-photo-grid-preview
-                data-grid-preview-mode="desktop"
+                data-grid-preview-mode="auto"
                 style="--admin-grid-mobile: {{ $gridColumnsMobile ?? 2 }}; --admin-grid-tablet: {{ $gridColumnsTablet ?? 3 }}; --admin-grid-desktop: {{ $gridColumnsDesktop ?? ($gridColumns ?? 3) }};"
             >
                 @forelse(($galleries ?? collect()) as $gallery)

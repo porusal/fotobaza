@@ -66,7 +66,8 @@
 
                         <div class="col-lg-3">
                             <label class="form-label" for="photo_file">Заменить файл</label>
-                            <input class="form-control @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" accept="image/*">
+                            <input class="form-control @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" accept="image/*" capture="environment">
+                            <div class="form-hint mt-2">На смартфоне откроется камера. Поддерживаются фото до 32 MB.</div>
                             @error('photo_file')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
