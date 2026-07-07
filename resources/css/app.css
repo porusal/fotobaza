@@ -384,6 +384,7 @@ img {
   background: var(--surface-strong);
   box-shadow: var(--shadow);
   backdrop-filter: blur(20px);
+  transform: translateX(var(--language-menu-shift-x, 0px));
 }
 
 .language-switcher__item {
@@ -403,6 +404,11 @@ img {
   border-radius: 4px;
   object-fit: cover;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.language-switcher__item span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .language-switcher__item:hover,
@@ -2792,6 +2798,18 @@ body.dark-mode .offcanvas .btn-close {
     height: 100%;
     place-items: center;
     margin: 0;
+  }
+
+  .language-switcher__menu {
+    min-width: min(14rem, calc(100vw - 1.5rem));
+    max-width: calc(100vw - 1.5rem);
+    max-height: min(58vh, 24rem);
+    z-index: 100;
+  }
+
+  .language-switcher__item {
+    display: flex;
+    width: 100%;
   }
 
   .navbar-toggler {

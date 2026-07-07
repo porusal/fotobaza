@@ -218,6 +218,28 @@ function syncLanguageSwitcherState(switcher, language) {
   syncLanguageSwitcherSummary(switcher, activeLink);
 }
 
+function alignLanguageSwitcherMenu(switcher) {
+  const menu = switcher.querySelector(".language-switcher__menu");
+
+  if (!menu) {
+    return;
+  }
+
+  menu.style.setProperty("--language-menu-shift-x", "0px");
+
+  const viewportMargin = 12;
+  const rect = menu.getBoundingClientRect();
+  let shift = 0;
+
+  if (rect.left < viewportMargin) {
+    shift = viewportMargin - rect.left;
+  } else if (rect.right > window.innerWidth - viewportMargin) {
+    shift = window.innerWidth - viewportMargin - rect.right;
+  }
+
+  menu.style.setProperty("--language-menu-shift-x", `${Math.round(shift)}px`);
+}
+
 function initLanguageSwitcher() {
   document.querySelectorAll("[data-language-switcher]").forEach((switcher) => {
     const sourceLanguage = switcher.dataset.sourceLanguage || "ru";
@@ -236,6 +258,22 @@ function initLanguageSwitcher() {
         window.location.reload();
       });
     });
+
+    switcher.addEventListener("toggle", () => {
+      if (switcher.open) {
+        window.requestAnimationFrame(() => alignLanguageSwitcherMenu(switcher));
+      }
+    });
+
+    window.addEventListener(
+      "resize",
+      () => {
+        if (switcher.open) {
+          alignLanguageSwitcherMenu(switcher);
+        }
+      },
+      { passive: true },
+    );
   });
 }
 
