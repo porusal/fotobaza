@@ -438,6 +438,69 @@ function initQuillEditors(root = document) {
   });
 }
 
+function updatePhotoSourceFilename(group) {
+  const output = group.querySelector("[data-photo-source-filename]");
+
+  if (!output) {
+    return;
+  }
+
+  const selectedInput = Array.from(group.querySelectorAll("[data-photo-source-input]")).find((input) => input.files?.length);
+  const emptyText = output.dataset.emptyText || "Файл не выбран";
+
+  if (!selectedInput) {
+    output.textContent = emptyText;
+    return;
+  }
+
+  const sourceLabel = selectedInput.dataset.photoSourceLabel || "Файл";
+  output.textContent = `${sourceLabel}: ${selectedInput.files[0].name}`;
+}
+
+function syncPhotoSourceNames(group, activeInput = null) {
+  const fieldName = group.dataset.photoSourceName;
+
+  if (!fieldName) {
+    return;
+  }
+
+  const inputs = Array.from(group.querySelectorAll("[data-photo-source-input]"));
+  const namedInput = activeInput || inputs.find((input) => input.hasAttribute("name")) || inputs[0];
+
+  inputs.forEach((input) => {
+    if (input === namedInput) {
+      input.setAttribute("name", fieldName);
+    } else {
+      input.removeAttribute("name");
+    }
+  });
+}
+
+function initPhotoSourceInputs(root = document) {
+  root.querySelectorAll("[data-photo-source-group]:not([data-photo-source-ready])").forEach((group) => {
+    group.addEventListener("change", (event) => {
+      const input = event.target.closest("[data-photo-source-input]");
+
+      if (!input) {
+        return;
+      }
+
+      group.querySelectorAll("[data-photo-source-input]").forEach((otherInput) => {
+        if (otherInput !== input) {
+          otherInput.value = "";
+        }
+      });
+
+      syncPhotoSourceNames(group, input);
+      updatePhotoSourceFilename(group);
+    });
+
+    syncPhotoSourceNames(group);
+    updatePhotoSourceFilename(group);
+    group.setAttribute("data-photo-source-ready", "true");
+  });
+}
+
 function initPhotoUploadRows() {
   const list = document.querySelector("[data-photo-upload-list]");
   const template = document.querySelector("[data-photo-upload-template]");
@@ -475,6 +538,9 @@ function initPhotoUploadRows() {
     row.querySelectorAll("[data-select2]").forEach((select) => {
       $(select).val(null).trigger("change");
     });
+
+    row.querySelectorAll("[data-photo-source-group]").forEach(updatePhotoSourceFilename);
+    row.querySelectorAll("[data-photo-source-group]").forEach((group) => syncPhotoSourceNames(group));
   };
 
   const addRow = () => {
@@ -484,6 +550,7 @@ function initPhotoUploadRows() {
     const newRow = list.lastElementChild;
     if (newRow) {
       window.foto636InitSelect2(newRow);
+      window.foto636InitPhotoSourceInputs(newRow);
     }
   };
 
@@ -563,6 +630,10 @@ window.foto636InitQuill = (root = document) => {
   }
 };
 
+window.foto636InitPhotoSourceInputs = (root = document) => {
+  initPhotoSourceInputs(root);
+};
+
 initGoogleTranslateElement();
 initThemeToggle();
 initLanguageSwitcher();
@@ -570,5 +641,6 @@ initGalleryTreeToggle();
 initLightGallery();
 window.foto636InitSelect2();
 window.foto636InitQuill();
+window.foto636InitPhotoSourceInputs();
 initPhotoUploadRows();
 initAdminPhotoGridSwitch();

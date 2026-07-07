@@ -66,8 +66,24 @@
 
                         <div class="col-lg-3">
                             <label class="form-label" for="photo_file">Заменить файл</label>
-                            <input class="form-control @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" accept="image/*">
-                            <div class="form-hint mt-2">На смартфоне можно выбрать фото из галереи или сделать новый снимок камерой. Поддерживаются фото до 32 MB.</div>
+                            <div class="photo-source-group" data-photo-source-group data-photo-source-name="photo_file">
+                                <input class="photo-source-input @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file_gallery" accept="image/*" data-photo-source-input data-photo-source-label="Галерея">
+                                <input class="photo-source-input @error('photo_file') is-invalid @enderror" type="file" id="photo_file_camera" accept="image/*" capture="environment" data-photo-source-input data-photo-source-label="Камера">
+
+                                <div class="photo-source-actions" aria-label="Источник фото">
+                                    <label class="btn-ghost photo-source-button" for="photo_file_gallery">
+                                        <x-admin-icon name="image" />
+                                        <span>Из галереи</span>
+                                    </label>
+                                    <label class="btn-ghost photo-source-button" for="photo_file_camera">
+                                        <x-admin-icon name="camera" />
+                                        <span>Камера</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-hint mt-2" data-photo-source-filename data-empty-text="Файл не выбран">Файл не выбран</div>
+                            </div>
+                            <div class="form-hint mt-2">Выберите готовое фото из галереи или сделайте новый снимок камерой. Поддерживаются фото до 32 MB.</div>
                             @error('photo_file')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror

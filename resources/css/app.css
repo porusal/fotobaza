@@ -2062,6 +2062,33 @@ h4 {
   width: 100% !important;
 }
 
+.photo-source-group {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.photo-source-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.photo-source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.photo-source-button {
+  cursor: pointer;
+  flex: 1 1 9rem;
+}
+
 .photo-category-list {
   display: grid;
   gap: 1rem;

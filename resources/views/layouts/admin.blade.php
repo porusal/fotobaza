@@ -77,8 +77,6 @@
                                     <strong>{{ $adminUser->name ?: 'Admin' }}</strong>
                                 </div>
 
-                                <a class="btn-ghost" href="{{ route('admin.security.show') }}">2FA</a>
-
                                 <form method="POST" action="{{ route('admin.logout') }}" class="admin-inline-form">
                                     @csrf
                                     <button class="btn-ghost" type="submit">Выход</button>
