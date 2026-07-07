@@ -3,8 +3,7 @@
     $hasNumericIndex = is_numeric($rowIndex);
     $oldItems = old('items', []);
     $rowItem = $oldItems[$rowIndex] ?? [];
-    $galleryInputId = 'photo-file-gallery-' . $rowIndex;
-    $cameraInputId = 'photo-file-camera-' . $rowIndex;
+    $fileInputId = 'photo-file-' . $rowIndex;
 @endphp
 
 <div class="upload-row" data-photo-upload-row>
@@ -22,24 +21,17 @@
     <div class="row g-3">
         <div class="col-lg-4">
             <label class="form-label">Файл</label>
-            <div class="photo-source-group" data-photo-source-group data-photo-source-name="items[{{ $rowIndex }}][file]">
-                <input class="photo-source-input" type="file" id="{{ $galleryInputId }}" name="items[{{ $rowIndex }}][file]" accept="image/*" data-photo-source-input data-photo-source-label="Галерея">
-                <input class="photo-source-input" type="file" id="{{ $cameraInputId }}" accept="image/*" capture="environment" data-photo-source-input data-photo-source-label="Камера">
-
-                <div class="photo-source-actions" aria-label="Источник фото">
-                    <label class="btn-ghost photo-source-button" for="{{ $galleryInputId }}">
+            <div class="photo-upload-control" data-photo-file-control>
+                <div class="photo-upload-picker">
+                    <span class="btn-ghost photo-upload-button">
                         <x-admin-icon name="image" />
-                        <span>Из галереи</span>
-                    </label>
-                    <label class="btn-ghost photo-source-button" for="{{ $cameraInputId }}">
-                        <x-admin-icon name="camera" />
-                        <span>Камера</span>
-                    </label>
+                        <span>Загрузить фото</span>
+                    </span>
+                    <input class="photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" accept="image/*" data-photo-file-input>
                 </div>
-
-                <div class="form-hint mt-2" data-photo-source-filename data-empty-text="Файл не выбран">Файл не выбран</div>
+                <div class="form-hint mt-2" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
             </div>
-            <div class="form-hint mt-2">Выберите готовое фото из галереи или сделайте новый снимок камерой. Поддерживаются фото до 32 MB.</div>
+            <div class="form-hint mt-2">На смартфоне откроется системный выбор: камера или фото из галереи. Поддерживаются фото до 32 MB.</div>
             @error('items.' . $rowIndex . '.file')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror

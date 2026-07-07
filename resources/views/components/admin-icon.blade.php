@@ -6,7 +6,6 @@
     $paths = [
         'check' => '<path d="M20 6 9 17l-5-5"/>',
         'back' => '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
-        'camera' => '<path d="M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z"/><circle cx="12" cy="13" r="3.5"/>',
         'circle' => '<circle cx="12" cy="12" r="8"/>',
         'edit' => '<path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/><path d="m14 6 4 4"/>',
         'external' => '<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/>',
