@@ -61,6 +61,9 @@ class PhotoController extends Controller
             'items.*.sort_order' => ['nullable', 'integer', 'min:0', 'max:99999'],
             'items.*.tags' => ['nullable', 'array'],
             'items.*.tags.*' => ['integer', Rule::exists('tags', 'id')],
+        ], [
+            'items.*.file.uploaded' => 'Не удалось загрузить фото. Попробуйте выбрать файл еще раз.',
+            'items.*.file.image' => 'Выберите изображение в поддерживаемом формате.',
         ]);
 
         $gallery = Gallery::query()->findOrFail((int) $validated['gallery_id']);
@@ -111,6 +114,9 @@ class PhotoController extends Controller
             'photo_file' => ['nullable', 'file', 'image', 'max:32768'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', Rule::exists('tags', 'id')],
+        ], [
+            'photo_file.uploaded' => 'Не удалось загрузить фото. Попробуйте выбрать файл еще раз.',
+            'photo_file.image' => 'Выберите изображение в поддерживаемом формате.',
         ]);
 
         $gallery = Gallery::query()->findOrFail((int) $validated['gallery_id']);

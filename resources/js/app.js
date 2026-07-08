@@ -459,7 +459,9 @@ function updatePhotoFileName(control) {
 function initPhotoFileInputs(root = document) {
   root.querySelectorAll("[data-photo-file-control]:not([data-photo-file-ready])").forEach((control) => {
     const input = control.querySelector("[data-photo-file-input]");
+    const button = control.querySelector("[data-photo-file-button]");
 
+    button?.addEventListener("click", () => input?.click());
     input?.addEventListener("change", () => updatePhotoFileName(control));
     updatePhotoFileName(control);
     control.setAttribute("data-photo-file-ready", "true");
