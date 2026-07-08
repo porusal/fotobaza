@@ -466,6 +466,133 @@ function initPhotoFileInputs(root = document) {
   });
 }
 
+const PHOTO_UPLOAD_TARGET_BYTES = 1.6 * 1024 * 1024;
+const PHOTO_UPLOAD_MAX_SIDE = 2200;
+
+function isPhotoFile(file) {
+  return file?.type?.startsWith("image/") || /\.(jpe?g|png|webp)$/i.test(file?.name || "");
+}
+
+function canvasToBlob(canvas, quality) {
+  return new Promise((resolve) => {
+    canvas.toBlob(resolve, "image/jpeg", quality);
+  });
+}
+
+function loadImageFile(file) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    const url = URL.createObjectURL(file);
+
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(image);
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Image load failed"));
+    };
+
+    image.src = url;
+  });
+}
+
+async function compressPhotoFile(file) {
+  if (!isPhotoFile(file) || file.size <= PHOTO_UPLOAD_TARGET_BYTES) {
+    return file;
+  }
+
+  const image = await loadImageFile(file);
+  const scale = Math.min(1, PHOTO_UPLOAD_MAX_SIDE / Math.max(image.naturalWidth, image.naturalHeight));
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    return file;
+  }
+
+  canvas.width = width;
+  canvas.height = height;
+  context.drawImage(image, 0, 0, width, height);
+
+  let quality = 0.82;
+  let blob = await canvasToBlob(canvas, quality);
+
+  while (blob && blob.size > PHOTO_UPLOAD_TARGET_BYTES && quality > 0.52) {
+    quality -= 0.08;
+    blob = await canvasToBlob(canvas, quality);
+  }
+
+  if (!blob || blob.size >= file.size) {
+    return file;
+  }
+
+  const fileName = file.name.replace(/\.[^.]+$/, "") || "photo";
+  return new File([blob], `${fileName}.jpg`, {
+    type: "image/jpeg",
+    lastModified: file.lastModified,
+  });
+}
+
+async function preparePhotoUploadForm(form) {
+  const inputs = Array.from(form.querySelectorAll("[data-photo-file-input]"))
+    .filter((input) => input.files?.length);
+
+  if (!inputs.length || typeof DataTransfer === "undefined") {
+    return;
+  }
+
+  for (const input of inputs) {
+    const file = input.files[0];
+    const compressed = await compressPhotoFile(file);
+
+    if (compressed === file) {
+      continue;
+    }
+
+    const transfer = new DataTransfer();
+    transfer.items.add(compressed);
+    input.files = transfer.files;
+
+    const control = input.closest("[data-photo-file-control]");
+    if (control) {
+      updatePhotoFileName(control);
+    }
+  }
+}
+
+function initPhotoUploadForms() {
+  document.querySelectorAll("#photo-create-form, #photo-edit-form").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      if (form.dataset.photoUploadPrepared === "true") {
+        return;
+      }
+
+      if (form.dataset.photoUploadPrepared === "preparing") {
+        event.preventDefault();
+        return;
+      }
+
+      event.preventDefault();
+      form.dataset.photoUploadPrepared = "preparing";
+
+      preparePhotoUploadForm(form)
+        .catch(() => {})
+        .finally(() => {
+          form.dataset.photoUploadPrepared = "true";
+          if (typeof form.requestSubmit === "function") {
+            form.requestSubmit();
+          } else {
+            form.submit();
+          }
+        });
+    });
+  });
+}
+
 function initPhotoUploadRows() {
   const list = document.querySelector("[data-photo-upload-list]");
   const template = document.querySelector("[data-photo-upload-template]");
@@ -607,4 +734,5 @@ window.foto636InitSelect2();
 window.foto636InitQuill();
 window.foto636InitPhotoFileInputs();
 initPhotoUploadRows();
+initPhotoUploadForms();
 initAdminPhotoGridSwitch();

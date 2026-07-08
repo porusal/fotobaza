@@ -22,7 +22,7 @@
         <div class="col-lg-4">
             <label class="form-label">Файл</label>
             <div class="photo-upload-control" data-photo-file-control>
-                <input class="form-control photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" accept="image/*" data-photo-file-input aria-label="Загрузить фото">
+                <input class="form-control photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" data-photo-file-input aria-label="Загрузить фото">
                 <div class="photo-upload-name" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
             </div>
             <div class="form-hint mt-2">На смартфоне откроется системный выбор: камера или галерея. На компьютере откроется обычное окно выбора файла. Поддерживаются фото до 64 MB.</div>
