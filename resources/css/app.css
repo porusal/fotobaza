@@ -2067,11 +2067,56 @@ h4 {
   gap: 0.4rem;
 }
 
+.photo-upload-mobile {
+  display: none;
+  position: relative;
+}
+
 .photo-upload-input {
   width: 100%;
   min-width: 0;
   cursor: pointer;
   max-width: 100%;
+}
+
+.photo-upload-native {
+  position: fixed;
+  inset: auto;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.photo-upload-trigger {
+  width: 100%;
+  justify-content: center;
+}
+
+.photo-upload-menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+  padding: 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.16);
+}
+
+.photo-upload-menu[hidden] {
+  display: none;
+}
+
+.photo-upload-menu button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.75rem 0.8rem;
+  background: var(--surface-strong);
+  color: var(--accent-strong);
+  font: inherit;
+  font-weight: 800;
 }
 
 .photo-upload-name {
@@ -2095,6 +2140,16 @@ h4 {
 .photo-upload-input:hover::file-selector-button,
 .photo-upload-input:focus::file-selector-button {
   filter: brightness(1.03);
+}
+
+@media (max-width: 767.98px) {
+  .photo-upload-input--desktop {
+    display: none;
+  }
+
+  .photo-upload-mobile {
+    display: block;
+  }
 }
 
 .photo-category-list {

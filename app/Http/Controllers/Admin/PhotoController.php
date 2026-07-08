@@ -56,7 +56,7 @@ class PhotoController extends Controller
         $validated = $request->validate([
             'gallery_id' => ['required', 'integer', Rule::exists('galleries', 'id')],
             'items' => ['required', 'array', 'min:1'],
-            'items.*.file' => ['required', 'file', 'image', 'max:32768'],
+            'items.*.file' => ['required', 'file', 'image', 'max:65536'],
             'items.*.alt_text' => ['nullable', 'string', 'max:255'],
             'items.*.sort_order' => ['nullable', 'integer', 'min:0', 'max:99999'],
             'items.*.tags' => ['nullable', 'array'],
@@ -111,7 +111,7 @@ class PhotoController extends Controller
             'filename' => ['required', 'string', 'max:255'],
             'alt_text' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:99999'],
-            'photo_file' => ['nullable', 'file', 'image', 'max:32768'],
+            'photo_file' => ['nullable', 'file', 'image', 'max:65536'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', Rule::exists('tags', 'id')],
         ], [

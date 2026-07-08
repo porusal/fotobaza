@@ -445,7 +445,7 @@ function updatePhotoFileName(control) {
     return;
   }
 
-  const input = control.querySelector("[data-photo-file-input]");
+  const input = Array.from(control.querySelectorAll("[data-photo-file-input]")).find((fileInput) => fileInput.files?.length);
   const emptyText = output.dataset.emptyText || "Файл не выбран";
 
   if (!input?.files?.length) {
@@ -456,11 +456,90 @@ function updatePhotoFileName(control) {
   output.textContent = input.files[0].name;
 }
 
+function setPhotoFileInputState(control, activeInput = null) {
+  const inputName = control.dataset.photoFileInputName;
+  const desktopInput = control.querySelector("[data-photo-file-desktop]");
+  const mobileInputs = Array.from(control.querySelectorAll("[data-photo-file-camera], [data-photo-file-gallery]"));
+  const isMobileUpload = window.matchMedia("(max-width: 767.98px)").matches;
+
+  if (!inputName) {
+    return;
+  }
+
+  if (!isMobileUpload) {
+    if (desktopInput) {
+      desktopInput.disabled = false;
+      desktopInput.name = inputName;
+    }
+
+    mobileInputs.forEach((input) => {
+      input.disabled = true;
+      input.removeAttribute("name");
+    });
+
+    return;
+  }
+
+  if (desktopInput) {
+    desktopInput.disabled = true;
+    desktopInput.removeAttribute("name");
+  }
+
+  mobileInputs.forEach((input) => {
+    const isActive = input === activeInput;
+    input.disabled = !isActive;
+    if (isActive) {
+      input.name = inputName;
+    } else {
+      input.removeAttribute("name");
+    }
+  });
+}
+
 function initPhotoFileInputs(root = document) {
   root.querySelectorAll("[data-photo-file-control]:not([data-photo-file-ready])").forEach((control) => {
-    const input = control.querySelector("[data-photo-file-input]");
+    const inputs = Array.from(control.querySelectorAll("[data-photo-file-input]"));
+    const trigger = control.querySelector("[data-photo-file-trigger]");
+    const menu = control.querySelector("[data-photo-file-menu]");
+    const cameraInput = control.querySelector("[data-photo-file-camera]");
+    const galleryInput = control.querySelector("[data-photo-file-gallery]");
 
-    input?.addEventListener("change", () => updatePhotoFileName(control));
+    setPhotoFileInputState(control);
+
+    trigger?.addEventListener("click", () => {
+      setPhotoFileInputState(control);
+      if (menu) {
+        menu.hidden = !menu.hidden;
+      }
+    });
+
+    menu?.addEventListener("click", (event) => {
+      const choice = event.target.closest("[data-photo-file-choice]");
+      if (!choice) {
+        return;
+      }
+
+      const input = choice.dataset.photoFileChoice === "camera" ? cameraInput : galleryInput;
+      if (!input) {
+        return;
+      }
+
+      menu.hidden = true;
+      setPhotoFileInputState(control, input);
+      input.click();
+    });
+
+    inputs.forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.files?.length) {
+          setPhotoFileInputState(control, input);
+        }
+
+        updatePhotoFileName(control);
+      });
+    });
+
+    window.addEventListener("resize", () => setPhotoFileInputState(control));
     updatePhotoFileName(control);
     control.setAttribute("data-photo-file-ready", "true");
   });
