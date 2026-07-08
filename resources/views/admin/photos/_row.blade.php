@@ -21,13 +21,26 @@
     <div class="row g-3">
         <div class="col-lg-4">
             <label class="form-label">Файл</label>
-            <div class="photo-upload-control" data-photo-file-control>
+            <div class="photo-upload-control" data-photo-file-control data-photo-file-field="items[{{ $rowIndex }}][file]">
                 <div class="photo-upload-picker">
-                    <button type="button" class="photo-upload-trigger" data-photo-file-button>
+                    <button type="button" class="photo-upload-trigger" data-photo-file-trigger aria-haspopup="menu" aria-expanded="false">
                         <x-admin-icon name="image" />
                         <span>Загрузить фото</span>
                     </button>
-                    <input class="photo-upload-input photo-upload-input--hidden" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" accept="image/*" data-photo-file-input aria-label="Загрузить фото">
+
+                    <div class="photo-upload-menu" data-photo-file-menu hidden role="menu" aria-label="Источник фото">
+                        <label class="photo-upload-menu__item" for="{{ $fileInputId }}" data-photo-file-choice="gallery" role="menuitem">
+                            <x-admin-icon name="image" />
+                            <span>Из галереи</span>
+                        </label>
+                        <label class="photo-upload-menu__item" for="{{ $fileInputId }}-camera" data-photo-file-choice="camera" role="menuitem">
+                            <x-admin-icon name="camera" />
+                            <span>Камера</span>
+                        </label>
+                    </div>
+
+                    <input class="photo-upload-input photo-upload-input--hidden" type="file" id="{{ $fileInputId }}" accept="image/*" data-photo-file-input data-photo-file-role="gallery" aria-label="Загрузить фото из галереи">
+                    <input class="photo-upload-input photo-upload-input--hidden" type="file" id="{{ $fileInputId }}-camera" accept="image/*" capture="environment" data-photo-file-input data-photo-file-role="camera" aria-label="Загрузить фото с камеры">
                 </div>
                 <div class="photo-upload-name" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
             </div>
