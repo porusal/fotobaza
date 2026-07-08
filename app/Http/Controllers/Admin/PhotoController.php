@@ -154,10 +154,32 @@ class PhotoController extends Controller
 
     private function deleteStoredAsset(?string $path): void
     {
-        if (! $path || ! Str::startsWith($path, '/storage/')) {
+        $path = $this->storageRelativePath($path);
+
+        if (! $path) {
             return;
         }
 
-        Storage::disk('public')->delete(Str::after($path, '/storage/'));
+        Storage::disk('public')->delete($path);
+    }
+
+    private function storageRelativePath(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        $urlPath = parse_url($path, PHP_URL_PATH) ?: $path;
+        $urlPath = rawurldecode(str_replace('\\', '/', $urlPath));
+
+        if (Str::startsWith($urlPath, '/storage/')) {
+            return ltrim(Str::after($urlPath, '/storage/'), '/');
+        }
+
+        if (Str::startsWith($urlPath, 'storage/')) {
+            return ltrim(Str::after($urlPath, 'storage/'), '/');
+        }
+
+        return null;
     }
 }
