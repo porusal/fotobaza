@@ -67,10 +67,13 @@
                         <div class="col-lg-3">
                             <label class="form-label" for="photo_file">Заменить файл</label>
                             <div class="photo-upload-control" data-photo-file-control>
-                                <input class="form-control photo-upload-input @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" data-photo-file-input aria-label="Загрузить фото">
+                                <label class="btn-soft photo-upload-button" for="photo_file">
+                                    <x-admin-icon name="image" />
+                                    <span>Выбрать файл</span>
+                                </label>
+                                <input class="photo-upload-input @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" data-photo-file-input aria-label="Загрузить фото">
                                 <div class="photo-upload-name" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
                             </div>
-                            <div class="form-hint mt-2">На смартфоне откроется системный выбор: камера или галерея. На компьютере откроется обычное окно выбора файла. Поддерживаются фото до 64 MB.</div>
                             @error('photo_file')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror

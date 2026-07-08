@@ -4,13 +4,13 @@
     $oldItems = old('items', []);
     $rowItem = $oldItems[$rowIndex] ?? [];
     $fileInputId = 'photo-file-' . $rowIndex;
+    $rowNumber = $hasNumericIndex ? $rowIndex + 1 : '__NUMBER__';
 @endphp
 
 <div class="upload-row" data-photo-upload-row>
     <div class="upload-row__header">
         <div>
-            <strong>Фото @if($hasNumericIndex){{ $rowIndex + 1 }}@endif</strong>
-            <span>Одна строка = один файл и свои теги</span>
+            <strong data-photo-row-title>Фото {{ $rowNumber }}</strong>
         </div>
 
         <button type="button" class="btn-ghost icon-button" data-photo-remove-row title="Удалить строку" aria-label="Удалить строку">
@@ -22,10 +22,13 @@
         <div class="col-lg-4">
             <label class="form-label">Файл</label>
             <div class="photo-upload-control" data-photo-file-control>
-                <input class="form-control photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" data-photo-file-input aria-label="Загрузить фото">
+                <label class="btn-soft photo-upload-button" for="{{ $fileInputId }}">
+                    <x-admin-icon name="image" />
+                    <span>Выбрать файл</span>
+                </label>
+                <input class="photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" data-photo-file-input aria-label="Загрузить фото">
                 <div class="photo-upload-name" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
             </div>
-            <div class="form-hint mt-2">На смартфоне откроется системный выбор: камера или галерея. На компьютере откроется обычное окно выбора файла. Поддерживаются фото до 64 MB.</div>
             @error('items.' . $rowIndex . '.file')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror

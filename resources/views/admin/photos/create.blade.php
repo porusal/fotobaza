@@ -15,13 +15,15 @@
                 <p class="eyebrow">Фото</p>
                 <h2>Массовая загрузка</h2>
             </div>
-            <div class="d-flex flex-wrap gap-2">
-                <a class="btn-ghost" href="{{ route('admin.photos.index') }}">Назад</a>
-                <button type="button" class="btn-ghost" data-photo-add-row>
+            <div class="photo-create-actions">
+                <a class="btn-ghost icon-button" href="{{ route('admin.photos.index') }}" title="Назад" aria-label="Назад">
+                    <x-admin-icon name="back" />
+                </a>
+                <button type="button" class="btn-ghost photo-create-actions__add" data-photo-add-row>
                     <x-admin-icon name="plus" />
-                    <span>Добавить строку</span>
+                    <span>Фото</span>
                 </button>
-                <button type="submit" class="btn-soft">
+                <button type="submit" class="btn-soft photo-create-actions__submit">
                     <x-admin-icon name="save" />
                     <span>Загрузить</span>
                 </button>
@@ -41,12 +43,6 @@
                     @error('gallery_id')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
-                </div>
-
-                <div class="col-lg-6 d-flex align-items-end">
-                    <div class="form-hint">
-                        Каждая строка загружает отдельный файл. Теги выбираются прямо в строке как облако чекбоксов.
-                    </div>
                 </div>
 
                 <div class="col-12">

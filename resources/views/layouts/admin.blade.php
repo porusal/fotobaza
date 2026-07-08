@@ -26,9 +26,33 @@
 </head>
 <body class="{{ $bodyClass }}" @if(!empty($siteThemeStyle)) style="{{ $siteThemeStyle }}" @endif>
     <div class="admin-layout">
+        <header class="admin-mobile-header">
+            <button class="admin-mobile-header__menu" type="button" data-admin-menu-toggle aria-controls="admin-sidebar" aria-expanded="false" aria-label="Открыть меню">
+                <x-admin-icon name="menu" />
+            </button>
+            <a class="admin-mobile-header__brand" href="{{ route('admin.dashboard') }}">
+                @if(!empty($siteLogo))
+                    <img src="{{ $siteLogo }}" alt="{{ $siteName }}">
+                @else
+                    <span>636</span>
+                @endif
+                <strong>@yield('title', $siteName)</strong>
+            </a>
+            <div class="admin-mobile-header__actions">
+                @include('partials.language-switcher')
+                <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">
+                    <span aria-hidden="true">◐</span>
+                    <span class="theme-toggle__label" data-theme-label>День</span>
+                </button>
+            </div>
+        </header>
+        <div class="admin-menu-backdrop" data-admin-menu-close hidden></div>
         <div class="container-xxl">
             <div class="admin-shell">
-                <aside class="admin-sidebar">
+                <aside class="admin-sidebar" id="admin-sidebar">
+                    <button class="admin-sidebar__close" type="button" data-admin-menu-close aria-label="Закрыть меню">
+                        <x-admin-icon name="x" />
+                    </button>
                     <a class="admin-sidebar__brand site-brand" href="{{ route('admin.dashboard') }}">
                         <span class="site-brand__mark" aria-hidden="true">
                             @if(!empty($siteLogo))

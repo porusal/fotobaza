@@ -60,13 +60,6 @@
                                 <strong>{{ $photo->filename }}</strong>
                                 <span>Порядок: {{ $photo->sort_order }}</span>
 
-                                @if($photo->tags->isNotEmpty())
-                                    <div class="d-flex flex-wrap gap-2 mt-2">
-                                        @foreach($photo->tags as $tag)
-                                            <span class="chip">{{ $tag->name }}</span>
-                                        @endforeach
-                                    </div>
-                                @endif
                             </div>
 
                             <div class="admin-photo-card__actions">

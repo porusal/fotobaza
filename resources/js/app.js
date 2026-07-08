@@ -23,23 +23,26 @@ import "../css/app.css";
 window.$ = window.jQuery = $;
 
 function initThemeToggle() {
-  const themeToggle = document.querySelector("[data-theme-toggle]");
-  if (!themeToggle) {
+  const themeToggles = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+  if (!themeToggles.length) {
     return;
   }
 
   const storageKey = "foto636-theme";
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const label = themeToggle.querySelector("[data-theme-label]");
-  const lightLabel = themeToggle.dataset.themeLabelLight || "День";
-  const darkLabel = themeToggle.dataset.themeLabelDark || "Ночь";
 
   const applyTheme = (theme) => {
     document.body.classList.toggle("dark-mode", theme === "dark");
-    themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
-    if (label) {
-      label.textContent = theme === "dark" ? darkLabel : lightLabel;
-    }
+    themeToggles.forEach((themeToggle) => {
+      const label = themeToggle.querySelector("[data-theme-label]");
+      const lightLabel = themeToggle.dataset.themeLabelLight || "День";
+      const darkLabel = themeToggle.dataset.themeLabelDark || "Ночь";
+
+      themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+      if (label) {
+        label.textContent = theme === "dark" ? darkLabel : lightLabel;
+      }
+    });
   };
 
   let savedTheme = null;
@@ -52,14 +55,16 @@ function initThemeToggle() {
   const nextTheme = savedTheme ?? (prefersDark ? "dark" : "light");
   applyTheme(nextTheme);
 
-  themeToggle.addEventListener("click", () => {
-    const theme = document.body.classList.contains("dark-mode") ? "light" : "dark";
-    try {
-      window.localStorage.setItem(storageKey, theme);
-    } catch {
-      // Local storage can be disabled in hardened browser profiles.
-    }
-    applyTheme(theme);
+  themeToggles.forEach((themeToggle) => {
+    themeToggle.addEventListener("click", () => {
+      const theme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+      try {
+        window.localStorage.setItem(storageKey, theme);
+      } catch {
+        // Local storage can be disabled in hardened browser profiles.
+      }
+      applyTheme(theme);
+    });
   });
 }
 
@@ -635,7 +640,10 @@ function initPhotoUploadRows() {
   };
 
   const addRow = () => {
-    const html = template.innerHTML.split("__INDEX__").join(String(nextIndex++));
+    const rowIndex = nextIndex++;
+    const html = template.innerHTML
+      .split("__INDEX__").join(String(rowIndex))
+      .split("__NUMBER__").join(String(rowIndex + 1));
     list.insertAdjacentHTML("beforeend", html.trim());
 
     const newRow = list.lastElementChild;
@@ -668,6 +676,44 @@ function initPhotoUploadRows() {
   });
 
   window.foto636InitSelect2(list);
+}
+
+function initAdminMobileMenu() {
+  const sidebar = document.querySelector("#admin-sidebar");
+  const toggles = Array.from(document.querySelectorAll("[data-admin-menu-toggle]"));
+  const closers = Array.from(document.querySelectorAll("[data-admin-menu-close]"));
+  const backdrop = document.querySelector(".admin-menu-backdrop");
+
+  if (!sidebar || !toggles.length) {
+    return;
+  }
+
+  const setOpen = (isOpen) => {
+    document.body.classList.toggle("admin-menu-open", isOpen);
+    sidebar.classList.toggle("is-open", isOpen);
+    toggles.forEach((toggle) => toggle.setAttribute("aria-expanded", String(isOpen)));
+    if (backdrop) {
+      backdrop.hidden = !isOpen;
+    }
+  };
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => setOpen(!sidebar.classList.contains("is-open")));
+  });
+
+  closers.forEach((closer) => {
+    closer.addEventListener("click", () => setOpen(false));
+  });
+
+  sidebar.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setOpen(false);
+    }
+  });
 }
 
 function initAdminPhotoGridSwitch() {
@@ -728,6 +774,7 @@ window.foto636InitPhotoFileInputs = (root = document) => {
 initGoogleTranslateElement();
 initThemeToggle();
 initLanguageSwitcher();
+initAdminMobileMenu();
 initGalleryTreeToggle();
 initLightGallery();
 window.foto636InitSelect2();
