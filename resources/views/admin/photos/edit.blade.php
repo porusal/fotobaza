@@ -66,23 +66,11 @@
 
                         <div class="col-lg-3">
                             <label class="form-label" for="photo_file">Заменить файл</label>
-                            <div class="photo-upload-control" data-photo-file-control data-photo-file-input-name="photo_file">
-                                <input class="form-control photo-upload-input photo-upload-input--desktop @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" accept="image/*" data-photo-file-input data-photo-file-desktop aria-label="Загрузить фото">
-                                <div class="photo-upload-mobile">
-                                    <button class="btn-soft photo-upload-trigger" type="button" data-photo-file-trigger>
-                                        <x-admin-icon name="plus" />
-                                        <span>Загрузить фото</span>
-                                    </button>
-                                    <div class="photo-upload-menu" data-photo-file-menu hidden>
-                                        <button type="button" data-photo-file-choice="camera">Камера</button>
-                                        <button type="button" data-photo-file-choice="gallery">Галерея</button>
-                                    </div>
-                                    <input class="photo-upload-native" type="file" accept="image/*" capture="environment" data-photo-file-input data-photo-file-camera disabled aria-label="Сделать фото камерой">
-                                    <input class="photo-upload-native" type="file" accept="image/*" data-photo-file-input data-photo-file-gallery disabled aria-label="Выбрать фото из галереи">
-                                </div>
+                            <div class="photo-upload-control" data-photo-file-control>
+                                <input class="form-control photo-upload-input @error('photo_file') is-invalid @enderror" type="file" name="photo_file" id="photo_file" accept="image/*" data-photo-file-input aria-label="Загрузить фото">
                                 <div class="photo-upload-name" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
                             </div>
-                            <div class="form-hint mt-2">На смартфоне можно выбрать камеру или галерею. На компьютере откроется обычное окно выбора файла. Поддерживаются фото до 64 MB.</div>
+                            <div class="form-hint mt-2">На смартфоне откроется системный выбор: камера или галерея. На компьютере откроется обычное окно выбора файла. Поддерживаются фото до 64 MB.</div>
                             @error('photo_file')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
