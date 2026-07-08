@@ -22,13 +22,7 @@
         <div class="col-lg-4">
             <label class="form-label">Файл</label>
             <div class="photo-upload-control" data-photo-file-control>
-                <div class="photo-upload-picker">
-                    <span class="btn-ghost photo-upload-button">
-                        <x-admin-icon name="image" />
-                        <span>Загрузить фото</span>
-                    </span>
-                    <input class="photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" accept="image/*" data-photo-file-input>
-                </div>
+                <input class="form-control photo-upload-input" type="file" id="{{ $fileInputId }}" name="items[{{ $rowIndex }}][file]" data-photo-file-input>
                 <div class="form-hint mt-2" data-photo-file-name data-empty-text="Файл не выбран">Файл не выбран</div>
             </div>
             <div class="form-hint mt-2">На смартфоне откроется системный выбор: камера или фото из галереи. Поддерживаются фото до 32 MB.</div>
