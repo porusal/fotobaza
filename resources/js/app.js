@@ -445,7 +445,7 @@ function updatePhotoFileName(control) {
     return;
   }
 
-  const input = Array.from(control.querySelectorAll("[data-photo-file-input]")).find((fileInput) => fileInput.files?.length);
+  const input = control.querySelector("[data-photo-file-input]");
   const emptyText = output.dataset.emptyText || "Файл не выбран";
 
   if (!input?.files?.length) {
@@ -458,77 +458,9 @@ function updatePhotoFileName(control) {
 
 function initPhotoFileInputs(root = document) {
   root.querySelectorAll("[data-photo-file-control]:not([data-photo-file-ready])").forEach((control) => {
-    const trigger = control.querySelector("[data-photo-file-trigger]");
-    const menu = control.querySelector("[data-photo-file-menu]");
-    const fieldName = control.dataset.photoFileField || "";
-    const inputs = Array.from(control.querySelectorAll("[data-photo-file-input]"));
+    const input = control.querySelector("[data-photo-file-input]");
 
-    const closeMenu = () => {
-      if (!menu) {
-        return;
-      }
-
-      menu.hidden = true;
-      trigger?.setAttribute("aria-expanded", "false");
-    };
-
-    const openMenu = () => {
-      if (!menu) {
-        return;
-      }
-
-      menu.hidden = false;
-      trigger?.setAttribute("aria-expanded", "true");
-    };
-
-    const syncNames = (activeRole = "gallery") => {
-      inputs.forEach((input) => {
-        const isActive = input.dataset.photoFileRole === activeRole;
-
-        if (isActive) {
-          input.setAttribute("name", fieldName);
-        } else {
-          input.removeAttribute("name");
-          input.value = "";
-        }
-      });
-    };
-
-    trigger?.addEventListener("click", () => {
-      if (!menu) {
-        return;
-      }
-
-      if (menu.hidden) {
-        openMenu();
-      } else {
-        closeMenu();
-      }
-    });
-
-    control.querySelectorAll("[data-photo-file-choice]").forEach((choice) => {
-      choice.addEventListener("click", () => {
-        const activeRole = choice.getAttribute("data-photo-file-choice") || "gallery";
-        syncNames(activeRole);
-        updatePhotoFileName(control);
-        setTimeout(closeMenu, 0);
-      });
-    });
-
-    inputs.forEach((input) => {
-      input.addEventListener("change", () => {
-        updatePhotoFileName(control);
-        closeMenu();
-      });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!control.contains(event.target)) {
-        closeMenu();
-      }
-    });
-
-    syncNames("gallery");
+    input?.addEventListener("change", () => updatePhotoFileName(control));
     updatePhotoFileName(control);
     control.setAttribute("data-photo-file-ready", "true");
   });
